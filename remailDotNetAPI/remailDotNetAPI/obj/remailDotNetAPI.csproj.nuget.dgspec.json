@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\mstopyra\\Documents\\GitHub\\remailDotNetAPI\\remailDotNetAPI\\remailDotNetAPI.csproj": {}
+    "C:\\Users\\mstopyra\\Documents\\GitHub\\internship-project-re-mail\\remailDotNetAPI\\remailDotNetAPI\\remailDotNetAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\mstopyra\\Documents\\GitHub\\remailDotNetAPI\\remailDotNetAPI\\remailDotNetAPI.csproj": {
+    "C:\\Users\\mstopyra\\Documents\\GitHub\\internship-project-re-mail\\remailDotNetAPI\\remailDotNetAPI\\remailDotNetAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mstopyra\\Documents\\GitHub\\remailDotNetAPI\\remailDotNetAPI\\remailDotNetAPI.csproj",
+        "projectUniqueName": "C:\\Users\\mstopyra\\Documents\\GitHub\\internship-project-re-mail\\remailDotNetAPI\\remailDotNetAPI\\remailDotNetAPI.csproj",
         "projectName": "remailDotNetAPI",
-        "projectPath": "C:\\Users\\mstopyra\\Documents\\GitHub\\remailDotNetAPI\\remailDotNetAPI\\remailDotNetAPI.csproj",
+        "projectPath": "C:\\Users\\mstopyra\\Documents\\GitHub\\internship-project-re-mail\\remailDotNetAPI\\remailDotNetAPI\\remailDotNetAPI.csproj",
         "packagesPath": "C:\\Users\\mstopyra\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mstopyra\\Documents\\GitHub\\remailDotNetAPI\\remailDotNetAPI\\obj\\",
+        "outputPath": "C:\\Users\\mstopyra\\Documents\\GitHub\\internship-project-re-mail\\remailDotNetAPI\\remailDotNetAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\mstopyra\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,6 +40,10 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "SQLite": {
+              "target": "Package",
+              "version": "[3.13.0, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.2.3, )"

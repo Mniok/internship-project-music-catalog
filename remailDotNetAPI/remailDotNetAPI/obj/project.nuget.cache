@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "3ERsnL+BX7QIvfMWV9D8zZN00IHjLfWnnSxFeRA2m8xIQVhsQPfWwitoeAoSOLYWX1Bh+C61nlr71k7w7sdawg==",
+  "dgSpecHash": "V1EOdV7Sd9OY+xScKA1QZdU2uivYD2mtkwHiKe1d3ekfwwvYrt+igr5BZCEOUnLaRCca+XPFf5JfFnHXLU7riQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\mstopyra\\Documents\\GitHub\\remailDotNetAPI\\remailDotNetAPI\\remailDotNetAPI.csproj",
+  "projectFilePath": "C:\\Users\\mstopyra\\Documents\\GitHub\\internship-project-re-mail\\remailDotNetAPI\\remailDotNetAPI\\remailDotNetAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\mstopyra\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
     "C:\\Users\\mstopyra\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\mstopyra\\.nuget\\packages\\sqlite\\3.13.0\\sqlite.3.13.0.nupkg.sha512",
     "C:\\Users\\mstopyra\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
     "C:\\Users\\mstopyra\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
     "C:\\Users\\mstopyra\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
