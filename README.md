@@ -4,6 +4,20 @@
 
 Made by Marian Stopyra, for student internship
 
+
+Used technologies:
+- Vue.Js
+- Vuetify
+- ASP.NET
+- C#
+- NuGet SQLite package
+- NuGet Microsoft.AspNetCore.Authentication.JwtBearer package
+- Pinia
+- Axios
+- Bootstrap
+
+
+
 Before running this:
 1. install the Long Time Support version of Node.Js
 2. install Visual Studio Community
