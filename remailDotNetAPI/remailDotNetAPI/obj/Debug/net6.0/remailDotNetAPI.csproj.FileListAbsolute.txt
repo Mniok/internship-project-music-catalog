@@ -56,3 +56,10 @@ C:\Users\mstopyra\Documents\GitHub\internship-project-re-mail\remailDotNetAPI\re
 C:\Users\mstopyra\Documents\GitHub\internship-project-re-mail\remailDotNetAPI\remailDotNetAPI\obj\Debug\net6.0\remailDotNetAPI.pdb
 C:\Users\mstopyra\Documents\GitHub\internship-project-re-mail\remailDotNetAPI\remailDotNetAPI\obj\Debug\net6.0\remailDotNetAPI.genruntimeconfig.cache
 C:\Users\mstopyra\Documents\GitHub\internship-project-re-mail\remailDotNetAPI\remailDotNetAPI\obj\Debug\net6.0\ref\remailDotNetAPI.dll
+C:\Users\mstopyra\Documents\GitHub\internship-project-re-mail\remailDotNetAPI\remailDotNetAPI\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\mstopyra\Documents\GitHub\internship-project-re-mail\remailDotNetAPI\remailDotNetAPI\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\mstopyra\Documents\GitHub\internship-project-re-mail\remailDotNetAPI\remailDotNetAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\mstopyra\Documents\GitHub\internship-project-re-mail\remailDotNetAPI\remailDotNetAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\mstopyra\Documents\GitHub\internship-project-re-mail\remailDotNetAPI\remailDotNetAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\mstopyra\Documents\GitHub\internship-project-re-mail\remailDotNetAPI\remailDotNetAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\mstopyra\Documents\GitHub\internship-project-re-mail\remailDotNetAPI\remailDotNetAPI\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
