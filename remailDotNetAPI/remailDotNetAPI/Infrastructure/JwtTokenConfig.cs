@@ -1,4 +1,4 @@
-﻿namespace remailDotNetAPI
+﻿namespace remailDotNetAPI.Infrastructure
 {
     public class JwtTokenConfig
     {
