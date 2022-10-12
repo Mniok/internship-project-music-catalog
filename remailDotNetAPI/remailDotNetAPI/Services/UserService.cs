@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
 namespace remailDotNetAPI.Services
@@ -8,6 +9,7 @@ namespace remailDotNetAPI.Services
         bool IsAnExistingUser(string userName);
         bool IsValidUserCredentials(string userName, string password);
         string GetUserRole(string userName);
+        bool CreateUser(string userName, string password);  //notice: should be CreateUserAsync! Not async for now
     }
 
     public class UserService : IUserService
@@ -15,7 +17,7 @@ namespace remailDotNetAPI.Services
         private readonly ILogger<UserService> _logger;
 
 
-        private readonly IDictionary<string, string> _users = new Dictionary<string, string>
+        private readonly IDictionary<string, string> _users = new Dictionary<string, string>            /// !!!!!!!! zast¹piæ database
         {
             { "test1", "password1" },
             { "test2", "password2" },
@@ -55,13 +57,35 @@ namespace remailDotNetAPI.Services
                 return string.Empty;
             }
 
-            if (userName == "admin")
+            /*if (userName == "admin")      /// !!! takie by³o u Changhui Xu. Dobrze ¿e zauwa¿y³em i zakomentowa³em bo mog³oby to byæ vulnerability
             {
                 return UserRoles.Admin;
-            }
+            }*/
 
             return UserRoles.BasicUser;
         }
+
+
+
+        ///     !!!     nowe: CreateUserAsync do rejestracji ze stackoverflowa, bo u Changhui'a Xu rejestracji z jakiegoœ powodu nie by³o
+        public bool CreateUser(string userName, string password)
+        {
+            //var user = _mapper.Map<User>(userRegistration);
+            //var result = await _userManager.CreateAsync(user, userRegistration.Password);
+            //return true; //success
+            return false; //failure     //TEMPORARY: just for testing always fails, remove this later 
+        }
+
+        /* rejestracja od Hadeeba Ajide (czêœæ):
+        public async Task<IdentityResult> RegisterUserAsync(UserRegistrationDto userRegistration)
+        {
+            var user = _mapper.Map<User>(userRegistration);
+            var result = await _userManager.CreateAsync(user, userRegistration.Password);
+            return result;
+        }
+        */
+
+
     }
 
     public static class UserRoles

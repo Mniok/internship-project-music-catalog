@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using System.Data;
 
 namespace remailDotNetAPI.Controllers
 {
@@ -62,13 +63,60 @@ namespace remailDotNetAPI.Controllers
             });
         }
 
+        ///     !!!     dodana rejestracja!
+        [AllowAnonymous]
+        [HttpPost("registration")]
+        public async Task<IActionResult> Registration([FromBody] RegisterRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(new { code = "ModelNotValid", description = "Model is not valid." });
+
+            if (_userService.IsAnExistingUser(request.UserName))        //IsAnExistingUser() podmienione ze UsernameTaken() bo ju¿ istnia³o
+                return BadRequest(new
+                {
+                    code = "UserNameTaken",
+                    description = $"The User Name {request.UserName} is taken."
+                });
+
+            var userCreatedSuccess = /*await*/ _userService.CreateUser(request.UserName, request.Password);
+
+            if (!userCreatedSuccess)
+                return BadRequest(new
+                {
+                    code = "Register failed",
+                    description = "For some reason the account couldn't be created. Try again later."
+                });
+
+            /*var user = _userService.GetUserByUserName(model.UserName);        // to z rejestracji ze stackoverflow, podmienione na generacjê tokenów z poradnika Changhui'a Xu
+            int validityDurationInHours = 3;
+            string token = _jwtService.GenerateJwtToken(user, await _userService.GetUserRolesAsync(user),
+                validityDurationInHours);
+
+            return Ok(new { code = "RegistrationSuccess", auth_token = token });*/
+
+            var role = _userService.GetUserRole(request.UserName);      // GetUserRole po prostu zwraca UserRoles.BasicUser;
+            var claims = new[]                                          // (w swaggerze jest jako string "role": "BasicUser")
+            {                                                           // adminów nie bêdzie
+                new Claim(ClaimTypes.Name, request.UserName),
+                new Claim(ClaimTypes.Role, role)
+            };
+
+            var jwtResult = _jwtAuthManager.GenerateTokens(request.UserName, claims, DateTime.Now);
+            _logger.LogInformation($"User [{request.UserName}] was registered, and logged in the system.");
+            return Ok(new LoginResult       // od razu zalogowanie z rejestracji
+            {
+                UserName = request.UserName,
+                Role = role,
+                AccessToken = jwtResult.AccessToken,
+                RefreshToken = jwtResult.RefreshToken.TokenString
+            });
+        }
+
+
         [HttpGet("user")]
         [Authorize]
         public ActionResult GetCurrentUser()
         {
-            // test:
-            //return Ok(new LoginResult { UserName = "not logged in", Role="none", OriginalUserName = "not logged in" });
-
             return Ok(new LoginResult
             {
                 UserName = User.Identity?.Name,
@@ -227,6 +275,20 @@ namespace remailDotNetAPI.Controllers
         [JsonPropertyName("refreshToken")]
         public string RefreshToken { get; set; }
     }
+
+
+    ///     !!!     RegisterRequest dodane!
+    public class RegisterRequest
+    {
+        [Required]
+        [JsonPropertyName("username")]
+        public string UserName { get; set; }        // OriginalUserName ustawiane od tego w generacji Usera btw
+
+        [Required]
+        [JsonPropertyName("password")]
+        public string Password { get; set; }
+    }
+
 
     public class RefreshTokenRequest
     {
