@@ -66,6 +66,9 @@ namespace remailDotNetAPI.Controllers
         [Authorize]
         public ActionResult GetCurrentUser()
         {
+            // test:
+            //return Ok(new LoginResult { UserName = "not logged in", Role="none", OriginalUserName = "not logged in" });
+
             return Ok(new LoginResult
             {
                 UserName = User.Identity?.Name,
@@ -73,6 +76,15 @@ namespace remailDotNetAPI.Controllers
                 OriginalUserName = User.FindFirst("OriginalUserName")?.Value
             });
         }
+
+        ///         TEST ===========================================================================================
+        [AllowAnonymous]
+        [HttpGet("testController")]
+        public ActionResult TestController()
+        {
+            return Ok(new LoginResult { UserName = "controller test", Role="test", OriginalUserName = "controller test" });
+        }
+
 
         [HttpPost("logout")]
         [Authorize]
@@ -102,7 +114,7 @@ namespace remailDotNetAPI.Controllers
                 }
 
                 var accessToken = await HttpContext.GetTokenAsync("Bearer", "access_token");
-                var jwtResult = _jwtAuthManager.Refresh(request.RefreshToken, accessToken, DateTime.Now);
+                var jwtResult = _jwtAuthManager.Refresh(request.RefreshToken, accessToken, DateTime.Now);       /// !!!
                 _logger.LogInformation($"User [{userName}] has refreshed JWT token.");
                 return Ok(new LoginResult
                 {

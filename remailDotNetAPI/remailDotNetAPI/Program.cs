@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using remailDotNetAPI;
 using remailDotNetAPI.Infrastructure;
+using remailDotNetAPI.Services;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,6 +39,10 @@ builder.Services.AddAuthentication(x =>                                     /// 
         ClockSkew = TimeSpan.FromMinutes(1)
     };
 });
+builder.Services.AddSingleton<IJwtAuthManager, JwtAuthManager>();   /// register services so they can be resolved in requests
+//builder.Services.AddHostedService<JwtRefreshTokenCache>();
+builder.Services.AddScoped<IUserService, UserService>();
+
 
 /*public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
 {
