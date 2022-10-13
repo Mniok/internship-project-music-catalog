@@ -15,6 +15,13 @@ namespace remailDotNetAPI.Services
     public class DBService : DbContext
     {
 
+        /*private readonly ConnectionStrings _configuration;
+
+        public DBService(ConnectionStrings configuration)
+        {
+            _configuration = configuration;
+        }*/
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder.UseSqlite($"Data Source = Users.db;");
 
@@ -25,11 +32,17 @@ namespace remailDotNetAPI.Services
         {
             modelBuilder.Entity<Models.User>().HasData(
 
-            new Models.User() { Id = 1, UserName = "testuser1", OriginalUserName = "testuser1", Password = "testpass1", CreatedAt = DateTime.Now, UserRole = Services.UserRoles.BasicUser },
+            new Models.User() { UserId = 1, UserName = "testuser1", OriginalUserName = "testuser1", Password = "testpass1", CreatedAt = DateTime.Now, UserRole = Services.UserRoles.BasicUser },
 
-            new Models.User() { Id = 2, UserName = "testuser2", OriginalUserName = "testuser2", Password = "testpass2", CreatedAt = DateTime.Now, UserRole = Services.UserRoles.BasicUser }
+            new Models.User() { UserId = 2, UserName = "testuser2", OriginalUserName = "testuser2", Password = "testpass2", CreatedAt = DateTime.Now, UserRole = Services.UserRoles.BasicUser }
 
             );
         }
     }
+}
+
+public class ConnectionStrings
+{
+    public string UsersContext { get; set; }
+
 }

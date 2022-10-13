@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using remailDotNetAPI;
@@ -73,6 +74,7 @@ builder.Services.AddSingleton<IJwtAuthManager, JwtAuthManager>();   /// register
 builder.Services.AddScoped<IUserService, UserService>();
 
 
+var ConnectionString = builder.Configuration.GetSection("ConnectionStrings").Get<ConnectionStrings>();      //unsure how to pass this to constructor, seems to be done from controller not from here, leaving it as is for now because I got sidetracked 
 builder.Services.AddDbContext<remailDotNetAPI.Services.DBService>();    //register DBService as a service, to use local SQLite database, as defined in DBService.cs
 
 
