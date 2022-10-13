@@ -78,7 +78,7 @@ namespace remailDotNetAPI.Controllers
                     description = $"The User Name {request.UserName} is taken."
                 });
 
-            var userCreatedSuccess = /*await*/ _userService.CreateUser(request.UserName, request.Password);
+            var userCreatedSuccess = _userService.CreateUser(request.UserName, request.Password);
 
             if (!userCreatedSuccess)
                 return BadRequest(new
