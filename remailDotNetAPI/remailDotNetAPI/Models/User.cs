@@ -16,6 +16,18 @@
 
 
 
+        public User(int Id, string Name, string Pass, string Role) {
+            this.UserId = Id;
+            this.UserName = Name;
+            this.OriginalUserName = Name;
+            this.Password = Pass;
+            this.CreatedAt = DateTime.Now;
+            this.UserRole = Role;
+        }
+
+        public User() { }       //bez tego wywalało się _context.User.whatever()
+
+
         //computed się robi tak: public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
         //public string? Summary { get; set; } /// ? - nullable
 

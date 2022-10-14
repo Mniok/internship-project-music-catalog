@@ -2,6 +2,11 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using remailDotNetAPI.Models;
+///using Microsoft.AspNetCore.Mvc;
+
 namespace remailDotNetAPI.Services
 {
     public interface IUserService
@@ -9,12 +14,13 @@ namespace remailDotNetAPI.Services
         bool IsAnExistingUser(string userName);
         bool IsValidUserCredentials(string userName, string password);
         string GetUserRole(string userName);
-        bool CreateUser(string userName, string password);  //notice: should be CreateUserAsync! Not async for now
+        Models.User CreateUser(string userName, string password);  //notice: should be CreateUserAsync! Not async for now
     }
 
     public class UserService : IUserService
     {
         private readonly ILogger<UserService> _logger;
+        private readonly DBService _context;
 
 
         private readonly IDictionary<string, string> _users = new Dictionary<string, string>            /// !!!!!!!! zast¹piæ database
@@ -24,9 +30,10 @@ namespace remailDotNetAPI.Services
             { "admin", "securePassword" }
         };
         // inject your database here for user validation
-        public UserService(ILogger<UserService> logger)
+        public UserService(ILogger<UserService> logger, DBService context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public bool IsValidUserCredentials(string userName, string password)
@@ -68,12 +75,24 @@ namespace remailDotNetAPI.Services
 
 
         ///     !!!     nowe: CreateUserAsync do rejestracji ze stackoverflowa, bo u Changhui'a Xu rejestracji z jakiegoœ powodu nie by³o
-        public bool CreateUser(string userName, string password)
+        public Models.User CreateUser(string userName, string password)
         {
-            //var user = _mapper.Map<User>(userRegistration);
-            //var result = await _userManager.CreateAsync(user, userRegistration.Password);
-            //return true; //success
-            return false; //failure     //TEMPORARY: just for testing always fails, remove this later 
+            int newId = _context.User.Count() + 1;
+
+            Models.User newUser = new Models.User(newId,
+                                        userName, 
+                                        password,
+                                        UserRoles.BasicUser);
+            //Models.User newUser = new Models.User { UserId = newId, UserName = userName, OriginalUserName = userName, Password = password, CreatedAt = DateTime.Now, UserRole = UserRoles.BasicUser };
+
+            _context.User.Add(newUser);
+            //await _context.SaveChangesAsync();
+            _context.SaveChanges();
+
+            //return CreatedAtAction("GetUser", new { id = user.UserId }, user);
+            //return new Models.User(1, "testuser1", "testpass1", Services.UserRoles.BasicUser);
+            return newUser;
+
         }
 
         /* rejestracja od Hadeeba Ajide (czêœæ):

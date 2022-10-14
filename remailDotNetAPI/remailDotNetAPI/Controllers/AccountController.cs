@@ -78,9 +78,10 @@ namespace remailDotNetAPI.Controllers
                     description = $"The User Name {request.UserName} is taken."
                 });
 
-            var userCreatedSuccess = _userService.CreateUser(request.UserName, request.Password);
+            //_userService.CreateUser(request.UserName, request.Password);
+            var createdUser = _userService.CreateUser(request.UserName, request.Password);
 
-            if (!userCreatedSuccess)
+            if (createdUser == null)        /// !!! might not actually work to determine whether user creation failed
                 return BadRequest(new
                 {
                     code = "Register failed",
@@ -94,18 +95,19 @@ namespace remailDotNetAPI.Controllers
 
             return Ok(new { code = "RegistrationSuccess", auth_token = token });*/
 
-            var role = _userService.GetUserRole(request.UserName);      // GetUserRole po prostu zwraca UserRoles.BasicUser;
+            //var role = _userService.GetUserRole(request.UserName);      // GetUserRole po prostu zwraca UserRoles.BasicUser;
+            var role = createdUser.UserRole;
             var claims = new[]                                          // (w swaggerze jest jako string "role": "BasicUser")
             {                                                           // adminów nie bêdzie
-                new Claim(ClaimTypes.Name, request.UserName),
+                new Claim(ClaimTypes.Name, createdUser.UserName),
                 new Claim(ClaimTypes.Role, role)
             };
 
-            var jwtResult = _jwtAuthManager.GenerateTokens(request.UserName, claims, DateTime.Now);
-            _logger.LogInformation($"User [{request.UserName}] was registered, and logged in the system.");
+            var jwtResult = _jwtAuthManager.GenerateTokens(createdUser.UserName, claims, DateTime.Now);
+            _logger.LogInformation($"User [{createdUser.UserName}] was registered, and logged in the system.");
             return Ok(new LoginResult       // od razu zalogowanie z rejestracji
             {
-                UserName = request.UserName,
+                UserName = createdUser.UserName,
                 Role = role,
                 AccessToken = jwtResult.AccessToken,
                 RefreshToken = jwtResult.RefreshToken.TokenString

@@ -32,9 +32,13 @@ namespace remailDotNetAPI.Services
         {
             modelBuilder.Entity<Models.User>().HasData(
 
-            new Models.User() { UserId = 1, UserName = "testuser1", OriginalUserName = "testuser1", Password = "testpass1", CreatedAt = DateTime.Now, UserRole = Services.UserRoles.BasicUser },
+            new Models.User { UserId = 1, UserName = "testuser1", OriginalUserName = "testuser1", Password = "testpass1", CreatedAt = DateTime.Now, UserRole = Services.UserRoles.BasicUser },
 
-            new Models.User() { UserId = 2, UserName = "testuser2", OriginalUserName = "testuser2", Password = "testpass2", CreatedAt = DateTime.Now, UserRole = Services.UserRoles.BasicUser }
+            new Models.User { UserId = 2, UserName = "testuser2", OriginalUserName = "testuser2", Password = "testpass2", CreatedAt = DateTime.Now, UserRole = Services.UserRoles.BasicUser }
+
+            //new Models.User(1, "testuser1", "testpass1", Services.UserRoles.BasicUser), //{ UserId = 1, UserName = "testuser1", OriginalUserName = "testuser1", Password = "testpass1", CreatedAt = DateTime.Now, UserRole = Services.UserRoles.BasicUser },
+
+            //new Models.User(1, "testuser2", "testpass2", Services.UserRoles.BasicUser)
 
             );
         }
