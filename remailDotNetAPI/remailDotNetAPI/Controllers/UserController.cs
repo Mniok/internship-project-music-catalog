@@ -75,14 +75,16 @@ namespace remailDotNetAPI.Controllers
 
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        /*[HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
             _context.User.Add(user);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetUser", new { id = user.UserId }, user);
-        }
+        }*/
+        /// moved to AccountController -> register
+
 
         // DELETE: api/Users/5
         [HttpDelete("{id}")]

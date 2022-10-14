@@ -54,7 +54,11 @@ namespace remailDotNetAPI.Services
 
         public bool IsAnExistingUser(string userName)
         {
-            return _users.ContainsKey(userName);
+            //return _users.ContainsKey(userName);
+            //_context.User.Find(var x => x.UserName == userName);
+            var foundUsers = from user in _context.User.ToList() where user.UserName == userName select user;
+
+            return foundUsers.Count() != 0;
         }
 
         public string GetUserRole(string userName)
