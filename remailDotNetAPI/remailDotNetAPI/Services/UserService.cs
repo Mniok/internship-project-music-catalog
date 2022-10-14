@@ -49,7 +49,13 @@ namespace remailDotNetAPI.Services
                 return false;
             }
 
-            return _users.TryGetValue(userName, out var p) && p == password;
+            //find by username and pass in db, check if one user was found (can't be more than one)
+            var foundUsers = from user in _context.User.ToList() where user.UserName == userName && user.Password == password select user;
+
+            if (foundUsers.Count() > 1)
+                _logger.LogCritical($"User [{userName}] cound not be validated, because somehow more than one user with this username exists!");
+
+            return foundUsers.Count() == 1; //jak 0 to nie ma takiego, >1 nie mo¿e byæ bez bezpoœredniego grzebania w bazie
         }
 
         public bool IsAnExistingUser(string userName)
@@ -73,7 +79,9 @@ namespace remailDotNetAPI.Services
                 return UserRoles.Admin;
             }*/
 
-            return UserRoles.BasicUser;
+            var role = from user in _context.User.ToList() where user.UserName == userName select user.UserRole;
+
+            return role.ElementAt(0);   //should only ever be one user with the same name, but query returns an enum
         }
 
 
