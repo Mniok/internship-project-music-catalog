@@ -2,44 +2,41 @@
   <v-app>
     <v-app-bar
       app
-      color="primary"
+      color="indigo lighten-1"
       dark
     >
       <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
+        <v-icon x-large>mdi-email-sync</v-icon>
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
+        <h4 class="mt-2 ml-2">re:mail</h4>
       </div>
 
       <v-spacer></v-spacer>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
+      <v-btn text disabled>
+        <span class="mr-2">Not logged in</span>
+        <v-icon>mdi-account-circle</v-icon>
       </v-btn>
     </v-app-bar>
 
     <v-main>
       <router-view/>
     </v-main>
+
+    <v-footer absolute padless>
+      <v-card
+        flat
+        tile
+        width="100%"
+        class="indigo lighten-1 text-center"
+      >
+        <v-card-text class="white--text">
+          <v-btn to="/about" color="blue lighten-5" text rounded>contact/about</v-btn>
+        </v-card-text>
+      </v-card>
+    </v-footer>
+
+
   </v-app>
 </template>
 
