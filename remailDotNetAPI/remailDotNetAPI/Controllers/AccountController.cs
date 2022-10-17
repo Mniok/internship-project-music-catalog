@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.Data;
+using Microsoft.AspNetCore.Cors;
 
 namespace remailDotNetAPI.Controllers
 {
@@ -32,6 +33,7 @@ namespace remailDotNetAPI.Controllers
         }
 
         [AllowAnonymous]
+        [EnableCors]
         [HttpPost("login")]
         public ActionResult Login([FromBody] LoginRequest request)
         {
@@ -65,6 +67,7 @@ namespace remailDotNetAPI.Controllers
 
         ///     !!!     dodana rejestracja!
         [AllowAnonymous]
+        [EnableCors]
         [HttpPost("registration")]
         public async Task<IActionResult> Registration([FromBody] RegisterRequest request)
         {
@@ -115,6 +118,7 @@ namespace remailDotNetAPI.Controllers
         }
 
 
+        [EnableCors]
         [HttpGet("user")]
         [Authorize]
         public ActionResult GetCurrentUser()
@@ -129,6 +133,7 @@ namespace remailDotNetAPI.Controllers
 
         ///         TEST ===========================================================================================
         [AllowAnonymous]
+        [EnableCors]
         [HttpGet("testController")]
         public ActionResult TestController()
         {
@@ -136,6 +141,7 @@ namespace remailDotNetAPI.Controllers
         }
 
 
+        [EnableCors]
         [HttpPost("logout")]
         [Authorize]
         public ActionResult Logout()
@@ -149,6 +155,7 @@ namespace remailDotNetAPI.Controllers
             return Ok();
         }
 
+        [EnableCors]
         [HttpPost("refresh-token")]
         [Authorize]
         public async Task<ActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
@@ -180,6 +187,7 @@ namespace remailDotNetAPI.Controllers
             }
         }
 
+        [EnableCors]
         [HttpPost("impersonation")]
         [Authorize(Roles = UserRoles.Admin)]
         public ActionResult Impersonate([FromBody] ImpersonationRequest request)
@@ -218,6 +226,7 @@ namespace remailDotNetAPI.Controllers
             });
         }
 
+        [EnableCors]
         [HttpPost("stop-impersonation")]
         public ActionResult StopImpersonation()
         {
@@ -303,6 +312,14 @@ namespace remailDotNetAPI.Controllers
         [JsonPropertyName("username")]
         public string UserName { get; set; }
     }
+
+
+
+    /*public class headers
+    {
+        [JsonPropertyName("Access-Control-Allow-Origin")]
+        public static string CORS ="*";
+    }*/
 
 
 

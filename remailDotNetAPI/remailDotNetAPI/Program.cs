@@ -8,6 +8,8 @@ using remailDotNetAPI.Infrastructure;
 using remailDotNetAPI.Services;
 using System.Text;
 
+//var allowCORS = "_allowCORS";
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -79,6 +81,17 @@ builder.Services.AddDbContext<remailDotNetAPI.Services.DBService>();    //regist
 
 
 
+/*builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: allowCORS,
+                      policy =>
+                      {
+                          policy.WithOrigins("*", "https://localhost", "https://localhost:7026");
+                      });
+});*/
+builder.Services.AddCors();
+
+
 
 var app = builder.Build();
 
@@ -90,6 +103,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+//app.UseCors(allowCORS);
+app.UseCors(
+    options => options.WithOrigins("*").AllowAnyMethod().AllowAnyHeader()
+//WithMethods("POST", "GET", "PUT", "DELETE") //AllowAnyMethod()
+);
+
 
 app.UseAuthentication();    //before UseAuth!
 app.UseAuthorization();

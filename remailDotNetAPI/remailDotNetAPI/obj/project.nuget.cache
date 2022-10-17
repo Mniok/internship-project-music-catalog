@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "wxV6Cz9qX7eL+25/wlcQiKoRSxZzBxk9IryMR97GbEYdxDqb190RNaEV8283J51q/qHD70m1RlJwE3fQAbur1Q==",
+  "dgSpecHash": "d+qGg1IdeYKENjvoq9ozXRX1/0f9S+pKe7+nak/MDtlUlVqiblO0xDxPBpzOC9LPrv/shR8EqTjRdpi9mwM0dQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\mstopyra\\Documents\\GitHub\\internship-project-re-mail\\remailDotNetAPI\\remailDotNetAPI\\remailDotNetAPI.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,10 @@
     "C:\\Users\\mstopyra\\.nuget\\packages\\messagepack\\2.1.152\\messagepack.2.1.152.nupkg.sha512",
     "C:\\Users\\mstopyra\\.nuget\\packages\\messagepack.annotations\\2.1.152\\messagepack.annotations.2.1.152.nupkg.sha512",
     "C:\\Users\\mstopyra\\.nuget\\packages\\messagepackanalyzer\\2.1.152\\messagepackanalyzer.2.1.152.nupkg.sha512",
+    "C:\\Users\\mstopyra\\.nuget\\packages\\microsoft.aspnet.cors\\5.2.9\\microsoft.aspnet.cors.5.2.9.nupkg.sha512",
+    "C:\\Users\\mstopyra\\.nuget\\packages\\microsoft.aspnet.webapi.client\\5.2.9\\microsoft.aspnet.webapi.client.5.2.9.nupkg.sha512",
+    "C:\\Users\\mstopyra\\.nuget\\packages\\microsoft.aspnet.webapi.core\\5.2.9\\microsoft.aspnet.webapi.core.5.2.9.nupkg.sha512",
+    "C:\\Users\\mstopyra\\.nuget\\packages\\microsoft.aspnet.webapi.cors\\5.2.9\\microsoft.aspnet.webapi.cors.5.2.9.nupkg.sha512",
     "C:\\Users\\mstopyra\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.9\\microsoft.aspnetcore.authentication.jwtbearer.6.0.9.nupkg.sha512",
     "C:\\Users\\mstopyra\\.nuget\\packages\\microsoft.aspnetcore.razor.language\\6.0.0\\microsoft.aspnetcore.razor.language.6.0.0.nupkg.sha512",
     "C:\\Users\\mstopyra\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\5.0.0\\microsoft.bcl.asyncinterfaces.5.0.0.nupkg.sha512",
@@ -77,6 +81,7 @@
     "C:\\Users\\mstopyra\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "C:\\Users\\mstopyra\\.nuget\\packages\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
     "C:\\Users\\mstopyra\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\mstopyra\\.nuget\\packages\\newtonsoft.json.bson\\1.0.1\\newtonsoft.json.bson.1.0.1.nupkg.sha512",
     "C:\\Users\\mstopyra\\.nuget\\packages\\nuget.common\\6.2.1\\nuget.common.6.2.1.nupkg.sha512",
     "C:\\Users\\mstopyra\\.nuget\\packages\\nuget.configuration\\6.2.1\\nuget.configuration.6.2.1.nupkg.sha512",
     "C:\\Users\\mstopyra\\.nuget\\packages\\nuget.dependencyresolver.core\\5.11.0\\nuget.dependencyresolver.core.5.11.0.nupkg.sha512",
@@ -192,5 +197,36 @@
     "C:\\Users\\mstopyra\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\mstopyra\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Microsoft.AspNet.Cors 5.2.9' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net6.0'. This package may not be fully compatible with your project.",
+      "libraryId": "Microsoft.AspNet.Cors",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Microsoft.AspNet.WebApi.Core 5.2.9' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net6.0'. This package may not be fully compatible with your project.",
+      "libraryId": "Microsoft.AspNet.WebApi.Core",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Microsoft.AspNet.WebApi.Cors 5.2.9' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net6.0'. This package may not be fully compatible with your project.",
+      "libraryId": "Microsoft.AspNet.WebApi.Cors",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    }
+  ]
 }

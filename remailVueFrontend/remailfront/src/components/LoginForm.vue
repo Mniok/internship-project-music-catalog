@@ -37,7 +37,7 @@
             <v-btn
               :disabled="!valid"
               color="success"
-              @click="validate"
+              @click="login"
             >
               Log in
             </v-btn>
@@ -72,8 +72,22 @@
     }),
 
     methods: {
-      validate () {
+      login () {
         this.$refs.form.validate()
+
+        var getTest = axios('https://localhost:7026/api/Account/testController');
+        
+        axios.post('https://localhost:7026/api/Account/login', {
+          username: this.username,
+          password: this.password
+        })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
       },
     },
 
