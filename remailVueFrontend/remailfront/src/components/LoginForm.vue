@@ -13,7 +13,6 @@
       
         <v-form
           ref="form"
-          v-model="valid"
           lazy-validation
         >
 
@@ -76,13 +75,35 @@
         this.$refs.form.validate()
 
         var getTest = axios('https://localhost:7026/api/Account/testController');
+        console.log(getTest);
+
+        var loginResponse = "";
+        var apikey = "";
         
         axios.post('https://localhost:7026/api/Account/login', {
           username: this.username,
           password: this.password
         })
         .then(function (response) {
+          loginResponse = response;
+          apikey = response.data.accessToken;
           console.log(response);
+          console.log(apikey);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+
+        console.log("got here! try GET loggedInAs (with authorization)");
+        console.log(`bearer ${apikey}`)
+        var loggedInAs = "";
+        axios.get(`https://localhost:7026/api/Account/user`, {
+          headers: { 'Authorization': `bearer ${apikey}` }
+        })
+        .then(function(response) {
+          loggedInAs = response.data.username;
+          console.log(`logged in as ${loggedInAs}`);
         })
         .catch(function (error) {
           console.log(error);
