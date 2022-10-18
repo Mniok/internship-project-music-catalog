@@ -75,25 +75,24 @@
     }),
 
     methods: {
-      /*updateCurrentUser(apikey) {
-        console.log("got here! try GET loggedInAs (with authorization)");
-        console.log(`bearer ${apikey}`)
-        var loggedInAs = "";
+      updateCurrentUserFromAPI(accessToken) {
+        //console.log("got here! try GET loggedInAs (with authorization)"); ////
+        //console.log(`bearer ${accessToken}`) ////
         axios.get(`https://localhost:7026/api/Account/user`, {
-          headers: { 'Authorization': `bearer ${apikey}` }
+          headers: { 'Authorization': `bearer ${accessToken}` }
         })
-        .then(function(response) {
-          loggedInAs = response.data.username;
-          console.log(`logged in as ${loggedInAs}`);
+        .then(response => {
+          this.updateCurrentUser(response.data.username);
+          console.log(`logged in as ${this.currentUser}`);
         })
         .catch(function (error) {
           console.log(error);
         });
-      },*/
-
-      test () {
-        console.log("here");
       },
+
+      /*test() {
+        console.log("here");
+      },*/
       
       login () {
         this.$refs.form.validate()
@@ -101,48 +100,24 @@
         //var getTest = axios('https://localhost:7026/api/Account/testController');
         //console.log(getTest);
 
-        var loginResponse = "";
-        var apikey = "";
-        //this.test();
-        
-        this.updateCurrentUser("123abc");
-        console.log("pinia store test: " + this.currentUser);
-
-        axios.post('https://localhost:7026/api/Account/login', {
+        var loginRequest = axios.post('https://localhost:7026/api/Account/login', {
           username: this.username,
           password: this.password
         })
-        .then(function (response) {
-          loginResponse = response;
-          apikey = response.data.accessToken;
+        .then(response => {
           console.log(response);
-          console.log(apikey);
-
-          //this.test();
-          //updateCurrentUser(apikey); //.then is apparrently outside of vue instance - this function is undefined here
-          console.log("got here! try GET loggedInAs (with authorization)");
-          console.log(`bearer ${apikey}`)
-          var loggedInAs = "";
-          axios.get(`https://localhost:7026/api/Account/user`, {
-            headers: { 'Authorization': `bearer ${apikey}` }
-          })
-          .then(function(response) {
-            loggedInAs = response.data.username;
-            console.log(`logged in as ${loggedInAs}`);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-
+          //this.test(); ////
+          this.newJWT(response.data.accessToken, response.data.refreshToken);
+          //console.log("access token: " + this.accessToken);
+          this.updateCurrentUserFromAPI(this.accessToken);
         })
         .catch(function (error) {
           console.log(error);
         });
-
       },
 
   
-      ...mapActions(useAccountStore, ['updateCurrentUser']),
+      ...mapActions(useAccountStore, ['updateCurrentUser', 'newJWT']),
       
     },
 
