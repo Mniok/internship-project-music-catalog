@@ -58,7 +58,11 @@
 
 
 <script>
+  import { useAccountStore } from '../store/account';
+  import { mapState, mapActions } from 'pinia';
+
   export default {
+
     data: () => ({
       username: '',
       usernameRules: [
@@ -71,30 +75,7 @@
     }),
 
     methods: {
-      login () {
-        this.$refs.form.validate()
-
-        var getTest = axios('https://localhost:7026/api/Account/testController');
-        console.log(getTest);
-
-        var loginResponse = "";
-        var apikey = "";
-        
-        axios.post('https://localhost:7026/api/Account/login', {
-          username: this.username,
-          password: this.password
-        })
-        .then(function (response) {
-          loginResponse = response;
-          apikey = response.data.accessToken;
-          console.log(response);
-          console.log(apikey);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-
-
+      /*updateCurrentUser(apikey) {
         console.log("got here! try GET loggedInAs (with authorization)");
         console.log(`bearer ${apikey}`)
         var loggedInAs = "";
@@ -108,14 +89,69 @@
         .catch(function (error) {
           console.log(error);
         });
+      },*/
+
+      test () {
+        console.log("here");
+      },
+      
+      login () {
+        this.$refs.form.validate()
+
+        //var getTest = axios('https://localhost:7026/api/Account/testController');
+        //console.log(getTest);
+
+        var loginResponse = "";
+        var apikey = "";
+        //this.test();
+        
+        this.updateCurrentUser("123abc");
+        console.log("pinia store test: " + this.currentUser);
+
+        axios.post('https://localhost:7026/api/Account/login', {
+          username: this.username,
+          password: this.password
+        })
+        .then(function (response) {
+          loginResponse = response;
+          apikey = response.data.accessToken;
+          console.log(response);
+          console.log(apikey);
+
+          //this.test();
+          //updateCurrentUser(apikey); //.then is apparrently outside of vue instance - this function is undefined here
+          console.log("got here! try GET loggedInAs (with authorization)");
+          console.log(`bearer ${apikey}`)
+          var loggedInAs = "";
+          axios.get(`https://localhost:7026/api/Account/user`, {
+            headers: { 'Authorization': `bearer ${apikey}` }
+          })
+          .then(function(response) {
+            loggedInAs = response.data.username;
+            console.log(`logged in as ${loggedInAs}`);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
 
       },
+
+  
+      ...mapActions(useAccountStore, ['updateCurrentUser']),
+      
     },
 
     computed: {
       valid() {
         return !!this.username && !!this.password;
-      }
+      },
+
+      ...mapState(useAccountStore, ['accessToken', 'refreshToken', 'currentUser']),
     }
   }
 </script>
