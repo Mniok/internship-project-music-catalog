@@ -13,8 +13,9 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn text disabled>
-        <span class="mr-2">Not logged in</span>
+      <v-btn text :disabled="!isLoggedIn">
+        <span v-if="!isLoggedIn" class="mr-2">Not logged in</span>
+        <span v-else class="mr-2">Logged in as {{currentUser}}</span>
         <v-icon>mdi-account-circle</v-icon>
       </v-btn>
     </v-app-bar>
@@ -42,6 +43,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { useAccountStore } from './store/account';
+import { mapState } from 'pinia';
 
 export default Vue.extend({
 
@@ -50,5 +53,13 @@ export default Vue.extend({
   data: () => ({
     //
   }),
+
+  computed: {
+      isLoggedIn() {
+        return !!this.currentUser;
+      },
+
+      ...mapState(useAccountStore, ['accessToken', 'refreshToken', 'currentUser']),
+    }
 });
 </script>

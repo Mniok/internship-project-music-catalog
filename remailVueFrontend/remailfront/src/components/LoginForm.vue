@@ -105,7 +105,7 @@
           password: this.password
         })
         .then(response => {
-          console.log(response);
+          //console.log(response);
           //this.test(); ////
           this.newJWT(response.data.accessToken, response.data.refreshToken);
           //console.log("access token: " + this.accessToken);
