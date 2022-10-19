@@ -1,18 +1,20 @@
-/*import { useAccountStore } from '../store/account';
-import { mapState, mapActions } from 'pinia';
+import { useAccountStore } from '../store/account';
+//import { mapState, mapActions } from 'pinia';
+import { mapActions } from 'pinia';
 import axios from 'axios';
 
 var mixinLoggedInAs = {
     methods: {
         updateCurrentUserFromAPI(accessToken : String) {
-            //console.log("got here! try GET loggedInAs (with authorization)"); ////
+             console.log("log from mixin"); ////
+        
             //console.log(`bearer ${accessToken}`) ////
             axios.get(`https://localhost:7026/api/Account/user`, {
               headers: { 'Authorization': `bearer ${accessToken}` }
             })
             .then(response => {
               this.updateCurrentUser(response.data.username);
-              console.log(`logged in as ${this.currentUser}`);
+              //console.log(`logged in as ${this.currentUser}`);
             })
             .catch(function (error) {
               console.log(error);
@@ -22,7 +24,9 @@ var mixinLoggedInAs = {
           ...mapActions(useAccountStore, ['updateCurrentUser']),
     },
 
-    computed: {
+    /*computed: {
       ...mapState(useAccountStore, ['currentUser']),
-    }
-}*/
+    }*/
+}
+
+export default mixinLoggedInAs;

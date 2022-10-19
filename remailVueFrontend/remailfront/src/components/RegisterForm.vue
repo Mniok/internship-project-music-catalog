@@ -58,13 +58,16 @@
 </template>
 
 
-<script>
+<script lang="ts">
   import { useAccountStore } from '../store/account';
   import { mapState, mapActions } from 'pinia';
   //import { LoginForm } from './LoginForm';
+  import mixinLoggedInAs from '../mixins/loggedInAs';
 
   export default {
     name: "registerForm",
+
+    mixins: [mixinLoggedInAs],
 
     data: () => ({
       username: '',
@@ -85,22 +88,8 @@
     }),
 
     methods: {
-      updateCurrentUserFromAPI(accessToken) {
-        //console.log("got here! try GET loggedInAs (with authorization)"); ////
-        //console.log(`bearer ${accessToken}`) ////
-        axios.get(`https://localhost:7026/api/Account/user`, {
-          headers: { 'Authorization': `bearer ${accessToken}` }
-        })
-        .then(response => {
-          this.updateCurrentUser(response.data.username);
-          console.log(`logged in as ${this.currentUser}`);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-      },
       
-      login (uname, pass) {
+      login (uname: string, pass: string) {
         var loginRequest = axios.post('https://localhost:7026/api/Account/login', {
           username: uname,
           password: pass
@@ -139,7 +128,7 @@
 
     computed: {
       valid() {
-        console.log(this.passwordsMatch);
+        //console.log(this.passwordsMatch); ////
         return !!this.username && !!this.password && !!this.confirmPassword && this.passwordsMatch === true; /// === true because string returned on false was truthy
       },
 

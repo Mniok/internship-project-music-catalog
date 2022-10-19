@@ -60,9 +60,12 @@
 <script>
   import { useAccountStore } from '../store/account';
   import { mapState, mapActions } from 'pinia';
+  import mixinLoggedInAs from '../mixins/loggedInAs';
 
   export default {
     name: "loginForm",
+
+    mixins: [mixinLoggedInAs],
 
     data: () => ({
       username: '',
@@ -76,6 +79,22 @@
     }),
 
     methods: {
+
+      /*updateCurrentUserFromAPI(accessToken) {
+        //console.log("got here! try GET loggedInAs (with authorization)"); ////
+        //console.log(`bearer ${accessToken}`) ////
+        axios.get(`https://localhost:7026/api/Account/user`, {
+          headers: { 'Authorization': `bearer ${accessToken}` }
+        })
+        .then(response => {
+          this.updateCurrentUser(response.data.username);
+          console.log(`logged in as ${this.currentUser}`);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      },*/
+
       /*test() {
         console.log("here");
       },*/
