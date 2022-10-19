@@ -12,6 +12,11 @@ const routes: Array<RouteConfig> = [
     component: HomeView
   },
   {
+    path: '/login',
+    name: 'login',
+    component: HomeView
+  },
+  {
     path: '/about',
     name: 'about',
     // route level code-splitting

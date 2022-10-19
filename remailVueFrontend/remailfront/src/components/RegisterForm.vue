@@ -98,7 +98,7 @@
           this.newJWT(response.data.accessToken, response.data.refreshToken);
           this.updateCurrentUserFromAPI(this.accessToken);
         })
-        .catch(function (error) {
+        .catch(function (error :any) {
           console.log(error);
         });
       },
@@ -114,7 +114,7 @@
         .then(response => {
           this.login(this.username, this.password);
         })
-        .catch(function (error) {
+        .catch(function (error :any) {
           console.log(error);
         });
       },

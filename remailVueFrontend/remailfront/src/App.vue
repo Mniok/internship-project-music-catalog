@@ -5,10 +5,13 @@
       color="indigo lighten-1"
       dark
     >
+      
       <div class="d-flex align-center">
         <v-icon x-large>mdi-email-sync</v-icon>
 
-        <h4 class="mt-2 ml-2">re:mail</h4>
+        <router-link to="/login" style="text-decoration: none;">
+          <h4 class="mt-2 ml-2 white--text">re:mail</h4>
+        </router-link>
       </div>
 
       <v-spacer></v-spacer>
@@ -17,6 +20,9 @@
         <span v-if="!isLoggedIn" class="mr-2">Not logged in</span>
         <span v-else class="mr-2">Logged in as {{currentUser}}</span>
         <v-icon>mdi-account-circle</v-icon>
+      </v-btn>
+      <v-btn v-if="isLoggedIn" text color="red lighten-2">
+        <span class="grey--text text--lighten-2">Log out</span>
       </v-btn>
     </v-app-bar>
 
