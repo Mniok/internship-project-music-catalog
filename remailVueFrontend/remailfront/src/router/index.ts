@@ -28,6 +28,11 @@ const routes: Array<RouteConfig> = [
     path: '/register',
     name: 'register',
     component: () => import('../views/RegisterView.vue')
+  },
+  {
+    path: '/app',
+    name: 'appview',
+    component: () => import('../views/AppView.vue')
   }
 ]
 

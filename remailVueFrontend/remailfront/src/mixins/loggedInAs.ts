@@ -6,7 +6,7 @@ import axios from 'axios';
 var mixinLoggedInAs = {
     methods: {
         updateCurrentUserFromAPI(accessToken : String) {
-             console.log("log from mixin"); ////
+            //console.log("log from mixin"); ////
         
             //console.log(`bearer ${accessToken}`) ////
             axios.get(`https://localhost:7026/api/Account/user`, {

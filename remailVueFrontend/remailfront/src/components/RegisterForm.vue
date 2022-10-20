@@ -64,6 +64,7 @@
   //import { LoginForm } from './LoginForm';
   import mixinLoggedInAs from '../mixins/loggedInAs';
 
+
   export default {
     name: "registerForm",
 
@@ -97,6 +98,8 @@
         .then(response => {
           this.newJWT(response.data.accessToken, response.data.refreshToken);
           this.updateCurrentUserFromAPI(this.accessToken);
+
+          this.$router.push({ name: 'appview' });
         })
         .catch(function (error :any) {
           console.log(error);
@@ -116,6 +119,9 @@
         })
         .catch(function (error :any) {
           console.log(error);
+          if(error.response.status == 400){
+            alert("User already exists! Try another username.");
+          }
         });
       },
 
@@ -129,7 +135,7 @@
     computed: {
       valid() {
         //console.log(this.passwordsMatch); ////
-        return !!this.username && !!this.password && !!this.confirmPassword && this.passwordsMatch === true; /// === true because string returned on false was truthy
+        return !!this.username && !!this.password && this.password.length >= 8 && !!this.confirmPassword && this.passwordsMatch === true; /// === true because string returned on false was truthy
       },
 
       passwordsMatch() {

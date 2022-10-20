@@ -109,15 +109,23 @@
           username: this.username,
           password: this.password
         })
-        .then(response => {
+        .then(response => { //logged in into valid account, otherwise error is thrown
           //console.log(response);
           //this.test(); ////
           this.newJWT(response.data.accessToken, response.data.refreshToken);
           //console.log("access token: " + this.accessToken);
           this.updateCurrentUserFromAPI(this.accessToken);
+
+          this.$router.push({ name: 'appview' });
+          // ! nie to samo co name: 'App' ! App to cała instancja, AppView to sam ten wycinek gdzie coś się dzieje.
+          //}
+
         })
         .catch(function (error) {
           console.log(error);
+          if(error.response.status == 401){
+            alert("Wrong username or password entered. Try again.");
+          }
         });
       },
 
