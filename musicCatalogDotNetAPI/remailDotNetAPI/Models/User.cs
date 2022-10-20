@@ -35,6 +35,6 @@
 
         //relacje:
 
-        public List<MasterEmail> masterEmails { get; } = new();
+        public List<Song> uploadedSongs { get; } = new();
     }
 }

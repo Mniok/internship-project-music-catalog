@@ -9,9 +9,9 @@
 
 
 
-        public int MasterEmailId { get; set; }
+        //public int MasterEmailId { get; set; }
 
-        public MasterEmail MasterEmail { get; set; }
+        //public MasterEmail MasterEmail { get; set; }
 
     }
 }

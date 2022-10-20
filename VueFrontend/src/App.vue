@@ -69,3 +69,10 @@ export default Vue.extend({
     }
 });
 </script>
+
+
+<style>
+/*body {
+  background-color: #283593; / indigo darken-3 /
+}*/
+</style>
