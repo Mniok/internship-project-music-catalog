@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\mstopyra\\Documents\\GitHub\\internship-project-re-mail\\remailDotNetAPI\\remailDotNetAPI\\remailDotNetAPI.csproj": {}
+    "C:\\Users\\mstopyra\\Documents\\GitHub\\internship-project-music-catalog\\remailDotNetAPI\\remailDotNetAPI\\remailDotNetAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\mstopyra\\Documents\\GitHub\\internship-project-re-mail\\remailDotNetAPI\\remailDotNetAPI\\remailDotNetAPI.csproj": {
+    "C:\\Users\\mstopyra\\Documents\\GitHub\\internship-project-music-catalog\\remailDotNetAPI\\remailDotNetAPI\\remailDotNetAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mstopyra\\Documents\\GitHub\\internship-project-re-mail\\remailDotNetAPI\\remailDotNetAPI\\remailDotNetAPI.csproj",
+        "projectUniqueName": "C:\\Users\\mstopyra\\Documents\\GitHub\\internship-project-music-catalog\\remailDotNetAPI\\remailDotNetAPI\\remailDotNetAPI.csproj",
         "projectName": "remailDotNetAPI",
-        "projectPath": "C:\\Users\\mstopyra\\Documents\\GitHub\\internship-project-re-mail\\remailDotNetAPI\\remailDotNetAPI\\remailDotNetAPI.csproj",
+        "projectPath": "C:\\Users\\mstopyra\\Documents\\GitHub\\internship-project-music-catalog\\remailDotNetAPI\\remailDotNetAPI\\remailDotNetAPI.csproj",
         "packagesPath": "C:\\Users\\mstopyra\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mstopyra\\Documents\\GitHub\\internship-project-re-mail\\remailDotNetAPI\\remailDotNetAPI\\obj\\",
+        "outputPath": "C:\\Users\\mstopyra\\Documents\\GitHub\\internship-project-music-catalog\\remailDotNetAPI\\remailDotNetAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\mstopyra\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "d+qGg1IdeYKENjvoq9ozXRX1/0f9S+pKe7+nak/MDtlUlVqiblO0xDxPBpzOC9LPrv/shR8EqTjRdpi9mwM0dQ==",
+  "dgSpecHash": "IdDZbEFknxomW9lNkGoR1k+RM9/59h7d1BFERvI2OUTu+5HLaZwiklSapRCx4fRXnuG1iXmxJqNlI0rTHDHW+A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\mstopyra\\Documents\\GitHub\\internship-project-re-mail\\remailDotNetAPI\\remailDotNetAPI\\remailDotNetAPI.csproj",
+  "projectFilePath": "C:\\Users\\mstopyra\\Documents\\GitHub\\internship-project-music-catalog\\remailDotNetAPI\\remailDotNetAPI\\remailDotNetAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\mstopyra\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\mstopyra\\.nuget\\packages\\messagepack\\2.1.152\\messagepack.2.1.152.nupkg.sha512",
