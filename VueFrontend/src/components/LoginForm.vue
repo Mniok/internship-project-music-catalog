@@ -123,6 +123,9 @@
         })
         .catch(function (error) {
           console.log(error);
+          if(error.response == undefined){
+            alert("Couldn't connect to the server. Try again later.");
+          }
           if(error.response.status == 401){
             alert("Wrong username or password entered. Try again.");
           }

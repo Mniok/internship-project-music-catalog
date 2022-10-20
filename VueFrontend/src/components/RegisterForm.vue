@@ -119,6 +119,9 @@
         })
         .catch(function (error :any) {
           console.log(error);
+          if(error.response == undefined){
+            alert("Couldn't connect to the server. Try again later.");
+          }
           if(error.response.status == 400){
             alert("User already exists! Try another username.");
           }
