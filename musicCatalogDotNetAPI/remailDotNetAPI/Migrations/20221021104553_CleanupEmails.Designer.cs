@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using musicCatalogDotNetAPI.Services;
 
@@ -10,9 +11,10 @@ using musicCatalogDotNetAPI.Services;
 namespace musicCatalogDotNetAPI.Migrations
 {
     [DbContext(typeof(DBService))]
-    partial class DBServiceModelSnapshot : ModelSnapshot
+    [Migration("20221021104553_CleanupEmails")]
+    partial class CleanupEmails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
