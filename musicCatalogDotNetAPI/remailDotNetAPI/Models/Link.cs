@@ -14,6 +14,10 @@
                                                 // https://blindguardian.bandcamp.com/track/fast-to-madness  ==>  fast-to-madness
 
 
+        //lepszy przykład:
+        // do "Soundcloud link" wpisujemy https://soundcloud.com/extra_shard/alan-parsons-project-sirius
+        // ToSite -> soundcloud (z pola)
+        // LinkBody -> extra_shard/alan-parsons-project-sirius
 
 
         public int SongId { get; set; }
