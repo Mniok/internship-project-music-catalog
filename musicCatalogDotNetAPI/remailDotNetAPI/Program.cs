@@ -74,6 +74,7 @@ builder.Services.AddAuthentication(x =>                                     /// 
 builder.Services.AddSingleton<IJwtAuthManager, JwtAuthManager>();   /// register services so they can be resolved in requests
 //builder.Services.AddHostedService<JwtRefreshTokenCache>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ISongService, SongService>();
 
 
 var ConnectionString = builder.Configuration.GetSection("ConnectionStrings").Get<ConnectionStrings>();      //unsure how to pass this to constructor, seems to be done from controller not from here, leaving it as is for now because I got sidetracked 

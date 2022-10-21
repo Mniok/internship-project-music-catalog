@@ -24,15 +24,16 @@ namespace musicCatalogDotNetAPI.Controllers
     public class SongController : ControllerBase
     {
         private readonly ILogger<SongController> _logger;
-        private readonly IUserService _userService;
+        //private readonly IUserService _userService;
+        private readonly ISongService _songService;
         private readonly IJwtAuthManager _jwtAuthManager;
 
         private readonly DBService _context;
 
-        public SongController(ILogger<SongController> logger, IUserService userService, IJwtAuthManager jwtAuthManager, DBService context)
+        public SongController(ILogger<SongController> logger, ISongService songService, IJwtAuthManager jwtAuthManager, DBService context)
         {
             _logger = logger;
-            _userService = userService;
+            _songService = songService;
             _jwtAuthManager = jwtAuthManager;
             _context = context;
         }
@@ -51,7 +52,7 @@ namespace musicCatalogDotNetAPI.Controllers
         }
 
 
-        [Authorize]
+        /*/ [Authorize] /*/ [AllowAnonymous] /**/
         [EnableCors]
         [HttpGet("songs")]
         public async Task<ActionResult<IEnumerable<Song>>> GetSongList()
@@ -62,11 +63,11 @@ namespace musicCatalogDotNetAPI.Controllers
 
         [Authorize]
         [EnableCors]
-        [HttpPost("registration")]
-        public async Task<IActionResult> UploadSong([FromBody] RegisterRequest request)
+        [HttpPost("upload")]
+        public async Task<IActionResult> UploadSong([FromBody] UploadSongRequest request)
         {
 
-            string uploader = User.Identity?.ToString();
+            string currentUser = User.Identity?.Name;
             
             
             if (!ModelState.IsValid)
@@ -80,7 +81,8 @@ namespace musicCatalogDotNetAPI.Controllers
                 });*/       //check if song is already uploaded? chyba niepotrzebne ale na razie zostawiam snippet
 
             //_userService.CreateUser(request.UserName, request.Password);
-                    /// !!!! var createdUser = _userService.CreateUser(request.UserName, request.Password);
+            ///var createdUser = _userService.CreateUser(request.UserName, request.Password);
+            var createdSong = _songService.CreateSong(request.Title, request.Time, request.Description, currentUser/*, request.Artists, request.Genres, request.Links*/);
 
 /*            if (createdUser == null)        /// !!! might not actually work to determine whether user creation failed
                 return BadRequest(new
@@ -89,30 +91,12 @@ namespace musicCatalogDotNetAPI.Controllers
                     description = "For some reason the account couldn't be created. Try again later."
                 });
 */
-            /*var user = _userService.GetUserByUserName(model.UserName);        // to z rejestracji ze stackoverflow, podmienione na generacjê tokenów z poradnika Changhui'a Xu
-            int validityDurationInHours = 3;
-            string token = _jwtService.GenerateJwtToken(user, await _userService.GetUserRolesAsync(user),
-                validityDurationInHours);
 
-            return Ok(new { code = "RegistrationSuccess", auth_token = token });*/
 
             //var role = _userService.GetUserRole(request.UserName);      // GetUserRole po prostu zwraca UserRoles.BasicUser;
- /*           var role = createdUser.UserRole;
-            var claims = new[]                                          // (w swaggerze jest jako string "role": "BasicUser")
-            {                                                           // adminów nie bêdzie
-                new Claim(ClaimTypes.Name, createdUser.UserName),
-                new Claim(ClaimTypes.Role, role)
-            };
 
-            var jwtResult = _jwtAuthManager.GenerateTokens(createdUser.UserName, claims, DateTime.Now);
-            _logger.LogInformation($"User [{createdUser.UserName}] was registered, and logged in the system.");     */
-            return Ok(new LoginResult       // od razu zalogowanie z rejestracji
-            {
-                UserName = "ABCtest",
-                Role = "ABCtest",
-                AccessToken = "BCDtest",
-                RefreshToken = "BCDEFGtest"
-            });
+            _logger.LogInformation($"Song [{createdSong.Title}] was added by user [{currentUser}].");
+            return Ok(createdSong);
         }
 
 
@@ -125,5 +109,35 @@ namespace musicCatalogDotNetAPI.Controllers
 
 
     /// klasy
+
+    public class UploadSongRequest
+    {
+        [Required]
+        [JsonPropertyName("title")]
+        public string Title { get; set; }
+
+        [Required]
+        [JsonPropertyName("time")]
+        public int Time { get; set; }
+
+        [Required]
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
+
+
+
+        /*[Required]
+        [JsonPropertyName("artists")]
+        public List<Artist> Artists { get; set; }
+
+        [Required]
+        [JsonPropertyName("genres")]
+        public List<Genre> Genres { get; set; }
+
+        [Required]
+        [JsonPropertyName("links")]
+        public List<Link> Links { get; set; }*/
+
+    }
 
 } //end of namespace

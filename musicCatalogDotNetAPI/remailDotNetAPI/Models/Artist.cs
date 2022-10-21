@@ -9,6 +9,20 @@
 
 
 
+
+        public Artist(int Id, string Name)
+        {
+            this.ArtistId = Id;
+            this.ArtistName = Name;
+        }
+
+        public Artist() { }
+
+
+
+
+
+
         public int SongId { get; set; }
 
         public Song Song { get; set; }

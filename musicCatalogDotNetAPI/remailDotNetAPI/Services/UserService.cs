@@ -97,6 +97,14 @@ namespace musicCatalogDotNetAPI.Services
                                         UserRoles.BasicUser);
             //Models.User newUser = new Models.User { UserId = newId, UserName = userName, OriginalUserName = userName, Password = password, CreatedAt = DateTime.Now, UserRole = UserRoles.BasicUser };
 
+
+            /// posts debug:
+            Models.Artist ar = new Artist(1, "testartist");
+            List<Artist> artistArray = new List<Artist>();
+            artistArray.Add(ar);
+            Models.Song testsong = new Song(2, "title2", 180, "desc", artistArray, new List<Genre>(), new List<Link>());
+            newUser.uploadedSongs.Add(testsong);    ///////////////// !!!!!!!!!!!!!!!!!!!!!! debug!!!
+
             _context.User.Add(newUser);
             //await _context.SaveChangesAsync();
             _context.SaveChanges();

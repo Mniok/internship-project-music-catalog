@@ -14,7 +14,7 @@
 
 
 
-        public Song(int Id, string Title, int Time, string Desc, User Uploader, List<Artist> Artists, List<Genre> Genres, List<Link> Links)
+        public Song(int Id, string Title, int Time, string Desc, /*User Uploader,*/ List<Artist> Artists, List<Genre> Genres, List<Link> Links)
         {
             this.SongId = Id;
             this.Title = Title;
@@ -22,8 +22,8 @@
             this.CreatedAt = DateTime.Now;
             this.Description = Desc;
 
-            this.UserId = Uploader.UserId;
-            this.UploadedBy = Uploader;
+            /*this.UserId = Uploader.UserId;
+            this.UploadedBy = Uploader;*/
 
             this.Artists = Artists;
             this.Genres = Genres;
