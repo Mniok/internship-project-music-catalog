@@ -6,7 +6,9 @@ using Microsoft.OpenApi.Models;
 using musicCatalogDotNetAPI;
 using musicCatalogDotNetAPI.Infrastructure;
 using musicCatalogDotNetAPI.Services;
+using System.ComponentModel;
 using System.Text;
+using System.Text.Json.Serialization;
 
 //var allowCORS = "_allowCORS";
 
@@ -14,7 +16,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>      //nowe @ robienie uploading songs - z https://github.com/dotnet/runtime/issues/47569
+    {
+        //options.JsonSerializerOptions.IgnoreNullValues = true;
+        //options.JsonSerializerOptions.Converters.Add(new TimeSpanConverter());
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 ///builder.Services.AddSwaggerGen();

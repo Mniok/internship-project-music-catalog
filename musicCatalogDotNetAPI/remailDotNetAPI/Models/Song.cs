@@ -44,7 +44,7 @@
 
 
 
-        public List<Artist> Artists { get; } = new();
+        public List<Artist> Artists { get; /*set;*/ } = new();      //settery do podpinania wartości do artists: [] żeby ich pokazywało wypisując songs
         public List<Genre> Genres { get; } = new();
         public List<Link> Links { get; } = new();
 

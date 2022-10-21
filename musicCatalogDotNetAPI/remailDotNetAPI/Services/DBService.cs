@@ -28,6 +28,10 @@ namespace musicCatalogDotNetAPI.Services
 
         public DbSet<Models.User> User { get; set; }
         public DbSet<Models.Song> Song { get; set; }
+        public DbSet<Models.Song> Artist { get; set; }
+        public DbSet<Models.Song> Genre { get; set; }
+        public DbSet<Models.Song> Link { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

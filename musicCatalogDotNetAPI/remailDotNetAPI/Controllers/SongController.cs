@@ -57,7 +57,18 @@ namespace musicCatalogDotNetAPI.Controllers
         [HttpGet("songs")]
         public async Task<ActionResult<IEnumerable<Song>>> GetSongList()
         {
-            return await _context.Song.ToListAsync();
+            var songs = await _context.Song.ToListAsync();
+            
+            foreach (Song song in songs)
+            {
+                var user = from u in _context.User.ToList() where u.UserId == song.UserId select u;
+                song.UploadedBy = user.First();
+
+                var artists = from a in _context.Artist.ToList() where a.SongId == song.SongId select a;
+                //song.Artists = artists;
+            }
+
+            return songs;
         }
 
 
