@@ -8,6 +8,16 @@
 
 
 
+        public Genre(int Id, string Name)
+        {
+            this.GenreId = Id;
+            this.GenreName = Name;
+        }
+
+        public Genre() { }
+
+
+
 
         public int SongId { get; set; }
 

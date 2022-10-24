@@ -69,6 +69,24 @@ namespace musicCatalogDotNetAPI.Services
                 newArtistId++;
             }
 
+            int newGenreId = _context.Genre.Count() + 1;
+            foreach (string genre in genres)
+            {
+                Genre g = new Genre(newGenreId, genre);
+                genresList.Add(g);
+                newSong.Genres.Add(g);
+                newGenreId++;
+            }
+
+            int newLinkId = _context.Link.Count() + 1;
+            foreach (UploadLink link in links)
+            {
+                Link l = new Link(newLinkId, link.ToSite, link.LinkBody);
+                linksList.Add(l);
+                newSong.Links.Add(l);
+                newLinkId++;
+            }
+
 
             //newSong.Artists.Add(artistsList);
 

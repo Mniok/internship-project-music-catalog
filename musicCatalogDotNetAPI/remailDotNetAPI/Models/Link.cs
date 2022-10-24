@@ -20,6 +20,22 @@
         // LinkBody -> extra_shard/alan-parsons-project-sirius
 
 
+
+        public Link(int Id, string ToSite, string LinkBody)
+        {
+            this.LinkId = Id;
+            this.ToSite = ToSite;
+            this.LinkBody = LinkBody;
+        }
+
+        public Link() { }
+
+
+
+
+
+
+
         public int SongId { get; set; }
 
         public Song Song { get; set; }

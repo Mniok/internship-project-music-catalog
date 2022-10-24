@@ -78,8 +78,7 @@ namespace musicCatalogDotNetAPI.Controllers
             return songs;
         }
 
-        /*/ [Authorize] /*/
-        [AllowAnonymous] /**/
+        /*/ [Authorize] /*/ [AllowAnonymous] /**/
         [EnableCors]
         [HttpGet("artists")]
         public async Task<ActionResult<IEnumerable<Artist>>> GetArtistsList()
@@ -87,6 +86,26 @@ namespace musicCatalogDotNetAPI.Controllers
             var artists = await _context.Artist.ToListAsync();
 
             return artists;
+        }
+
+        /*/ [Authorize] /*/ [AllowAnonymous] /**/
+        [EnableCors]
+        [HttpGet("genres")]
+        public async Task<ActionResult<IEnumerable<Genre>>> GetGenresList()
+        {
+            var genres = await _context.Genre.ToListAsync();
+
+            return genres;
+        }
+
+        /*/ [Authorize] /*/ [AllowAnonymous] /**/
+        [EnableCors]
+        [HttpGet("links")]
+        public async Task<ActionResult<IEnumerable<Link>>> GetLinksList()
+        {
+            var links = await _context.Link.ToListAsync();
+
+            return links;
         }
 
 
