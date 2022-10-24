@@ -99,11 +99,12 @@ namespace musicCatalogDotNetAPI.Services
 
 
             /// posts debug:
-            Models.Artist ar = new Artist(1, "testartist");
+            /*Models.Artist ar = new Artist(1, "testartist");
             List<Artist> artistArray = new List<Artist>();
             artistArray.Add(ar);
             Models.Song testsong = new Song(2, "title2", 180, "desc", artistArray, new List<Genre>(), new List<Link>());
             newUser.uploadedSongs.Add(testsong);    ///////////////// !!!!!!!!!!!!!!!!!!!!!! debug!!!
+            */
 
             _context.User.Add(newUser);
             //await _context.SaveChangesAsync();
@@ -115,14 +116,6 @@ namespace musicCatalogDotNetAPI.Services
 
         }
 
-        /* rejestracja od Hadeeba Ajide (czêœæ):
-        public async Task<IdentityResult> RegisterUserAsync(UserRegistrationDto userRegistration)
-        {
-            var user = _mapper.Map<User>(userRegistration);
-            var result = await _userManager.CreateAsync(user, userRegistration.Password);
-            return result;
-        }
-        */
 
 
     }

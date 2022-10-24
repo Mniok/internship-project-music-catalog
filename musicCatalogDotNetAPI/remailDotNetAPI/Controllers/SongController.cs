@@ -14,6 +14,7 @@ using System.Data;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.EntityFrameworkCore;
 using musicCatalogDotNetAPI.Models;
+using NuGet.Protocol;
 
 namespace musicCatalogDotNetAPI.Controllers
 {
@@ -65,7 +66,13 @@ namespace musicCatalogDotNetAPI.Controllers
                 song.UploadedBy = user.First();
 
                 var artists = from a in _context.Artist.ToList() where a.SongId == song.SongId select a;
-                //song.Artists = artists;
+                song.Artists = artists.ToList<Artist>();
+
+                var genres = from g in _context.Genre.ToList() where g.SongId == song.SongId select g;
+                song.Genres = genres.ToList<Genre>();
+
+                var links = from l in _context.Link.ToList() where l.SongId == song.SongId select l;
+                song.Links = links.ToList<Link>();
             }
 
             return songs;
@@ -137,17 +144,17 @@ namespace musicCatalogDotNetAPI.Controllers
 
 
 
-        /*[Required]
+        //[Required]
         [JsonPropertyName("artists")]
         public List<Artist> Artists { get; set; }
 
-        [Required]
+        //[Required]
         [JsonPropertyName("genres")]
         public List<Genre> Genres { get; set; }
 
-        [Required]
+        //[Required]
         [JsonPropertyName("links")]
-        public List<Link> Links { get; set; }*/
+        public List<Link> Links { get; set; }
 
     }
 

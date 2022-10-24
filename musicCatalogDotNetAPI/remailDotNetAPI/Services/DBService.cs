@@ -28,9 +28,9 @@ namespace musicCatalogDotNetAPI.Services
 
         public DbSet<Models.User> User { get; set; }
         public DbSet<Models.Song> Song { get; set; }
-        public DbSet<Models.Song> Artist { get; set; }
-        public DbSet<Models.Song> Genre { get; set; }
-        public DbSet<Models.Song> Link { get; set; }
+        public DbSet<Models.Artist> Artist { get; set; }
+        public DbSet<Models.Genre> Genre { get; set; }
+        public DbSet<Models.Link> Link { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
