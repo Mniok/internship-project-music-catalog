@@ -9,10 +9,13 @@ import router from './router'
 import vuetify from './plugins/vuetify'
 import { createPinia, PiniaVuePlugin } from 'pinia'
 import VueCompositionAPI from '@vue/composition-api'
+import { markRaw } from 'vue'
 
 Vue.use(PiniaVuePlugin)
 const pinia = createPinia()
+pinia.use(({ store }) => { store.router = markRaw(router) });   //to allow using router inside pinia actions
 Vue.use(VueCompositionAPI)
+
 
 Vue.config.productionTip = false
 

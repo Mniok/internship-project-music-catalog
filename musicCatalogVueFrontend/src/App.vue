@@ -21,7 +21,7 @@
         <span v-else class="mr-2">Logged in as {{currentUser}}</span>
         <v-icon>mdi-account-circle</v-icon>
       </v-btn>
-      <v-btn v-if="isLoggedIn" text color="red lighten-2">
+      <v-btn v-if="isLoggedIn" text color="red lighten-2" @click="logout">
         <span class="grey--text text--lighten-2">Log out</span>
       </v-btn>
     </v-app-bar>
@@ -50,7 +50,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { useAccountStore } from './store/account';
-import { mapState } from 'pinia';
+import { mapState, mapActions } from 'pinia';
 
 export default Vue.extend({
 
@@ -59,6 +59,11 @@ export default Vue.extend({
   data: () => ({
     //
   }),
+
+  methods: {
+      
+      ...mapActions(useAccountStore, ['logout'])
+    },
 
   computed: {
       isLoggedIn() {
