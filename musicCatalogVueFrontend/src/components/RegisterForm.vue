@@ -20,21 +20,30 @@
             v-model="username"
             :rules="usernameRules"
             label="Username:"
+            counter
             required
           ></v-text-field>
 
           <v-text-field
             v-model="password"
+            :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
             :rules="passwordRules"
+            :type="showPass ? 'text' : 'password'"
             label="Password:"
+            counter
             required
+            @click:append="showPass = !showPass"
           ></v-text-field>
 
           <v-text-field
             v-model="confirmPassword"
+            :append-icon="showConfirmPass ? 'mdi-eye' : 'mdi-eye-off'"
             :rules="confirmPasswordRules.concat(passwordsMatch)"
+            :type="showConfirmPass ? 'text' : 'password'"
             label="Confirm password:"
+            counter
             required
+            @click:append="showConfirmPass = !showConfirmPass"
           ></v-text-field>
 
           <v-spacer />
@@ -86,6 +95,8 @@
         //v => (v && true && console.log(v + ", ")) || 'Debug',
         //v => (v && v==this.password) || 'Password must match', //didn't have access to password, placed in computed passwordsMatch instead and concated to rules so it's one array
       ],
+      showPass: false,
+      showConfirmPass: false,
     }),
 
     methods: {

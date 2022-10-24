@@ -25,9 +25,13 @@
 
           <v-text-field
             v-model="password"
+            :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
             :rules="passwordRules"
+            :type="showPass ? 'text' : 'password'"
             label="Password:"
+            counter
             required
+            @click:append="showPass = !showPass"
           ></v-text-field>
 
           <v-spacer />
@@ -76,6 +80,7 @@
       passwordRules: [
         v => !!v || 'Please enter Your Password',
       ],
+      showPass: false,
     }),
 
     methods: {

@@ -64,6 +64,7 @@ namespace musicCatalogDotNetAPI.Controllers
             {
                 var user = from u in _context.User.ToList() where u.UserId == song.UserId select u;
                 song.UploadedBy = user.First();
+                song.UploadedBy.Password = "***";   ///lazy fix so songs list doesn't leak passwords
 
                 var artists = from a in _context.Artist.ToList() where a.SongId == song.SongId select a;
                 song.Artists = artists.ToList<Artist>();
