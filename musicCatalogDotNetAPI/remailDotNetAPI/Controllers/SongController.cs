@@ -78,6 +78,17 @@ namespace musicCatalogDotNetAPI.Controllers
             return songs;
         }
 
+        /*/ [Authorize] /*/
+        [AllowAnonymous] /**/
+        [EnableCors]
+        [HttpGet("artists")]
+        public async Task<ActionResult<IEnumerable<Artist>>> GetArtistsList()
+        {
+            var artists = await _context.Artist.ToListAsync();
+
+            return artists;
+        }
+
 
         [Authorize]
         [EnableCors]
@@ -98,17 +109,15 @@ namespace musicCatalogDotNetAPI.Controllers
                     description = $"The User Name {request.UserName} is taken."
                 });*/       //check if song is already uploaded? chyba niepotrzebne ale na razie zostawiam snippet
 
-            //_userService.CreateUser(request.UserName, request.Password);
-            ///var createdUser = _userService.CreateUser(request.UserName, request.Password);
-            var createdSong = _songService.CreateSong(request.Title, request.Time, request.Description, currentUser/*, request.Artists, request.Genres, request.Links*/);
+            var createdSong = _songService.CreateSong(request.Title, request.Time, request.Description, currentUser, request.Artists, request.Genres, request.Links);
 
-/*            if (createdUser == null)        /// !!! might not actually work to determine whether user creation failed
+            if (createdSong == null)
                 return BadRequest(new
                 {
-                    code = "Register failed",
-                    description = "For some reason the account couldn't be created. Try again later."
+                    code = "Upload failed",
+                    description = "For some reason the song couldn't be uploaded. Please try again later."
                 });
-*/
+
 
 
             //var role = _userService.GetUserRole(request.UserName);      // GetUserRole po prostu zwraca UserRoles.BasicUser;
@@ -146,15 +155,27 @@ namespace musicCatalogDotNetAPI.Controllers
 
         //[Required]
         [JsonPropertyName("artists")]
-        public List<Artist> Artists { get; set; }
+        public List<string> Artists { get; set; }
 
         //[Required]
         [JsonPropertyName("genres")]
-        public List<Genre> Genres { get; set; }
+        public List<string> Genres { get; set; }
 
         //[Required]
         [JsonPropertyName("links")]
-        public List<Link> Links { get; set; }
+        public List<UploadLink> Links { get; set; }
+
+    }
+
+    public class UploadLink
+    {
+        [Required]
+        [JsonPropertyName("ToSite")]
+        public string ToSite { get; set; }
+
+        [Required]
+        [JsonPropertyName("LinkBody")]
+        public string LinkBody { get; set; }
 
     }
 

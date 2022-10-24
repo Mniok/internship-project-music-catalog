@@ -88,7 +88,7 @@ namespace musicCatalogDotNetAPI.Controllers
                 return BadRequest(new
                 {
                     code = "Register failed",
-                    description = "For some reason the account couldn't be created. Try again later."
+                    description = "For some reason the account couldn't be created. Please try again later."
                 });
 
             /*var user = _userService.GetUserByUserName(model.UserName);        // to z rejestracji ze stackoverflow, podmienione na generacjê tokenów z poradnika Changhui'a Xu
