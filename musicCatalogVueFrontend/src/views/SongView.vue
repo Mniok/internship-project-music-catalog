@@ -5,7 +5,7 @@
     <p>length: {{songTime | timeFormat}}</p>
     <p>genres: {{genresString}}</p>
     <p>links: {{linksString}}</p>
-    <p>uploaded by {{songUploader}} on {{songUploadedOn}}</p>
+    <p>uploaded by {{songUploader}} on {{songUploadedOn | dateFormat}}</p>
   </div>
 </template>
 
@@ -116,6 +116,17 @@
 
         return `${minutes}:${String(seconds).padStart(2,'0')}`;
 
+      },
+
+      dateFormat(value: string) {
+        var date : string; var time : string;
+        [date, time] = value!.split("T")!;   //! is supposed to tell tsc this value will newer be null, but doesn't fix undefined error in console
+        time = time!.split(".").at(0)!;
+
+        //time = time?.split(":").at(0) + ':' + time?.split(":").at(1);   ///strip seconds
+        time = time!.substring(0, 5);   ///strip seconds    //both of these keep throwing type errors in console no matter what I try but work flawlessly
+
+        return date + " " + time;
       }
     },
 
