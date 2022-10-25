@@ -13,15 +13,17 @@ import { markRaw } from 'vue'
 
 Vue.use(PiniaVuePlugin)
 const pinia = createPinia()
-pinia.use(({ store }) => { store.router = markRaw(router) });   //to allow using router inside pinia actions
+pinia.use(({ store }) => { store.$router = markRaw(router) });
 Vue.use(VueCompositionAPI)
 
 
 Vue.config.productionTip = false
 
-new Vue({
+var vueApp = new Vue({
   router,
   vuetify,
   pinia,
   render: h => h(App)
 }).$mount('#app')
+
+export {vueApp};

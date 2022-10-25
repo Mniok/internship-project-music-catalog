@@ -1,8 +1,12 @@
 import { defineStore } from 'pinia'
 import axios from 'axios';
-import router from '@/router';
+//import router from '.././router'; //`router: router` w options wywala bledy
+//import router from '@/router';
+import { vueApp } from '../main';   //// dla routera
+
 
 export const useAccountStore = defineStore('accountStore', {
+
   state: () => ({
     accessToken: "",
     refreshToken: "",
@@ -24,9 +28,10 @@ export const useAccountStore = defineStore('accountStore', {
     },
 
     logout(){
-      console.log("logging out...");
+      //console.log("logging out...");  ////
+      //console.log(`bearer ${this.accessToken}`) ////
 
-      axios.post('https://localhost:7026/api/Account/logout', {
+      axios.post(`https://localhost:7026/api/Account/logout`, {/*no params*/}, {
         headers: { 'Authorization': `bearer ${this.accessToken}` }
       })
       .then(response => {
@@ -35,13 +40,17 @@ export const useAccountStore = defineStore('accountStore', {
         this.currentUser = "";
 
         //router.push({ name: 'home' })
-        //this.$router
+        //this.router.push("/");
+
+        vueApp.$router.push("/");
       })
       .catch(function (error :any) {
         console.log(error);
       });
 
-      
     },
+
   },
+
+
 })
