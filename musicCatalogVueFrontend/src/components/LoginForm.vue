@@ -64,12 +64,12 @@
 <script>
   import { useAccountStore } from '../store/account';
   import { mapState, mapActions } from 'pinia';
-  import mixinLoggedInAs from '../mixins/loggedInAs';
+  //import mixinLoggedInAs from '../mixins/loggedInAs';
 
   export default {
     name: "loginForm",
 
-    mixins: [mixinLoggedInAs],
+    //mixins: [mixinLoggedInAs],
 
     data: () => ({
       username: '',
@@ -119,7 +119,7 @@
           //this.test(); ////
           this.newJWT(response.data.accessToken, response.data.refreshToken);
           //console.log("access token: " + this.accessToken);
-          this.updateCurrentUserFromAPI(this.accessToken);
+          this.updateCurrentUser(this.accessToken);
 
           this.$router.push({ name: 'appview' });
           // ! nie to samo co name: 'App' ! App to cała instancja, AppView to sam ten wycinek gdzie coś się dzieje.

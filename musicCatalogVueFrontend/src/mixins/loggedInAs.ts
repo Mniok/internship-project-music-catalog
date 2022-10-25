@@ -1,4 +1,4 @@
-import { useAccountStore } from '../store/account';
+/*import { useAccountStore } from '../store/account';
 //import { mapState, mapActions } from 'pinia';
 import { mapActions } from 'pinia';
 import axios from 'axios';
@@ -24,9 +24,10 @@ var mixinLoggedInAs = {
           ...mapActions(useAccountStore, ['updateCurrentUser']),
     },
 
-    /*computed: {
-      ...mapState(useAccountStore, ['currentUser']),
-    }*/
+    //computed: {
+    //  ...mapState(useAccountStore, ['currentUser']),
+    //}
 }
 
 export default mixinLoggedInAs;
+*/

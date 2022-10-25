@@ -71,13 +71,13 @@
   import { useAccountStore } from '../store/account';
   import { mapState, mapActions } from 'pinia';
   //import { LoginForm } from './LoginForm';
-  import mixinLoggedInAs from '../mixins/loggedInAs';
+  //import mixinLoggedInAs from '../mixins/loggedInAs';
 
 
   export default {
     name: "registerForm",
 
-    mixins: [mixinLoggedInAs],
+    //mixins: [mixinLoggedInAs],
 
     data: () => ({
       username: '',
@@ -108,7 +108,7 @@
         })
         .then(response => {
           this.newJWT(response.data.accessToken, response.data.refreshToken);
-          this.updateCurrentUserFromAPI(this.accessToken);
+          this.updateCurrentUser(this.accessToken);
 
           this.$router.push({ name: 'appview' });
         })
@@ -147,7 +147,7 @@
     },
 
     computed: {
-      valid() {
+      valid() : boolean {
         //console.log(this.passwordsMatch); ////
         return !!this.username && !!this.password && this.password.length >= 8 && !!this.confirmPassword && this.passwordsMatch === true; /// === true because string returned on false was truthy
       },

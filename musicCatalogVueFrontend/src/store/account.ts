@@ -23,8 +23,17 @@ export const useAccountStore = defineStore('accountStore', {
       this.refreshToken = refreshToken;
     },
 
-    updateCurrentUser(username: string){
-      this.currentUser = username;
+    updateCurrentUser(accessToken: string){
+      axios.get(`https://localhost:7026/api/Account/user`, {
+        headers: { 'Authorization': `bearer ${accessToken}` }
+      })
+      .then(response => {
+        this.currentUser = response.data.username;
+        //console.log(`logged in as ${this.currentUser}`);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     },
 
     logout(){
