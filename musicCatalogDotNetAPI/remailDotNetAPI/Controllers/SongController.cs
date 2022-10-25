@@ -81,6 +81,21 @@ namespace musicCatalogDotNetAPI.Controllers
 
         /*/ [Authorize] /*/ [AllowAnonymous] /**/
         [EnableCors]
+        [HttpGet("song/{id}")]
+        public async Task<ActionResult<Song>> GetSongById(int id)
+        {
+
+            //Song song = _context.Song.Where(b => b.SongId == id).First(); ////nie uwzglednia tych co w tym nizej sa included - sa null i []
+            Song song = _context.Song.Include(b => b.UploadedBy).Include(b => b.Artists).Include(b => b.Genres).Include(b => b.Links).Where(b => b.SongId == id).First();
+
+            song.UploadedBy.Password = "***";
+
+            return song;
+        }
+
+        /*/ [Authorize] /*/
+        [AllowAnonymous] /**/
+        [EnableCors]
         [HttpGet("artists")]
         public async Task<ActionResult<IEnumerable<Artist>>> GetArtistsList()
         {
