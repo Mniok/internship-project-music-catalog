@@ -33,7 +33,12 @@ const routes: Array<RouteConfig> = [
     path: '/app',
     name: 'appview',
     component: () => import('../views/AppView.vue')
-  }
+  },
+  {
+    path: '/settings',
+    name: 'settings',
+    component: () => import('../views/SettingsView.vue')
+  },
 ]
 
 const router = new VueRouter({

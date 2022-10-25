@@ -1,11 +1,11 @@
 <template>
   <v-container>
-    <v-card class="pa-8 d-flex align-center" elevation="4" outlined>
+    <v-card class="pa-8 d-flex align-center" color="indigo lighten-4" elevation="4" outlined>
       <v-col>
 
         <v-row justify="center">
           <v-card-title>
-            Log into re:mail
+            Log into {{this.$appName}}
           </v-card-title>
         </v-row>
 

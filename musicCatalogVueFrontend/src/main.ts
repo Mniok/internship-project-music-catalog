@@ -11,13 +11,14 @@ import { createPinia, PiniaVuePlugin } from 'pinia'
 import VueCompositionAPI from '@vue/composition-api'
 import { markRaw } from 'vue'
 
-Vue.use(PiniaVuePlugin)
-const pinia = createPinia()
+Vue.use(PiniaVuePlugin);
+const pinia = createPinia();
 pinia.use(({ store }) => { store.$router = markRaw(router) });
-Vue.use(VueCompositionAPI)
+Vue.use(VueCompositionAPI);
 
+Vue.prototype.$appName = 'note-a-logue';
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 var vueApp = new Vue({
   router,

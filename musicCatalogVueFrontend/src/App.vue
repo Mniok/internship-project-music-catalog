@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="indigo-darken-3-bg" >
     <v-app-bar
       app
       color="indigo lighten-1"
@@ -7,19 +7,22 @@
     >
       
       <div class="d-flex align-center">
-        <v-icon x-large>mdi-email-sync</v-icon>
+        <v-icon x-large>mdi-folder-music</v-icon>
 
-        <router-link to="/login" style="text-decoration: none;">
-          <h4 class="mt-2 ml-2 white--text">re:mail</h4>
+        <router-link :to="isLoggedIn ? '/app' : '/login'" class="no-decorators">
+          <h4 class="mt-2 ml-2 white--text">{{this.$appName}}</h4>
         </router-link>
       </div>
 
       <v-spacer></v-spacer>
 
-      <v-btn text :disabled="!isLoggedIn">
+      <v-btn to="/app" text :disabled="!isLoggedIn" class="no-decorators">
         <span v-if="!isLoggedIn" class="mr-2">Not logged in</span>
         <span v-else class="mr-2">Logged in as {{currentUser}}</span>
         <v-icon>mdi-account-circle</v-icon>
+      </v-btn>
+      <v-btn to="/settings" v-if="isLoggedIn" text color="blue lighten-2" class="no-decorators">
+        <v-icon color="grey lighten-2">mdi-cog</v-icon>
       </v-btn>
       <v-btn v-if="isLoggedIn" text color="red lighten-2" @click="logout">
         <span class="grey--text text--lighten-2">Log out</span>
@@ -70,6 +73,10 @@ export default Vue.extend({
         return !!this.currentUser;
       },
 
+      logoLink() {  //where clicking logo redirects you
+        return false;
+      },
+
       ...mapState(useAccountStore, ['accessToken', 'refreshToken', 'currentUser']),
     }
 });
@@ -77,7 +84,11 @@ export default Vue.extend({
 
 
 <style>
-/*body {
-  background-color: #283593; / indigo darken-3 /
-}*/
+.indigo-darken-3-bg {
+  background-color: #283593 !important;   /* nie może być scoped! */
+}
+
+.no-decorators {
+  text-decoration: none !important;
+}
 </style>

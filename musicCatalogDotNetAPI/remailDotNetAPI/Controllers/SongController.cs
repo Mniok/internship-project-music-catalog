@@ -93,8 +93,7 @@ namespace musicCatalogDotNetAPI.Controllers
             return song;
         }
 
-        /*/ [Authorize] /*/
-        [AllowAnonymous] /**/
+        /*/ [Authorize] /*/ [AllowAnonymous] /**/
         [EnableCors]
         [HttpGet("artists")]
         public async Task<ActionResult<IEnumerable<Artist>>> GetArtistsList()
