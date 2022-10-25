@@ -39,6 +39,11 @@ const routes: Array<RouteConfig> = [
     name: 'settings',
     component: () => import('../views/SettingsView.vue')
   },
+  {
+    path: '/song/:id',  //$route.params.id
+    name: 'song',
+    component: () => import('../views/SongView.vue')
+  },
 ]
 
 const router = new VueRouter({

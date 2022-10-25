@@ -1,5 +1,5 @@
 <template>
-  <v-app class="indigo-darken-3-bg" >
+  <v-app class="blue-grey-darken-4-bg" >
     <v-app-bar
       app
       color="indigo lighten-1"
@@ -86,6 +86,10 @@ export default Vue.extend({
 <style>
 .indigo-darken-3-bg {
   background-color: #283593 !important;   /* nie może być scoped! */
+}
+
+.blue-grey-darken-4-bg {
+  background-color: #263238 !important;
 }
 
 .no-decorators {
