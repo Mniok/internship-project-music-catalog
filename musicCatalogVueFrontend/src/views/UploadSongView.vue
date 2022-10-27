@@ -1,12 +1,45 @@
 <template>
-  <div>
-    <h1>upload song</h1>
-    <p>song id {{$route.params.id}}: {{songTitle}} by {{artistsString}}</p>
-    <p>{{songDescription}}</p>
-    <p>length: {{songTime | timeFormat}}</p>
-    <p>genres: {{genresString}}</p>
-    <p>uploaded by {{songUploader}} on {{songUploadedOn}}</p>
-  </div>
+  <v-container class="d-flex">
+    <v-container id="left-column" style="width:40%">
+      <v-sheet id="image-preview" height="220px" width="220px" rounded outlined elevation="8" color="blue-grey darken-3">
+        <span>[choose an image]</span>
+      </v-sheet>
+    </v-container>
+
+    <v-divider vertical class="blue-grey darken-1"/>
+
+    <v-container id="right-column" class="float-right">
+      <v-text-field
+        dark color="indigo lighten-2"
+        v-model="songTitle"
+        outlined
+        label="Song Title:"
+        class="search-inputs mt-4 wider-field"
+      >
+        <v-icon 
+          large
+          slot="prepend" 
+          color="blue-grey"
+          style="margin-top:-8px"
+        >mdi-tag-text-outline <!-- negative margin centers icon to text field -->
+        </v-icon>
+      </v-text-field>
+
+
+      <p class="category-title">
+        <v-icon small color="blue-grey">mdi-account-box-multiple</v-icon>
+        ARTIST(S):
+      </p>
+      <v-text-field v-for="(artist, index) in songArtists"
+        dark color="indigo lighten-2"
+        v-model="songArtists[index]"
+        :label="index | artistLabel"
+        class="search-inputs ml-5"
+      >
+      </v-text-field>
+
+    </v-container>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -30,7 +63,7 @@
       //songArtists: Array<String>(),
       //songGenres: Array<String>(),
       //songLinks: Array<Link>(),
-      songArtists: [],
+      songArtists: Array<String>("", "", ""),
       songGenres: [],
       songLinks: [],
       songUploader: '',
@@ -55,6 +88,10 @@
         return links.join(", ");
       },*/
 
+      artistsCount(){
+        return 5;
+      },
+
       ...mapState(useAccountStore, ['accessToken', 'refreshToken']),
     },
 
@@ -73,6 +110,14 @@
 
       },
 
+      artistLabel(index : number){
+        if (index < 1)
+          return "Artist"
+        return "Artist " + index.toString();
+        //z jakiegoś powodu podświetla jako błąd? ale działa i wg. dokumentacji tak był powinno
+        // :label="'Artist ' + ( index==0 ? '' : (index+1).toString() )"    nie podkreśla jako błąd, ale jest niezbyt czyste
+      }
+
       /*dateFormat(value: string) {
         var date : string; var time : string;
         [date, time] = value!.split("T")!;   //! is supposed to tell tsc this value will newer be null, but doesn't fix undefined error in console
@@ -90,8 +135,9 @@
 
 
 <style scoped>
-p {
-  color: bisque;
+.category-title {
+  color: #B0BEC5; /* blue-grey lighten-3 */
+  font-size: 0.8em;
 }
 
 </style>
