@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import axios from 'axios';
 //import router from '.././router'; //`router: router` w options wywala bledy
 //import router from '@/router';
-import { vueApp } from '../main';   //// dla routera
+import { vueApp } from '../main';   //// dla routera 
 
 
 export const useAccountStore = defineStore('accountStore', {
@@ -21,6 +21,9 @@ export const useAccountStore = defineStore('accountStore', {
     newJWT(accessToken: string, refreshToken: string){
       this.accessToken = accessToken;
       this.refreshToken = refreshToken;
+
+      localStorage.setItem('Auth', this.accessToken);
+      localStorage.setItem('Refresh', this.refreshToken);
     },
 
     updateCurrentUser(accessToken: string){
@@ -40,18 +43,32 @@ export const useAccountStore = defineStore('accountStore', {
       //console.log("logging out...");  ////
       //console.log(`bearer ${this.accessToken}`) ////
 
+      var token : string = this.accessToken;  //to pass to api, because pinia store gets cleared
+
+      this.accessToken = "";    //moved here, because You couldn't log out when token expired and got locked in
+      this.refreshToken = "";
+      this.currentUser = "";
+
+      localStorage.removeItem('Auth');
+      localStorage.removeItem('Refresh');
+
+      vueApp.$router.push("/");
+
       axios.post(`https://localhost:7026/api/Account/logout`, {/*no params*/}, {
-        headers: { 'Authorization': `bearer ${this.accessToken}` }
+        headers: { 'Authorization': `bearer ${token}` }
       })
-      .then(response => {
-        this.accessToken = "";
+      .then(() => {
+        /*this.accessToken = "";    //moved outside of .then because otherwise, You got locked in when the token expired
         this.refreshToken = "";
         this.currentUser = "";
+
+        localStorage.removeItem('Auth');
+        localStorage.removeItem('Refresh');
 
         //router.push({ name: 'home' })
         //this.router.push("/");
 
-        vueApp.$router.push("/");
+        vueApp.$router.push("/");*/
       })
       .catch(function (error :any) {
         console.log(error);

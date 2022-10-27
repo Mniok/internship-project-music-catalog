@@ -68,8 +68,18 @@ export default Vue.extend({
 
   methods: {
       
-      ...mapActions(useAccountStore, ['logout'])
-    },
+      ...mapActions(useAccountStore, ['newJWT', 'updateCurrentUser', 'logout'])
+  },
+
+  created() {
+    var accessToken : string | null = localStorage.getItem('Auth');
+    var refreshToken : string | null = localStorage.getItem('Refresh');
+
+    if (!!accessToken && !!refreshToken){
+      this.newJWT(accessToken, refreshToken);
+      this.updateCurrentUser(accessToken);
+    }
+  },
 
   computed: {
       isLoggedIn() {
@@ -81,7 +91,7 @@ export default Vue.extend({
       },
 
       ...mapState(useAccountStore, ['accessToken', 'refreshToken', 'currentUser']),
-    }
+  }
 });
 </script>
 
