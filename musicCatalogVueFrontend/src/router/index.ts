@@ -44,6 +44,11 @@ const routes: Array<RouteConfig> = [
     name: 'song',
     component: () => import('../views/SongView.vue')
   },
+  {
+    path: '/upload',
+    name: 'upload',
+    component: () => import('../views/UploadSongView.vue')
+  },
 ]
 
 const router = new VueRouter({

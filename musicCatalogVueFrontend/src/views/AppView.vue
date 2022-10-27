@@ -1,8 +1,8 @@
 <template>
   <v-container fluid>
-    <v-toolbar style="background-color:#00000000" elevation="0">
+    <v-toolbar style="background-color:#00000000" elevation="0">    <!-- search criteria bar -->
 
-      <!---->
+      <!--
       <v-checkbox
         v-model="searchByFavourite"
         label="Show favourite only"
@@ -11,7 +11,7 @@
         hide-details
       ></v-checkbox>
       <v-spacer></v-spacer>
-      <!---->
+      -->
 
       <v-checkbox
         v-model="searchByUploader"
@@ -67,6 +67,37 @@
     </v-toolbar>
 
     <v-divider class="blue-grey darken-1"></v-divider>
+
+    <!-- main content - song widgets page -->
+    <!--<h1 style="height:2137px">test footer if there's content</h1>-->
+
+
+    <!-- bar for bottom pagination and add song button -->
+    <v-footer  
+      absolute 
+      padless 
+      style="background-color:#00000000" elevation="0"
+      class="mb-13 d-flex justify-space-between"
+    >  <!-- bars seem to always be the same height so positioning with mb-13 shouldn't be a problem on differrent size displays -->
+      <v-card class="hidden">
+          <!-- invisible card to center pagination component -->
+          <v-btn class="pl-8">
+          <span class="mr-2">Upload new song</span> <!-- not really, just same width -->
+          <v-icon>mdi-tray-arrow-up</v-icon>
+        </v-btn> 
+      </v-card>
+      
+      <v-card >
+            <span>&nbsp;&nbsp;&lt; pagination goes here &gt;&nbsp;&nbsp;</span>    <!-- !!! layout kinda breaks when dislpay is thin, might have to split pagination and upload into 2 differrent footers, or make seperate style for s or xs displays -->
+      </v-card>
+
+      <v-card class="corner-curved" color="success">
+        <v-btn to="/upload" class="corner-curved no-decorators pl-8 pt-1" text color="grey lighten-3">
+          <span class="mr-2">Upload new song</span>
+          <v-icon>mdi-tray-arrow-up</v-icon>
+        </v-btn>
+      </v-card>
+    </v-footer>
 
   </v-container>
 </template>
@@ -131,6 +162,14 @@ hr.widen {  /* do v-divider */
 
 .wider-field {
   min-width: 20vw;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.corner-curved {
+  border-radius: 48px 0px 0px 0px !important;
 }
 
 </style>

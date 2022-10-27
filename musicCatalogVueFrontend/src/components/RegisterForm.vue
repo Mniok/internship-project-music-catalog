@@ -119,13 +119,13 @@
 
 
       register () {
-        this.$refs.form.validate();
+        this.$refs.form?.validate();
 
         axios.post('https://localhost:7026/api/Account/registration', {
           username: this.username,
           password: this.password
         })
-        .then(response => {
+        .then(() => {
           this.login(this.username, this.password);
         })
         .catch(function (error :any) {

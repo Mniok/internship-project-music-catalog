@@ -19,5 +19,6 @@
   div {
     width: 60%;
     margin-top:15vh;
+    margin-bottom:15vh;
   }
 </style>
