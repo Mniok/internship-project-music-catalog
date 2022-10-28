@@ -1,10 +1,30 @@
 <template>
   <v-container class="d-flex mb-16 pb-16">
     <v-form class="d-flex" style="width:100%">
-      <v-container id="left-column" style="width:40%">
+      <v-container id="left-column" class="mr-5" style="width:40%">
         <v-sheet id="image-preview" height="220px" width="220px" rounded outlined elevation="8" color="blue-grey darken-3">
           <span>[choose an image]</span>
         </v-sheet>
+
+        <p class="category-title mt-8">                                            <!-- song length input -->
+          <v-icon small color="blue-grey">mdi-account-box-multiple</v-icon>
+          TIME:
+        </p>
+        <v-text-field
+          dark color="indigo lighten-2"
+          v-model="songTime"
+          label="How long is this song?"
+          class="ml-5"
+          type="time"
+          step="1"
+          messages="hh:mm:ss"
+        ></v-text-field>
+
+        <p class="category-title mt-8">                                            <!-- list of link inputs -->
+          <v-icon small color="blue-grey">mdi-account-box-multiple</v-icon>
+          LINK(S):
+        </p>
+
       </v-container>
 
       <v-divider vertical class="blue-grey darken-1 mt-4"/>
@@ -32,7 +52,7 @@
           <v-icon small color="blue-grey">mdi-account-box-multiple</v-icon>
           ARTIST(S):
         </p>
-        <v-text-field v-for="index in artistsCount" :key="index"
+        <v-text-field v-for="index in artistsCount" :key="'artist'+index"
           dark color="indigo lighten-2"
           v-model="songArtists[index-1]"
           :label="index | labelNumbers('Artist')"
@@ -44,7 +64,7 @@
           <v-icon small color="blue-grey">mdi-music-box-multiple</v-icon>
           GENRE(S):
         </p>
-        <v-text-field v-for="index in genresCount" :key="index"
+        <v-text-field v-for="index in genresCount" :key="'genre'+index"
           dark color="indigo lighten-2"
           v-model="songGenres[index-1]"
           :label="index | labelNumbers('Genre')"
@@ -61,7 +81,7 @@
           v-model="songDescription"
           outlined
           label="Song Description:"
-          class="wider-field ml-5 pb-0"
+          class="wider-field ml-5"
         >
         </v-textarea>
 
@@ -87,18 +107,17 @@
       song: '',
       songTitle: '',
       songDescription: '',
-      songTime: 0,
+      songTime: "00:05:00",
       songArtists: Array<String>(),
       songGenres: Array<String>(),
       songLinks: Array<Link>(),
-      songUploader: '',
-      songUploadedOn: '',
     }),
 
 
     computed: {
-      artistsCount(){   //ile wyświetlić inputów - o 1 więcej niż najwyższy niepusty
+      artistsCount() : number {   //ile wyświetlić inputów - o 1 więcej niż najwyższy niepusty
         //console.log(this.songArtists);  ////
+        console.log(this.songTime + " ==> " + this.songTimeInt)
 
         if(!!this.songArtists.at(this.songArtists.length-1)){   //przy dodawaniu
           return this.songArtists.length + 1;
@@ -111,7 +130,7 @@
         return 1;
       },
 
-      genresCount(){   //ile wyświetlić inputów - o 1 więcej niż najwyższy niepusty
+      genresCount() : number{   //ile wyświetlić inputów - o 1 więcej niż najwyższy niepusty
         //console.log(this.songArtists);  ////
 
         if(!!this.songGenres.at(this.songGenres.length-1)){   //przy dodawaniu
@@ -123,6 +142,12 @@
             return i+2;
 
         return 1;
+      },
+
+      songTimeInt() : number{
+        var hours:string, minutes:string, seconds:string;
+        [hours, minutes, seconds] = this.songTime.split(":");
+        return parseInt(hours)*60*60 + parseInt(minutes)*60 + parseInt(seconds);
       },
 
       ...mapState(useAccountStore, ['accessToken', 'refreshToken']),
@@ -151,16 +176,6 @@
         // :label="'Artist ' + ( index==0 ? '' : (index+1).toString() )"    nie podkreśla jako błąd, ale jest niezbyt czyste
       }
 
-      /*dateFormat(value: string) {
-        var date : string; var time : string;
-        [date, time] = value!.split("T")!;   //! is supposed to tell tsc this value will newer be null, but doesn't fix undefined error in console
-        time = time!.split(".").at(0)!;
-
-        //time = time?.split(":").at(0) + ':' + time?.split(":").at(1);   ///strip seconds
-        time = time!.substring(0, 5);   ///strip seconds    //both of these keep throwing type errors in console no matter what I try but work flawlessly
-
-        return date + " " + time;
-      }*/
     },
 
   })
@@ -172,5 +187,10 @@
   color: #B0BEC5; /* blue-grey lighten-3 */
   font-size: 0.8em;
 }
+</style>
 
+<style> /* to nie może być scoped, bo wpływa na element z innego komponentu (v-text-field type="time") */
+::-webkit-calendar-picker-indicator {
+    filter: invert(1);  /* normalnie input type="time" ma hardcoded czarny background-image */
+}
 </style>
