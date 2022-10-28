@@ -1,44 +1,72 @@
 <template>
-  <v-container class="d-flex">
-    <v-container id="left-column" style="width:40%">
-      <v-sheet id="image-preview" height="220px" width="220px" rounded outlined elevation="8" color="blue-grey darken-3">
-        <span>[choose an image]</span>
-      </v-sheet>
-    </v-container>
+  <v-container class="d-flex mb-16 pb-16">
+    <v-form class="d-flex" style="width:100%">
+      <v-container id="left-column" style="width:40%">
+        <v-sheet id="image-preview" height="220px" width="220px" rounded outlined elevation="8" color="blue-grey darken-3">
+          <span>[choose an image]</span>
+        </v-sheet>
+      </v-container>
 
-    <v-divider vertical class="blue-grey darken-1"/>
+      <v-divider vertical class="blue-grey darken-1 mt-4"/>
 
-    <v-container id="right-column" class="float-right">
-      <v-text-field
-        dark color="indigo lighten-2"
-        v-model="songTitle"
-        outlined
-        label="Song Title:"
-        class="mt-4 wider-field"
-      >
-        <v-icon 
-          large
-          slot="prepend" 
-          color="blue-grey"
-          style="margin-top:-8px"
-        >mdi-tag-text-outline <!-- negative margin centers icon to text field -->
-        </v-icon>
-      </v-text-field>
+      <v-container id="right-column" class="float-right pb-0">
+        <!-- song title input -->
+        <v-text-field
+          dark color="indigo lighten-2"
+          v-model="songTitle"
+          outlined
+          label="Song Title:"
+          class="mt-4 wider-field"
+        >
+          <v-icon 
+            large
+            slot="prepend" 
+            color="blue-grey"
+            style="margin-top:-8px"
+          >mdi-tag-text-outline <!-- negative margin centers icon to text field -->
+          </v-icon>
+        </v-text-field>
 
 
-      <p class="category-title">
-        <v-icon small color="blue-grey">mdi-account-box-multiple</v-icon>
-        ARTIST(S):
-      </p>
-      <v-text-field v-for="index in artistsCount" :key="index"
-        dark color="indigo lighten-2"
-        v-model="songArtists[index-1]"
-        :label="index | artistLabel"
-        class="ml-5"
-      >
-      </v-text-field>
+        <p class="category-title">                                            <!-- artists inputs list -->
+          <v-icon small color="blue-grey">mdi-account-box-multiple</v-icon>
+          ARTIST(S):
+        </p>
+        <v-text-field v-for="index in artistsCount" :key="index"
+          dark color="indigo lighten-2"
+          v-model="songArtists[index-1]"
+          :label="index | labelNumbers('Artist')"
+          class="ml-5"
+        >
+        </v-text-field>
 
-    </v-container>
+        <p class="category-title mt-8">                                       <!-- genres inputs list -->
+          <v-icon small color="blue-grey">mdi-music-box-multiple</v-icon>
+          GENRE(S):
+        </p>
+        <v-text-field v-for="index in genresCount" :key="index"
+          dark color="indigo lighten-2"
+          v-model="songGenres[index-1]"
+          :label="index | labelNumbers('Genre')"
+          class="ml-5"
+        >
+        </v-text-field>
+
+        <p class="category-title mt-8">                                       <!-- genres inputs list -->
+          <v-icon small color="blue-grey">mdi-music-box-multiple</v-icon>
+          DESCRIPTION:
+        </p>
+        <v-textarea
+          dark color="indigo lighten-2" 
+          v-model="songDescription"
+          outlined
+          label="Song Description:"
+          class="wider-field ml-5 pb-0"
+        >
+        </v-textarea>
+
+      </v-container>
+    </v-form>
   </v-container>
 </template>
 
@@ -60,34 +88,15 @@
       songTitle: '',
       songDescription: '',
       songTime: 0,
-      //songArtists: Array<String>(),
-      //songGenres: Array<String>(),
-      //songLinks: Array<Link>(),
       songArtists: Array<String>(),
-      songGenres: [],
-      songLinks: [],
+      songGenres: Array<String>(),
+      songLinks: Array<Link>(),
       songUploader: '',
       songUploadedOn: '',
     }),
 
 
     computed: {
-      artistsString(){
-        return this.songArtists.join(", ");
-      },
-
-      genresString(){
-        return this.songGenres.join(", ");
-      },
-
-      /*linksString(){
-        var links : Array<String> = ["(TEMPORARY before adding links is implemented): "];
-        this.songLinks.forEach(l => {
-          links.push( l.toSite + ".com/" + l.linkBody);
-        });
-        return links.join(", ");
-      },*/
-
       artistsCount(){   //ile wyświetlić inputów - o 1 więcej niż najwyższy niepusty
         //console.log(this.songArtists);  ////
 
@@ -97,6 +106,20 @@
 
         for(var i : number = this.songArtists.length - 1; i>=0; i--)   //przy zmniejszaniu
           if(!!this.songArtists.at(i))
+            return i+2;
+
+        return 1;
+      },
+
+      genresCount(){   //ile wyświetlić inputów - o 1 więcej niż najwyższy niepusty
+        //console.log(this.songArtists);  ////
+
+        if(!!this.songGenres.at(this.songGenres.length-1)){   //przy dodawaniu
+          return this.songGenres.length + 1;
+        }
+
+        for(var i : number = this.songGenres.length - 1; i>=0; i--)   //przy zmniejszaniu
+          if(!!this.songGenres.at(i))
             return i+2;
 
         return 1;
@@ -120,10 +143,10 @@
 
       },
 
-      artistLabel(index : number){
+      labelNumbers(index : number, labelFor: string){
         if (index < 2)
-          return "Artist"
-        return "Artist " + index.toString();
+          return labelFor
+        return labelFor + ' ' + index.toString();
         //z jakiegoś powodu podświetla jako błąd? ale działa i wg. dokumentacji tak był powinno
         // :label="'Artist ' + ( index==0 ? '' : (index+1).toString() )"    nie podkreśla jako błąd, ale jest niezbyt czyste
       }

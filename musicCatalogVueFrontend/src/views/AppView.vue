@@ -1,73 +1,75 @@
 <template>
   <v-container fluid>
-    <v-toolbar style="background-color:#00000000" elevation="0">    <!-- search criteria bar -->
+    <v-form class="d-flex">
+      <v-toolbar style="background-color:#00000000" elevation="0">    <!-- search criteria bar -->
+      
+        <!--
+        <v-checkbox
+          v-model="searchByFavourite"
+          label="Show favourite only"
+          color="indigo lighten-1"
+          class="search-inputs"
+          hide-details
+        ></v-checkbox>
+        <v-spacer></v-spacer>
+        -->
 
-      <!--
-      <v-checkbox
-        v-model="searchByFavourite"
-        label="Show favourite only"
-        color="indigo lighten-1"
-        class="search-inputs"
-        hide-details
-      ></v-checkbox>
-      <v-spacer></v-spacer>
-      -->
+        <v-checkbox
+          v-model="searchByUploader"
+          label="Show only uploaded by me"
+          color="indigo lighten-1"
+          class="search-inputs"
+          hide-details
+        ></v-checkbox>
 
-      <v-checkbox
-        v-model="searchByUploader"
-        label="Show only uploaded by me"
-        color="indigo lighten-1"
-        class="search-inputs"
-        hide-details
-      ></v-checkbox>
+        <v-spacer class="thin"></v-spacer>
 
-      <v-spacer class="thin"></v-spacer>
+        <v-text-field
+          v-model="searchByTitle"
+          label="Search by Title:"
+          class="search-inputs mt-4 wider-field"
+          color="indigo lighten-1"
+        >
+          <v-icon 
+            slot="prepend" 
+            color="indigo lighten-2"
+          >mdi-tag-text-outline</v-icon>
+        </v-text-field>
 
-      <v-text-field
-        v-model="searchByTitle"
-        label="Search by Title:"
-        class="search-inputs mt-4 wider-field"
-        color="indigo lighten-1"
-      >
-        <v-icon 
-          slot="prepend" 
-          color="indigo lighten-2"
-        >mdi-tag-text-outline</v-icon>
-      </v-text-field>
+        <v-spacer></v-spacer>
 
-      <v-spacer></v-spacer>
+        <v-text-field
+          v-model="searchByArtist"
+          label="Search by Artists:"
+          class="search-inputs mt-4 wider-field"
+          color="indigo lighten-1"
+        >
+          <v-icon 
+            slot="prepend" 
+            color="indigo lighten-2"
+          >mdi-account-box-multiple</v-icon>
+        </v-text-field>
 
-      <v-text-field
-        v-model="searchByArtist"
-        label="Search by Artists:"
-        class="search-inputs mt-4 wider-field"
-        color="indigo lighten-1"
-      >
-        <v-icon 
-          slot="prepend" 
-          color="indigo lighten-2"
-        >mdi-account-box-multiple</v-icon>
-      </v-text-field>
+        <v-spacer></v-spacer>
 
-      <v-spacer></v-spacer>
+        <v-text-field
+          v-model="searchByGenre"
+          label="Search by Genres:"
+          class="search-inputs mt-4 wider-field"
+          color="indigo lighten-1"
+        >
+          <v-icon 
+            slot="prepend" 
+            color="indigo lighten-2"
+          >mdi-music-box-multiple</v-icon>
+        </v-text-field>
 
-      <v-text-field
-        v-model="searchByGenre"
-        label="Search by Genres:"
-        class="search-inputs mt-4 wider-field"
-        color="indigo lighten-1"
-      >
-        <v-icon 
-          slot="prepend" 
-          color="indigo lighten-2"
-        >mdi-music-box-multiple</v-icon>
-      </v-text-field>
+        <v-btn text color="indigo lighten-2" class="ml-8" @click="search">
+          <v-icon x-large >mdi-magnify</v-icon>
+        </v-btn>
 
-      <v-btn text color="indigo lighten-2" class="ml-8" @click="search">
-        <v-icon x-large >mdi-magnify</v-icon>
-      </v-btn>
-
-    </v-toolbar>
+      </v-toolbar>
+    </v-form>
 
     <v-divider class="blue-grey darken-1"></v-divider>
 
