@@ -7,7 +7,7 @@
         </v-sheet>
 
         <p class="category-title mt-8">                                            <!-- song length input -->
-          <v-icon small color="blue-grey">mdi-account-box-multiple</v-icon>
+          <v-icon small color="blue-grey">mdi-timer-outline</v-icon>
           TIME:
         </p>
         <v-text-field
@@ -21,7 +21,7 @@
         ></v-text-field>
 
         <p class="category-title mt-8">                                            <!-- list of link inputs -->
-          <v-icon small color="blue-grey">mdi-account-box-multiple</v-icon>
+          <v-icon small color="blue-grey">mdi-link-box-variant</v-icon>
           LINK(S):
         </p>
         <v-text-field
@@ -39,6 +39,7 @@
         <v-text-field
           dark color="green"
           v-model="spotifyLink"
+          :rules="spotifyLinkRules"
           label="Spotify link:"
         >
           <v-icon 
@@ -48,8 +49,33 @@
         </v-text-field>
 
         <v-text-field
+          dark color="purple"
+          v-model="itunesLink"
+          :rules="itunesLinkRules"
+          label="Itunes link:"
+        >
+          <v-icon 
+            slot="prepend" 
+            color="purple darken-4"
+          >mdi-soundcloud</v-icon>
+        </v-text-field>
+
+        <v-text-field
+          dark color="blue"
+          v-model="bandcampLink"
+          :rules="bandcampLinkRules"
+          label="Bandcamp link:"
+        >
+          <v-icon 
+            slot="prepend" 
+            color="blue darken-4"
+          >mdi-soundcloud</v-icon>
+        </v-text-field>
+
+        <v-text-field
           dark color="orange"
           v-model="soundcloudLink"
+          :rules="soundcloudLinkRules"
           label="Soundcloud link:"
         >
           <v-icon 
@@ -128,13 +154,13 @@
   import { useAccountStore } from '../store/account';
   import { mapState, mapActions } from 'pinia';
 
-  function trimLinkEnd(linkEnd:string) : string | undefined {
-    console.log(linkEnd);
-    console.log(linkEnd?.split('/').at(0)?.split('?').at(0)?.split('&').at(0));
+  function cleanupLink(linkEnd:string) : string | undefined {
+    //console.log(linkEnd);   ////
+    //console.log(linkEnd?.split('/').at(0)?.split('?').at(0)?.split('&').at(0));   ////
     return linkEnd?.split('/').at(0)?.split('?').at(0)?.split('&').at(0);
   }
 
-  var youtubeLinkBase : string = "www.youtube.com/watch?v=";      //ex. https://www.youtube.com/watch?v=ORnvO1VyYMk
+  var youtubeLinkBase : string = "www.youtube.com/watch?v=";      //ex. https://www.youtube.com/watch?v=ORnvO1VyYMk   //Man On The Silver Mountain btw
   var youtubeLinkShare : string = "youtu.be/";                    //ex. https://youtu.be/ORnvO1VyYMk
   var youtubeLinkShorts : string = "www.youtube.com/shorts/";     //ex. https://www.youtube.com/shorts/BZ_276VGGv4
   function trimYoutubeLink(link : string) : string | boolean | undefined {
@@ -148,13 +174,50 @@
       link = link.substring("http://".length);
 
     if (link.substring(0, youtubeLinkBase.length) == youtubeLinkBase)
-      return trimLinkEnd( link.substring(youtubeLinkBase.length) );
+      return cleanupLink( link.substring(youtubeLinkBase.length) );
 
     if (link.substring(0, youtubeLinkShare.length) == youtubeLinkShare)
-      return trimLinkEnd( link.substring(youtubeLinkShare.length) );
+      return cleanupLink( link.substring(youtubeLinkShare.length) );
 
     if (link.substring(0, youtubeLinkShorts.length) == youtubeLinkShorts)
-      return trimLinkEnd( link.substring(youtubeLinkShorts.length) );
+      return cleanupLink( link.substring(youtubeLinkShorts.length) );
+
+    return false;
+  }
+
+  function trimSpotifyLink(link : string) : string | boolean | undefined {
+    return false;
+  }
+
+  function trimItunesLink(link : string) : string | boolean | undefined {
+    return false;
+  }
+
+  function trimBandcampLink(link : string) : string | boolean | undefined {
+    return false;
+  }
+
+  var soundcloudLinkBase : string = "soundcloud.com/";           //ex. https://soundcloud.com/jimihendrix/3b-wav , https://soundcloud.com/creedence-clearwater-revival/fortunate-son-at-the-royal //ten 2gi not available in poland
+  function trimSoundcloudLink(link : string) : string | boolean | undefined {
+    if (!link)
+      return false;
+
+    if (link.startsWith("https://"))
+      link = link.substring("https://".length);
+
+    if (link.startsWith("http://"))
+      link = link.substring("http://".length);
+
+    if (link.substring(0, soundcloudLinkBase.length) == soundcloudLinkBase){
+      link = link.substring(soundcloudLinkBase.length);
+      var linkArtist : string | undefined, linkSong : string | undefined;
+      [linkArtist, linkSong] = link.split("/");
+      linkArtist = cleanupLink(linkArtist);
+      linkSong = cleanupLink(linkSong);
+      //console.log(link + " ==> " + linkArtist + " / " + linkSong); ////
+      if (!!linkArtist && !!linkSong)
+        return linkArtist + '/' + linkSong;
+    }
 
     return false;
   }
@@ -175,17 +238,28 @@
       songArtists: Array<String>(),
       songGenres: Array<String>(),
       //songLinks: Array<Link>(),
+
       youtubeLink: '',
       youtubeLinkRules: [
-        /// https://www.youtube.com/watch?v=ORnvO1VyYMk //man on the silver mountain btw
-        /// or https://youtu.be/ORnvO1VyYMk
         /// v => v.substring(0, youtubeLinkBase.length) == youtubeLinkBase || "No valid YouTube link detected",
         v => !!trimYoutubeLink(v) || "No valid YouTube link detected",
       ],
       spotifyLink: '',
+      spotifyLinkRules: [
+        v => !!trimSpotifyLink(v) || "No valid Spotify link detected",
+      ],
       itunesLink: '',
+      itunesLinkRules: [
+        v => !!trimItunesLink(v) || "No valid Itunes link detected",
+      ],
       bandcampLink: '',
+      bandcampLinkRules: [
+        v => !!trimBandcampLink(v) || "No valid Bandcamp link detected",
+      ],
       soundcloudLink: '',
+      soundcloudLinkRules: [
+        v => !!trimSoundcloudLink(v) || "No valid Soundcloud link detected",
+      ],
     }),
 
 
@@ -223,6 +297,10 @@
         var hours:string, minutes:string, seconds:string;
         [hours, minutes, seconds] = this.songTime.split(":");
         return parseInt(hours)*60*60 + parseInt(minutes)*60 + parseInt(seconds);
+      },
+
+      songLinks() : Array<Link>{
+        return Array<Link>();
       },
 
       ...mapState(useAccountStore, ['accessToken', 'refreshToken']),
