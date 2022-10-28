@@ -24,6 +24,39 @@
           <v-icon small color="blue-grey">mdi-account-box-multiple</v-icon>
           LINK(S):
         </p>
+        <v-text-field
+          dark color="red"
+          v-model="youtubeLink"
+          :rules="youtubeLinkRules"
+          label="YouTube link:"
+        >
+          <v-icon 
+            slot="prepend" 
+            color="red darken-4"
+          >mdi-youtube</v-icon>
+        </v-text-field>
+
+        <v-text-field
+          dark color="green"
+          v-model="spotifyLink"
+          label="Spotify link:"
+        >
+          <v-icon 
+            slot="prepend" 
+            color="green darken-4"
+          >mdi-spotify</v-icon>
+        </v-text-field>
+
+        <v-text-field
+          dark color="orange"
+          v-model="soundcloudLink"
+          label="Soundcloud link:"
+        >
+          <v-icon 
+            slot="prepend" 
+            color="orange darken-4"
+          >mdi-soundcloud</v-icon>
+        </v-text-field>
 
       </v-container>
 
@@ -95,6 +128,37 @@
   import { useAccountStore } from '../store/account';
   import { mapState, mapActions } from 'pinia';
 
+  function trimLinkEnd(linkEnd:string) : string | undefined {
+    console.log(linkEnd);
+    console.log(linkEnd?.split('/').at(0)?.split('?').at(0)?.split('&').at(0));
+    return linkEnd?.split('/').at(0)?.split('?').at(0)?.split('&').at(0);
+  }
+
+  var youtubeLinkBase : string = "www.youtube.com/watch?v=";      //ex. https://www.youtube.com/watch?v=ORnvO1VyYMk
+  var youtubeLinkShare : string = "youtu.be/";                    //ex. https://youtu.be/ORnvO1VyYMk
+  var youtubeLinkShorts : string = "www.youtube.com/shorts/";     //ex. https://www.youtube.com/shorts/BZ_276VGGv4
+  function trimYoutubeLink(link : string) : string | boolean | undefined {
+    if (!link)
+      return false;
+
+    if (link.startsWith("https://"))
+      link = link.substring("https://".length);
+
+    if (link.startsWith("http://"))
+      link = link.substring("http://".length);
+
+    if (link.substring(0, youtubeLinkBase.length) == youtubeLinkBase)
+      return trimLinkEnd( link.substring(youtubeLinkBase.length) );
+
+    if (link.substring(0, youtubeLinkShare.length) == youtubeLinkShare)
+      return trimLinkEnd( link.substring(youtubeLinkShare.length) );
+
+    if (link.substring(0, youtubeLinkShorts.length) == youtubeLinkShorts)
+      return trimLinkEnd( link.substring(youtubeLinkShorts.length) );
+
+    return false;
+  }
+
   interface Link {
     toSite: string,
     linkBody: string
@@ -110,14 +174,25 @@
       songTime: "00:05:00",
       songArtists: Array<String>(),
       songGenres: Array<String>(),
-      songLinks: Array<Link>(),
+      //songLinks: Array<Link>(),
+      youtubeLink: '',
+      youtubeLinkRules: [
+        /// https://www.youtube.com/watch?v=ORnvO1VyYMk //man on the silver mountain btw
+        /// or https://youtu.be/ORnvO1VyYMk
+        /// v => v.substring(0, youtubeLinkBase.length) == youtubeLinkBase || "No valid YouTube link detected",
+        v => !!trimYoutubeLink(v) || "No valid YouTube link detected",
+      ],
+      spotifyLink: '',
+      itunesLink: '',
+      bandcampLink: '',
+      soundcloudLink: '',
     }),
 
 
     computed: {
       artistsCount() : number {   //ile wyświetlić inputów - o 1 więcej niż najwyższy niepusty
         //console.log(this.songArtists);  ////
-        console.log(this.songTime + " ==> " + this.songTimeInt)
+        //console.log(this.songTime + " ==> " + this.songTimeInt) ////
 
         if(!!this.songArtists.at(this.songArtists.length-1)){   //przy dodawaniu
           return this.songArtists.length + 1;
@@ -131,7 +206,7 @@
       },
 
       genresCount() : number{   //ile wyświetlić inputów - o 1 więcej niż najwyższy niepusty
-        //console.log(this.songArtists);  ////
+        //console.log(this.songGenres);  ////
 
         if(!!this.songGenres.at(this.songGenres.length-1)){   //przy dodawaniu
           return this.songGenres.length + 1;
