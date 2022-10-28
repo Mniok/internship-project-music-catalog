@@ -267,6 +267,7 @@
       artistsCount() : number {   //ile wyświetlić inputów - o 1 więcej niż najwyższy niepusty
         //console.log(this.songArtists);  ////
         //console.log(this.songTime + " ==> " + this.songTimeInt) ////
+        //console.log(this.songLinks); ////
 
         if(!!this.songArtists.at(this.songArtists.length-1)){   //przy dodawaniu
           return this.songArtists.length + 1;
@@ -300,7 +301,25 @@
       },
 
       songLinks() : Array<Link>{
-        return Array<Link>();
+        var linksList : Array<Link> = Array<Link>();
+
+        if (!!trimYoutubeLink(this.youtubeLink))
+          linksList.push({ toSite: 'youtube', linkBody: trimYoutubeLink(this.youtubeLink)?.toString()! });    //toString żeby się typescript uspokoił
+
+        if (!!trimSpotifyLink(this.spotifyLink))
+          linksList.push({ toSite: 'spotify', linkBody: trimSpotifyLink(this.spotifyLink)?.toString()! });
+
+        if (!!trimItunesLink(this.itunesLink))
+          linksList.push({ toSite: 'itunes', linkBody: trimItunesLink(this.itunesLink)?.toString()! });
+
+        if (!!trimBandcampLink(this.bandcampLink))
+          linksList.push({ toSite: 'bandcamp', linkBody: trimBandcampLink(this.bandcampLink)?.toString()! });
+
+        if (!!trimSoundcloudLink(this.soundcloudLink))
+          linksList.push({ toSite: 'soundcloud', linkBody: trimSoundcloudLink(this.soundcloudLink)?.toString()! });
+
+        //console.log(this.songLinks); ////
+        return linksList;
       },
 
       ...mapState(useAccountStore, ['accessToken', 'refreshToken']),
