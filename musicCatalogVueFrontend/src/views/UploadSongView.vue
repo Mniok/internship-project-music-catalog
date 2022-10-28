@@ -14,7 +14,7 @@
         v-model="songTitle"
         outlined
         label="Song Title:"
-        class="search-inputs mt-4 wider-field"
+        class="mt-4 wider-field"
       >
         <v-icon 
           large
@@ -34,7 +34,7 @@
         dark color="indigo lighten-2"
         v-model="songArtists[index]"
         :label="index | artistLabel"
-        class="search-inputs ml-5"
+        class="ml-5"
       >
       </v-text-field>
 

@@ -27,6 +27,7 @@
         v-model="searchByTitle"
         label="Search by Title:"
         class="search-inputs mt-4 wider-field"
+        color="indigo lighten-1"
       >
         <v-icon 
           slot="prepend" 
@@ -40,6 +41,7 @@
         v-model="searchByArtist"
         label="Search by Artists:"
         class="search-inputs mt-4 wider-field"
+        color="indigo lighten-1"
       >
         <v-icon 
           slot="prepend" 
@@ -53,6 +55,7 @@
         v-model="searchByGenre"
         label="Search by Genres:"
         class="search-inputs mt-4 wider-field"
+        color="indigo lighten-1"
       >
         <v-icon 
           slot="prepend" 
