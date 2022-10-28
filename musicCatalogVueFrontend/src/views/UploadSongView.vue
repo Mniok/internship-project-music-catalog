@@ -30,9 +30,9 @@
         <v-icon small color="blue-grey">mdi-account-box-multiple</v-icon>
         ARTIST(S):
       </p>
-      <v-text-field v-for="(artist, index) in songArtists"
+      <v-text-field v-for="index in artistsCount" :key="index"
         dark color="indigo lighten-2"
-        v-model="songArtists[index]"
+        v-model="songArtists[index-1]"
         :label="index | artistLabel"
         class="ml-5"
       >
@@ -63,7 +63,7 @@
       //songArtists: Array<String>(),
       //songGenres: Array<String>(),
       //songLinks: Array<Link>(),
-      songArtists: Array<String>("", "", ""),
+      songArtists: Array<String>(),
       songGenres: [],
       songLinks: [],
       songUploader: '',
@@ -88,8 +88,18 @@
         return links.join(", ");
       },*/
 
-      artistsCount(){
-        return 5;
+      artistsCount(){   //ile wyświetlić inputów - o 1 więcej niż najwyższy niepusty
+        //console.log(this.songArtists);  ////
+
+        if(!!this.songArtists.at(this.songArtists.length-1)){   //przy dodawaniu
+          return this.songArtists.length + 1;
+        }
+
+        for(var i : number = this.songArtists.length - 1; i>=0; i--)   //przy zmniejszaniu
+          if(!!this.songArtists.at(i))
+            return i+2;
+
+        return 1;
       },
 
       ...mapState(useAccountStore, ['accessToken', 'refreshToken']),
@@ -111,7 +121,7 @@
       },
 
       artistLabel(index : number){
-        if (index < 1)
+        if (index < 2)
           return "Artist"
         return "Artist " + index.toString();
         //z jakiegoś powodu podświetla jako błąd? ale działa i wg. dokumentacji tak był powinno
