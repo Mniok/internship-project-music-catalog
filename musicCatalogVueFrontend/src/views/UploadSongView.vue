@@ -1,7 +1,7 @@
 <template>
   <v-container class="d-flex mb-16 pb-16">
     <v-form class="d-flex" style="width:100%">
-      <v-container id="left-column" class="mr-5 pb-0" style="width:40%">
+      <v-container id="left-column" class="mr-5 pb-0">
         <v-sheet id="image-preview" height="220px" width="220px" rounded outlined elevation="8" color="blue-grey darken-3">
           <span>[choose an image]</span>
         </v-sheet>
@@ -356,6 +356,11 @@
 
 
 <style scoped>
+
+#left-column {
+  width: 40%;
+}
+
 .category-title {
   color: #B0BEC5; /* blue-grey lighten-3 */
   font-size: 0.8em;
