@@ -1,7 +1,7 @@
 <template>
   <v-container class="d-flex mb-16 pb-16">
     <v-form class="d-flex" style="width:100%">
-      <v-container id="left-column" class="mr-5" style="width:40%">
+      <v-container id="left-column" class="mr-5 pb-0" style="width:40%">
         <v-sheet id="image-preview" height="220px" width="220px" rounded outlined elevation="8" color="blue-grey darken-3">
           <span>[choose an image]</span>
         </v-sheet>
@@ -22,7 +22,7 @@
 
         <p class="category-title mt-8">                                            <!-- list of link inputs -->
           <v-icon small color="blue-grey">mdi-link-box-variant</v-icon>
-          LINK(S):
+          LINK(S)*:
         </p>
         <v-text-field
           dark color="red"
@@ -83,6 +83,7 @@
             color="orange darken-4"
           >mdi-soundcloud</v-icon>
         </v-text-field>
+        <div class="v-messages theme--dark v-messages__message ml-12">* at least 1 required</div>
 
       </v-container>
 
@@ -94,8 +95,9 @@
           dark color="indigo lighten-2"
           v-model="songTitle"
           outlined
-          label="Song Title:"
-          class="mt-4 wider-field"
+          label="Song Title*:"
+          messages="*required"
+          class="mt-4 mb-4 wider-field"
         >
           <v-icon 
             large
@@ -109,7 +111,7 @@
 
         <p class="category-title">                                            <!-- artists inputs list -->
           <v-icon small color="blue-grey">mdi-account-box-multiple</v-icon>
-          ARTIST(S):
+          ARTIST(S)*:
         </p>
         <v-text-field v-for="index in artistsCount" :key="'artist'+index"
           dark color="indigo lighten-2"
@@ -118,6 +120,7 @@
           class="ml-5"
         >
         </v-text-field>
+        <div class="v-messages theme--dark v-messages__message ml-8">* at least 1 required</div>
 
         <p class="category-title mt-8">                                       <!-- genres inputs list -->
           <v-icon small color="blue-grey">mdi-music-box-multiple</v-icon>
@@ -132,7 +135,7 @@
         </v-text-field>
 
         <p class="category-title mt-8">                                       <!-- genres inputs list -->
-          <v-icon small color="blue-grey">mdi-music-box-multiple</v-icon>
+          <v-icon small color="blue-grey">mdi-comment-text</v-icon>
           DESCRIPTION:
         </p>
         <v-textarea
@@ -143,6 +146,17 @@
           class="wider-field ml-5"
         >
         </v-textarea>
+
+        <div class="v-messages theme--dark v-messages__message ml-8">* required <br/>** at least 1 required</div>
+        <v-row class="mt-4 ml-0 mr-0 float-right">
+            <v-btn
+              :disabled="!valid"
+              dark color="success"
+              @click="submitSong"
+            >
+              Submit song
+            </v-btn>
+        </v-row>
 
       </v-container>
     </v-form>
@@ -242,23 +256,23 @@
       youtubeLink: '',
       youtubeLinkRules: [
         /// v => v.substring(0, youtubeLinkBase.length) == youtubeLinkBase || "No valid YouTube link detected",
-        v => !!trimYoutubeLink(v) || "No valid YouTube link detected",
+        v => (!!trimYoutubeLink(v) || v=="") || "No valid YouTube link detected",
       ],
       spotifyLink: '',
       spotifyLinkRules: [
-        v => !!trimSpotifyLink(v) || "No valid Spotify link detected",
+        v => (!!trimSpotifyLink(v) || v=="") || "No valid Spotify link detected",
       ],
       itunesLink: '',
       itunesLinkRules: [
-        v => !!trimItunesLink(v) || "No valid Itunes link detected",
+        v => (!!trimItunesLink(v) || v=="") || "No valid Itunes link detected",
       ],
       bandcampLink: '',
       bandcampLinkRules: [
-        v => !!trimBandcampLink(v) || "No valid Bandcamp link detected",
+        v => (!!trimBandcampLink(v) || v=="") || "No valid Bandcamp link detected",
       ],
       soundcloudLink: '',
       soundcloudLinkRules: [
-        v => !!trimSoundcloudLink(v) || "No valid Soundcloud link detected",
+        v => (!!trimSoundcloudLink(v) || v=="") || "No valid Soundcloud link detected",
       ],
     }),
 
@@ -303,7 +317,7 @@
       songLinks() : Array<Link>{
         var linksList : Array<Link> = Array<Link>();
 
-        if (!!trimYoutubeLink(this.youtubeLink))
+        if (!!trimYoutubeLink(this.youtubeLink))    //!!"" -> false btw
           linksList.push({ toSite: 'youtube', linkBody: trimYoutubeLink(this.youtubeLink)?.toString()! });    //toString żeby się typescript uspokoił
 
         if (!!trimSpotifyLink(this.spotifyLink))
@@ -320,6 +334,27 @@
 
         //console.log(this.songLinks); ////
         return linksList;
+      },
+
+      songArtistsNonEmpty() : Array<String>{
+        return this.songArtists.filter(artist => !!artist);
+      },
+
+      valid() : boolean{
+        //console.log(this.songArtistsNonEmpty); ////
+        var noInvalidLinks : boolean = (!!trimYoutubeLink(this.youtubeLink) || this.youtubeLink == "");
+        console.log("all1: " + noInvalidLinks);
+        noInvalidLinks &&= (!!trimSpotifyLink(this.spotifyLink) || this.spotifyLink == "");
+        console.log("all2: " + noInvalidLinks);
+        noInvalidLinks &&= (!!trimItunesLink(this.itunesLink) || this.itunesLink == "");
+        console.log("all3: " + noInvalidLinks);
+        noInvalidLinks &&= (!!trimBandcampLink(this.bandcampLink) || this.bandcampLink == "");
+        console.log("all4: " + noInvalidLinks);
+        noInvalidLinks &&= (!!trimSoundcloudLink(this.soundcloudLink) || this.soundcloudLink == "");
+        console.log("yt: " + !!trimYoutubeLink(this.youtubeLink) || this.youtubeLink == "");
+        console.log("all5: " + noInvalidLinks);
+
+        return !!this.songTitle && this.songArtistsNonEmpty.length > 0 && this.songLinks.length > 0 && noInvalidLinks;
       },
 
       ...mapState(useAccountStore, ['accessToken', 'refreshToken']),
