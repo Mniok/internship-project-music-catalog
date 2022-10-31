@@ -36,9 +36,21 @@
           </h5>
         </div>
 
-        <div id="links" class="mt-5">
-          <v-chip v-if="!!youtubeLink">
-            YouTube link
+        <div id="links" class="mt-5 mb-5">
+          <v-chip
+            v-if="!!youtubeLink"
+            pill
+            link :href="youtubeLink"
+            class="no-decorators mr-3"
+            >YouTube link
+            <v-icon>mdi-play</v-icon>
+          </v-chip>
+          <v-chip
+            v-if="!!soundcloudLink"
+            pill
+            link :href="soundcloudLink"
+            class="no-decorators mr-3"
+            >Soundcloud link
             <v-icon>mdi-play</v-icon>
           </v-chip>
         </div>
@@ -55,7 +67,7 @@
 <script lang="ts">
   import { useAccountStore } from '../store/account';
   import { mapState, mapActions } from 'pinia';
-  import { Link } from '../service/linkHelpers';
+  import { Link, restoreYoutubeLink, restoreSoundcloudLink } from '../service/linkHelpers';
 
   export default {
     name: "songWidgetLarge",
@@ -108,10 +120,19 @@
         for (link of this.songLinks!){
           if (link.toSite == "youtube"){
             //console.log("youtube: " + link.linkBody); ////
-            return link.linkBody;
+            return restoreYoutubeLink(link.linkBody);
           }
         };
+        return "";
+      },
 
+      soundcloudLink() : string {
+        var link : any;
+        for (link of this.songLinks!){
+          if (link.toSite == "soundcloud"){
+            return restoreSoundcloudLink(link.linkBody);
+          }
+        };
         return "";
       },
     },

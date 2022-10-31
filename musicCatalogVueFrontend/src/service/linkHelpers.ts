@@ -35,11 +35,11 @@
     return false;
   }
 
-  function trimSpotifyLink(link : string) : string | boolean | undefined {
+  function trimSpotifyLink(link : string) : string | boolean | undefined {      //ex. https://open.spotify.com/track/03sEzk1VyrUZSgyhoQR0LZ?si=0eb2a7047aec4363 //pneuma, działa bez ?si
     return false;
   }
 
-  function trimItunesLink(link : string) : string | boolean | undefined {
+  function trimItunesLink(link : string) : string | boolean | undefined {       //https://music.apple.com/pl/album/pneuma/1475686696?i=1475686700   //nie itunes ale powiązane, a itunes wymaga pass do instalacji
     return false;
   }
 
@@ -72,4 +72,24 @@
     return false;
   }
 
-  export { Link, cleanupLink, trimYoutubeLink, trimSpotifyLink, trimItunesLink, trimBandcampLink, trimSoundcloudLink };
+    function restoreYoutubeLink(linkBody : string) : string {
+        return "https://" + youtubeLinkBase + linkBody;
+    }
+
+    /*function restoreSpotifyLink(linkBody : string) : string {
+        return "https://" + youtubeLinkBase + linkBody;
+    }*/
+
+    /*function restoreYoutubeLink(linkBody : string) : string { //itunes / applemusic
+        return "https://" + youtubeLinkBase + linkBody;
+    }*/
+
+    /*function restoreYoutubeLink(linkBody : string) : string {
+        return "https://" + youtubeLinkBase + linkBody;
+    }*/
+
+    function restoreSoundcloudLink(linkBody : string) : string {
+        return "https://" + soundcloudLinkBase + linkBody;
+    }
+
+  export { Link, cleanupLink, trimYoutubeLink, trimSpotifyLink, trimItunesLink, trimBandcampLink, trimSoundcloudLink, restoreYoutubeLink , /* */ restoreSoundcloudLink};
