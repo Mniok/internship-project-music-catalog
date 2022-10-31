@@ -22,7 +22,7 @@
 
         <p class="category-title mt-8">                                            <!-- list of link inputs -->
           <v-icon small color="blue-grey">mdi-link-box-variant</v-icon>
-          LINK(S)*:
+          LINK(S)**:
         </p>
         <v-text-field
           dark color="red"
@@ -83,7 +83,6 @@
             color="orange darken-4"
           >mdi-soundcloud</v-icon>
         </v-text-field>
-        <div class="v-messages theme--dark v-messages__message ml-12">* at least 1 required</div>
 
       </v-container>
 
@@ -96,7 +95,6 @@
           v-model="songTitle"
           outlined
           label="Song Title*:"
-          messages="*required"
           class="mt-4 mb-4 wider-field"
         >
           <v-icon 
@@ -111,7 +109,7 @@
 
         <p class="category-title">                                            <!-- artists inputs list -->
           <v-icon small color="blue-grey">mdi-account-box-multiple</v-icon>
-          ARTIST(S)*:
+          ARTIST(S)**:
         </p>
         <v-text-field v-for="index in artistsCount" :key="'artist'+index"
           dark color="indigo lighten-2"
@@ -120,7 +118,6 @@
           class="ml-5"
         >
         </v-text-field>
-        <div class="v-messages theme--dark v-messages__message ml-8">* at least 1 required</div>
 
         <p class="category-title mt-8">                                       <!-- genres inputs list -->
           <v-icon small color="blue-grey">mdi-music-box-multiple</v-icon>
@@ -147,15 +144,19 @@
         >
         </v-textarea>
 
-        <div class="v-messages theme--dark v-messages__message ml-8">* required <br/>** at least 1 required</div>
-        <v-row class="mt-4 ml-0 mr-0 float-right">
-            <v-btn
-              :disabled="!valid"
-              dark color="success"
-              @click="submitSong"
-            >
-              Submit song
-            </v-btn>
+        <v-row class="mr-0">
+          <v-card style="background-color:#00000000" elevation="0" class="v-messages theme--dark v-messages__message mt-4 ml-8">
+              <span >* required <br/>** at least 1 required</span>
+          </v-card>
+          <v-spacer/>
+          <v-btn
+            :disabled="!valid"
+            dark color="success"
+            class="mt-4 ml-0 mr-0 float-right"
+            @click="submitSong"
+          >
+            Submit song
+          </v-btn>
         </v-row>
 
       </v-container>
@@ -277,6 +278,42 @@
     }),
 
 
+    methods: {
+      submitSong () {
+        axios.post('https://localhost:7026/api/Song/upload', 
+        {
+          title: this.songTitle,
+          time: this.songTimeInt,
+          description: this.songDescription,
+          artists: this.songArtistsNonEmpty,
+          genres: this.songGenresNonEmpty,
+          links: this.songLinks
+        }, 
+        {
+          headers: { 'Authorization': `bearer ${this.accessToken}` }
+        })
+        .then(response => {
+          //console.log(response); ////
+
+          this.$router.push({
+            name: 'song',
+            params: { id: response.data.songId }
+          });
+
+        })
+        .catch(function (error) {
+          console.log(error);
+          if(error.response == undefined){
+            alert("Couldn't connect to the server. Try again later.");
+          }
+          if(error.response.status == 401){
+            alert("Token expired. Log in again and retry.");
+          }
+        });
+      },
+    },
+
+
     computed: {
       artistsCount() : number {   //ile wyświetlić inputów - o 1 więcej niż najwyższy niepusty
         //console.log(this.songArtists);  ////
@@ -340,19 +377,17 @@
         return this.songArtists.filter(artist => !!artist);
       },
 
+      songGenresNonEmpty() : Array<String>{
+        return this.songGenres.filter(genre => !!genre);
+      },
+
       valid() : boolean{
         //console.log(this.songArtistsNonEmpty); ////
         var noInvalidLinks : boolean = (!!trimYoutubeLink(this.youtubeLink) || this.youtubeLink == "");
-        console.log("all1: " + noInvalidLinks);
         noInvalidLinks &&= (!!trimSpotifyLink(this.spotifyLink) || this.spotifyLink == "");
-        console.log("all2: " + noInvalidLinks);
         noInvalidLinks &&= (!!trimItunesLink(this.itunesLink) || this.itunesLink == "");
-        console.log("all3: " + noInvalidLinks);
         noInvalidLinks &&= (!!trimBandcampLink(this.bandcampLink) || this.bandcampLink == "");
-        console.log("all4: " + noInvalidLinks);
         noInvalidLinks &&= (!!trimSoundcloudLink(this.soundcloudLink) || this.soundcloudLink == "");
-        console.log("yt: " + !!trimYoutubeLink(this.youtubeLink) || this.youtubeLink == "");
-        console.log("all5: " + noInvalidLinks);
 
         return !!this.songTitle && this.songArtistsNonEmpty.length > 0 && this.songLinks.length > 0 && noInvalidLinks;
       },
