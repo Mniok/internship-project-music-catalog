@@ -46,6 +46,30 @@
             <v-icon>mdi-play</v-icon>
           </v-chip>
           <v-chip
+            v-if="!!spotifyLink"
+            pill
+            link :href="spotifyLink"
+            class="no-decorators mr-3"
+            >Spotify link
+            <v-icon>mdi-play</v-icon>
+          </v-chip>
+          <v-chip
+            v-if="!!applemusicLink"
+            pill
+            link :href="applemusicLink"
+            class="no-decorators mr-3"
+            >Apple Music link
+            <v-icon>mdi-play</v-icon>
+          </v-chip>
+          <v-chip
+            v-if="!!bandcampLink"
+            pill
+            link :href="bandcampLink"
+            class="no-decorators mr-3"
+            >Bandcamp link
+            <v-icon>mdi-play</v-icon>
+          </v-chip>
+          <v-chip
             v-if="!!soundcloudLink"
             pill
             link :href="soundcloudLink"
@@ -67,7 +91,7 @@
 <script lang="ts">
   import { useAccountStore } from '../store/account';
   import { mapState, mapActions } from 'pinia';
-  import { Link, restoreYoutubeLink, restoreSoundcloudLink } from '../service/linkHelpers';
+  import { Link, restoreYoutubeLink, restoreSpotifyLink, restoreApplemusicLink, restoreBandcampLink, restoreSoundcloudLink } from '../service/linkHelpers';
 
   export default {
     name: "songWidgetLarge",
@@ -121,6 +145,37 @@
           if (link.toSite == "youtube"){
             //console.log("youtube: " + link.linkBody); ////
             return restoreYoutubeLink(link.linkBody);
+          }
+        };
+        return "";
+      },
+
+      spotifyLink() : string {
+        var link : any;
+        for (link of this.songLinks!){
+          if (link.toSite == "spotify"){
+            return restoreSpotifyLink(link.linkBody);
+          }
+        };
+        return "";
+      },
+
+      applemusicLink() : string {
+        var link : any;
+        for (link of this.songLinks!){
+          if (link.toSite == "applemusic"){
+            //console.log("youtube: " + link.linkBody); ////
+            return restoreApplemusicLink(link.linkBody);
+          }
+        };
+        return "";
+      },
+
+      bandcampLink() : string {
+        var link : any;
+        for (link of this.songLinks!){
+          if (link.toSite == "bandcamp"){
+            return restoreBandcampLink(link.linkBody);
           }
         };
         return "";

@@ -50,9 +50,9 @@
 
         <v-text-field
           dark color="purple"
-          v-model="itunesLink"
-          :rules="itunesLinkRules"
-          label="Itunes link:"
+          v-model="applemusicLink"
+          :rules="applemusicLinkRules"
+          label="Apple Music link:"
         >
           <v-icon 
             slot="prepend" 
@@ -168,7 +168,7 @@
   import Vue from 'vue'
   import { useAccountStore } from '../store/account';
   import { mapState, mapActions } from 'pinia';
-  import { Link, trimYoutubeLink, trimSpotifyLink, trimItunesLink, trimBandcampLink, trimSoundcloudLink } from '../service/linkHelpers';
+  import { Link, trimYoutubeLink, trimSpotifyLink, trimApplemusicLink, trimBandcampLink, trimSoundcloudLink } from '../service/linkHelpers';
 
 
   
@@ -194,9 +194,9 @@
       spotifyLinkRules: [
         v => (!!trimSpotifyLink(v) || v=="") || "No valid Spotify link detected",
       ],
-      itunesLink: '',
-      itunesLinkRules: [
-        v => (!!trimItunesLink(v) || v=="") || "No valid Itunes link detected",
+      applemusicLink: '',
+      applemusicLinkRules: [
+        v => (!!trimApplemusicLink(v) || v=="") || "No valid Apple Music link detected",
       ],
       bandcampLink: '',
       bandcampLinkRules: [
@@ -291,8 +291,8 @@
         if (!!trimSpotifyLink(this.spotifyLink))
           linksList.push({ toSite: 'spotify', linkBody: trimSpotifyLink(this.spotifyLink)?.toString()! });
 
-        if (!!trimItunesLink(this.itunesLink))
-          linksList.push({ toSite: 'itunes', linkBody: trimItunesLink(this.itunesLink)?.toString()! });
+        if (!!trimApplemusicLink(this.applemusicLink))
+          linksList.push({ toSite: 'applemusic', linkBody: trimApplemusicLink(this.applemusicLink)?.toString()! });
 
         if (!!trimBandcampLink(this.bandcampLink))
           linksList.push({ toSite: 'bandcamp', linkBody: trimBandcampLink(this.bandcampLink)?.toString()! });
@@ -316,7 +316,7 @@
         //console.log(this.songArtistsNonEmpty); ////
         var noInvalidLinks : boolean = (!!trimYoutubeLink(this.youtubeLink) || this.youtubeLink == "");
         noInvalidLinks &&= (!!trimSpotifyLink(this.spotifyLink) || this.spotifyLink == "");
-        noInvalidLinks &&= (!!trimItunesLink(this.itunesLink) || this.itunesLink == "");
+        noInvalidLinks &&= (!!trimApplemusicLink(this.applemusicLink) || this.applemusicLink == "");
         noInvalidLinks &&= (!!trimBandcampLink(this.bandcampLink) || this.bandcampLink == "");
         noInvalidLinks &&= (!!trimSoundcloudLink(this.soundcloudLink) || this.soundcloudLink == "");
 
