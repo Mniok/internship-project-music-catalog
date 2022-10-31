@@ -30,10 +30,7 @@
           :rules="youtubeLinkRules"
           label="YouTube link:"
         >
-          <v-icon 
-            slot="prepend" 
-            color="red darken-4"
-          >mdi-youtube</v-icon>
+          <site-icon slot="prepend" site="youtube"/>
         </v-text-field>
 
         <v-text-field
@@ -42,46 +39,34 @@
           :rules="spotifyLinkRules"
           label="Spotify link:"
         >
-          <v-icon 
-            slot="prepend" 
-            color="green darken-4"
-          >mdi-spotify</v-icon>
+          <site-icon slot="prepend" site="spotify"/>
         </v-text-field>
 
         <v-text-field
-          dark color="purple"
+          dark color="pink accent-2"
           v-model="applemusicLink"
           :rules="applemusicLinkRules"
           label="Apple Music link:"
         >
-          <v-icon 
-            slot="prepend" 
-            color="purple darken-4"
-          >mdi-soundcloud</v-icon>
+          <site-icon slot="prepend" site="applemusic"/>
         </v-text-field>
 
         <v-text-field
-          dark color="blue"
+          dark color="blue lighten-1"
           v-model="bandcampLink"
           :rules="bandcampLinkRules"
           label="Bandcamp link:"
         >
-          <v-icon 
-            slot="prepend" 
-            color="blue darken-4"
-          >mdi-soundcloud</v-icon>
+          <site-icon slot="prepend" site="bandcamp"/>
         </v-text-field>
 
         <v-text-field
-          dark color="orange"
+          dark color="orange darken-1"
           v-model="soundcloudLink"
           :rules="soundcloudLinkRules"
           label="Soundcloud link:"
         >
-          <v-icon 
-            slot="prepend" 
-            color="orange darken-4"
-          >mdi-soundcloud</v-icon>
+          <site-icon slot="prepend" site="soundcloud"/>
         </v-text-field>
 
       </v-container>
@@ -169,12 +154,16 @@
   import { useAccountStore } from '../store/account';
   import { mapState, mapActions } from 'pinia';
   import { Link, trimYoutubeLink, trimSpotifyLink, trimApplemusicLink, trimBandcampLink, trimSoundcloudLink } from '../service/linkHelpers';
-
+  import SiteIcon from '../components/SiteIcon.vue';
 
   
 
   export default Vue.extend({
     name: 'UploadSong',
+
+    components: {
+      SiteIcon,
+    },
 
     data: () => ({
       song: '',
