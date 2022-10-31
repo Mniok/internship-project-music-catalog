@@ -13,11 +13,7 @@
   import Vue from 'vue'
   import { useAccountStore } from '../store/account';
   import { mapState, mapActions } from 'pinia';
-
-  interface Link {
-    toSite: string,
-    linkBody: string
-  }
+  import { Link } from '../service/linkHelpers';
 
   export default Vue.extend({
     name: 'Song',
