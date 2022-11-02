@@ -108,18 +108,37 @@
 </template>
   
 <script lang="ts">
- import Vue from 'vue'
-  //import LoginForm from '../components/LoginForm.vue'
+import Vue from 'vue'
+import SongWidget from '../components/SongWidget.vue'
+import { Link } from '../service/linkHelpers';
+
+interface Song {
+  title: string,
+  description: string,
+  time: number,
+  artists: Array<String>,
+  genres: Array<String>,
+  links: Array<Link>,
+  uploadedBy: string,
+  uploadedDate: string
+}
   
   export default Vue.extend({
     name: 'AppView',
+
+    components: {
+      SongWidget,
+    },
 
     data: () => ({
       searchByFavourite: false,
       searchByUploader: false,
       searchByTitle: '',
       searchByArtist: '',
-      searchByGenre: ''
+      searchByGenre: '',
+
+      songsList: Array<Song>(),
+      
     }),
   
     /*components: {
@@ -134,52 +153,25 @@
           headers: { 'Authorization': `bearer ${this.accessToken}` }
         })
         .then(response => { 
-          console.log(response.data); ////
-          //console.log(response.data.$values); ////
-          /*console.log(response.data.$values.at(16).valueOf().$ref); ////
-          console.log(JSON.decycle(response.data.$values));
-          var newJson : any;
-          var njson = JSON.decycle(response.data.$values, newJson);
-          console.log(newJson);
-          console.log(njson);
-          var elem = response.data.$values[0];
-          elem.$ref = 2;
-          elem.$id = 2;
-          //elem.uploadedBy.uploadedSongs.$values[0].$ref = elem;
-          console.log(JSON.decycle(elem))
-          console.log(JSON.retrocycle(elem))
-          console.log(JSON.retrocycle(response.data.$values));
-          console.log("---------");
-          console.log(JSON.retrocycle(response.data));
-          //console.log(JSON.hbasfsdhga(response.data)); properly crashes, meaning cycle.js IS used
-          console.log(JSON.retrocycle(response.data));
-          console.log(JSON.retrocycle(JSON.stringify(response.data.$values)));
-          console.log(JSON.parse(JSON.retrocycle(JSON.stringify(response.data.$values))));
-          console.log(JSON.parse(JSON.decycle(JSON.stringify(response.data.$values))));*/
+          //console.log(response.data); ////
 
-          /*this.song = response.data;
+          var s: any;
+          for(s of response.data){
+            var newSong : Song = {title: '', description: '', time: 0, artists: [], genres: [], links: [], uploadedBy: '', uploadedDate: ''};
+            //({s.title, s.description, s.time, s.artists, s.genres, s.links, s.uploadedBy} = response.data[0]);
+            newSong.title = s.title;
+            newSong.description = s.description;
+            newSong.time = s.time;
+            newSong.artists = s.artists;
+            newSong.genres = s.genres;
+            newSong.links = s.links;
+            newSong.uploadedBy = s.uploadedBy;
+            newSong.uploadedDate = s.createdAt;  //!!
 
-          this.songTitle = response.data.title;
-          this.songDescription = response.data.description;
-          this.songTime = response.data.time;
-          this.songUploader = response.data.uploadedBy.userName;
-          this.songUploadedOn = response.data.createdAt;
-
-
-          for(var i=0; i<response.data.artists.$values.length; i++){
-            this.songArtists.push(response.data.artists.$values.at(i).artistName);
+            this.songsList.push(newSong);
           }
 
-          for(var i=0; i<response.data.genres.$values.length; i++){
-            this.songGenres.push(response.data.genres.$values.at(i).genreName);
-          }
-
-          for(var i=0; i<response.data.links.$values.length; i++){
-            var l : Link = {toSite: "", linkBody: ""};
-            l.toSite = response.data.links.$values.at(i).toSite;
-            l.linkBody = response.data.links.$values.at(i).linkBody;
-            this.songLinks.push(l);
-          }*/
+          console.log(this.songsList);
 
         })
         .catch(function (error) {
