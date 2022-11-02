@@ -30,7 +30,7 @@
           :rules="youtubeLinkRules"
           label="YouTube link:"
         >
-          <site-icon slot="prepend" site="youtube" size="small"/>
+          <site-icon slot="prepend" site="youtube" size="small" class="m-1 mt-2"/>
         </v-text-field>
 
         <v-text-field
@@ -39,7 +39,7 @@
           :rules="spotifyLinkRules"
           label="Spotify link:"
         >
-          <site-icon slot="prepend" site="spotify" size="small"/>
+          <site-icon slot="prepend" site="spotify" size="small" class="m-1 mt-2"/>
         </v-text-field>
 
         <v-text-field
@@ -48,7 +48,7 @@
           :rules="applemusicLinkRules"
           label="Apple Music link:"
         >
-          <site-icon slot="prepend" site="applemusic" size="small"/>
+          <site-icon slot="prepend" site="applemusic" size="small" class="m-1 mt-2"/>
         </v-text-field>
 
         <v-text-field
@@ -57,7 +57,7 @@
           :rules="bandcampLinkRules"
           label="Bandcamp link:"
         >
-          <site-icon slot="prepend" site="bandcamp" size="small"/>
+          <site-icon slot="prepend" site="bandcamp" size="small" class="m-1 mt-2"/>
         </v-text-field>
 
         <v-text-field
@@ -66,7 +66,7 @@
           :rules="soundcloudLinkRules"
           label="Soundcloud link:"
         >
-          <site-icon slot="prepend" site="soundcloud" size="small"/>
+          <site-icon slot="prepend" site="soundcloud" size="small" class="m-1 mt-2"/>
         </v-text-field>
 
         <v-input :error-messages="linksErrors" class="ml-8"/>

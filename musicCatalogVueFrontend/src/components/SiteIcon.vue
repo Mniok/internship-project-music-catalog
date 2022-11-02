@@ -1,6 +1,6 @@
 <template>
   <v-container class="d-flex m-0 p-0">
-    <v-icon :small="size == 'small'" :class="[site, {'m-1': size=='small', 'mt-2': size=='small', 'mr-2': size!='small'}]" color="#ffffff00">mdi-link</v-icon>
+    <v-icon :small="size == 'small'" :class="site" color="#ffffff00">mdi-link</v-icon>
   </v-container>
 </template>
 

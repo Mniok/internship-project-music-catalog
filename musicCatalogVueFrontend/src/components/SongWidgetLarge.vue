@@ -44,8 +44,8 @@
             link :href="youtubeLink"
             dark color="red lighten-1"
             class="no-decorators mr-3"
-            ><site-icon site="youtube"/>
-            YouTube link
+            ><site-icon site="youtube" class="mr-2"/>
+            view on YouTube
             <v-icon>mdi-play</v-icon>
           </v-chip>
           <v-chip
@@ -54,8 +54,8 @@
             link :href="spotifyLink"
             dark color="green darken-3"
             class="no-decorators mr-3"
-            ><site-icon site="spotify"/>
-            Spotify link
+            ><site-icon site="spotify" class="mr-2"/>
+            view on Spotify
             <v-icon>mdi-play</v-icon>
           </v-chip>
           <v-chip
@@ -64,8 +64,8 @@
             link :href="applemusicLink"
             dark color="pink darken-2"
             class="no-decorators mr-3"
-            ><site-icon site="applemusic"/>
-            Apple Music link
+            ><site-icon site="applemusic" class="mr-2"/>
+            view on Apple Music
             <v-icon>mdi-play</v-icon>
           </v-chip>
           <v-chip
@@ -74,8 +74,8 @@
             link :href="bandcampLink"
             dark color="cyan lighten-2"
             class="no-decorators mr-3"
-            ><site-icon site="bandcamp"/>
-            Bandcamp link
+            ><site-icon site="bandcamp" class="mr-2"/>
+            view on Bandcamp
             <v-icon>mdi-play</v-icon>
           </v-chip>
           <v-chip
@@ -84,8 +84,8 @@
             link :href="soundcloudLink"
             dark color="orange lighten-2"
             class="no-decorators mr-3"
-            ><site-icon site="soundcloud"/>
-            Soundcloud link
+            ><site-icon site="soundcloud" class="mr-2"/>
+            view on Soundcloud
             <v-icon>mdi-play</v-icon>
           </v-chip>
         </div>

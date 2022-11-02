@@ -74,7 +74,7 @@
     <v-divider class="blue-grey darken-1"></v-divider>
 
     <!-- main content - song widgets page -->
-    <!--<h1 style="height:2137px">test footer if there's content</h1>-->
+    <song-widget :song="songsList.at(18)" />
 
 
     <!-- bar for bottom pagination and add song button -->
