@@ -108,7 +108,9 @@
 </template>
   
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
+import { useAccountStore } from '../store/account';
+import { mapState, mapActions } from 'pinia';
 import SongWidget from '../components/SongWidget.vue'
 import { Link } from '../service/linkHelpers';
 
@@ -146,6 +148,7 @@ interface Song {
     },*/
 
     created() {
+        this.refreshJWT();
         axios.get('https://localhost:7026/api/Song/songs/', {
           //id: this.$route.params.id
         },
@@ -189,6 +192,8 @@ interface Song {
       search () {
         console.log("clicked search button");
       },
+
+      ...mapActions(useAccountStore, ['refreshJWT']),
     },
 
 

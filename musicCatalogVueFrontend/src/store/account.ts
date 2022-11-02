@@ -40,7 +40,7 @@ export const useAccountStore = defineStore('accountStore', {
     },
 
     logout(){
-      console.log("logging out...");  ////
+      //console.log("logging out...");  ////
       //console.log(`bearer ${this.accessToken}`) ////
       var token : string = this.accessToken;  //to pass to api, because pinia store gets cleared
 
@@ -86,6 +86,7 @@ export const useAccountStore = defineStore('accountStore', {
         headers: { 'Authorization': `bearer ${this.accessToken}` }
       })
       .then(response => {
+        console.log("refreshed " + response.data.accessToken + " ||| " + response.data.refreshToken); ////
         this.newJWT(response.data.accessToken, response.data.refreshToken)
       })
       .catch(function (error) {

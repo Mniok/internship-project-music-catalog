@@ -3,40 +3,40 @@
     <v-card class="d-flex" dark>
       <v-container id="left-column" class="mr-5 pb-0" style="width:90px"> <!-- bez tego style width v-sheet jest zciśnięty -->
         <v-sheet id="image-preview" height="88px" width="88px" rounded outlined elevation="8" color="blue-grey darken-3" class="d-flex">
-          <span v-if="song.time>0" class="float-right"> {{song.time | timeFormat}}</span>
+          <div class="float-right float-end"><span v-if="time>0"> {{time | timeFormat}}</span></div>
         </v-sheet>
       </v-container>
 
       <v-container id="right-column">
         <h5>
-          <strong><u>{{song.title}}</u></strong>
+          <strong><u>{{title}}</u></strong>
         </h5>
 
         <strong>By</strong> <v-chip 
-          v-for="artist in song.artists"
+          v-for="artist in artists"
           link
           small pill
           color="indigo lighten-1"
           text-color="blue lighten-5"
           class="mr-2"
-        >{{artist.artistName}}
+        >{{artist}}
         </v-chip>
 
-        <h6 v-if="song.genres?.length == 0">No genres found.</h6>
+        <h6 v-if="genres?.length == 0">No genres found.</h6>
         <div v-else>
             <v-chip
-              v-for="genre in song.genres"
+              v-for="genre in genres"
               link
               small pill
               color="deep-purple lighten-2"
               text-color="blue lighten-5"
               class="mr-2"
-            >{{genre.genreName}}
+            >{{genre}}
             </v-chip>
         </div>
 
         <div id="description">
-          <p>{{song.description}}</p>
+          <p>{{description}}</p>
         </div>
 
       </v-container>
@@ -85,8 +85,8 @@
       </div>
           
     </v-card>
-    <p class="uploader-info mt-2 ml-1">Uploaded by <strong>{{song.uploadedBy.userName}}</strong><br/>
-    on {{song.uploadedDate | dateFormat}}</p>
+    <p class="uploader-info mt-2 ml-1">Uploaded by <strong>{{uploadedBy}}</strong><br/>
+    on {{uploadedDate | dateFormat}}</p>
   </v-container>
 </template>
 
@@ -116,6 +116,48 @@
     },
 
     props: ['song'],
+
+    data: () => ({
+      title: String,
+      description: String,
+      time: 0,
+      artists: Array<String>(),
+      genres: Array<String>(),
+      links: Array<Link>(),
+      uploadedBy: String,
+      uploadedDate: String
+    }),
+
+    created() {
+      // moves values from prop song to option data, to prevent typeerrors when value is read before prop is fully processed
+
+      this.title = this.song?.title;
+      this.description = this.song?.description;
+      this.time = this.song?.time;
+
+      var artistsList : Array<String> = [];
+      for (var artist of this.song?.artists){
+        artistsList.push(artist.artistName);
+      }
+      this.artists = artistsList;
+      console.log(this.artists) 
+
+      var genresList : Array<String> = [];
+      for (var genre of this.song?.genres){
+        genresList.push(genre.genreName);
+      }
+      this.genres = genresList;
+
+      var linksList : Array<List> = Array<List>();
+      for (var link of this.song?.links){
+        linksList.push({toSite: link.toSite, linkBody: link.linkBody});
+      }
+      this.links = linksList;
+
+      console.log(this.links) 
+      this.uploadedBy = this.song?.uploadedBy.userName;
+      this.uploadedDate = this.song?.uploadedDate;
+    },
 
     filters: {
       timeFormat(value : number) {
@@ -148,7 +190,7 @@
     computed: {
       youtubeLink() : string {
         var link : any;
-        for (link of this.song.links!){
+        for (link of this.links){
           if (link.toSite == "youtube"){
             //console.log("youtube: " + link.linkBody); ////
             return restoreYoutubeLink(link.linkBody);
@@ -159,7 +201,7 @@
 
       spotifyLink() : string {
         var link : any;
-        for (link of this.song.links!){
+        for (link of this.links){
           if (link.toSite == "spotify"){
             return restoreSpotifyLink(link.linkBody);
           }
@@ -169,7 +211,7 @@
 
       applemusicLink() : string {
         var link : any;
-        for (link of this.song.links!){
+        for (link of this.links){
           if (link.toSite == "applemusic"){
             //console.log("youtube: " + link.linkBody); ////
             return restoreApplemusicLink(link.linkBody);
@@ -180,7 +222,7 @@
 
       bandcampLink() : string {
         var link : any;
-        for (link of this.song.links!){
+        for (link of this.links){
           if (link.toSite == "bandcamp"){
             return restoreBandcampLink(link.linkBody);
           }
@@ -190,7 +232,7 @@
 
       soundcloudLink() : string {
         var link : any;
-        for (link of this.song.links!){
+        for (link of this.links){
           if (link.toSite == "soundcloud"){
             return restoreSoundcloudLink(link.linkBody);
           }
