@@ -41,40 +41,50 @@
             v-if="!!youtubeLink"
             pill
             link :href="youtubeLink"
+            dark color="red lighten-1"
             class="no-decorators mr-3"
-            >YouTube link
+            ><site-icon site="youtube"/>
+            YouTube link
             <v-icon>mdi-play</v-icon>
           </v-chip>
           <v-chip
             v-if="!!spotifyLink"
             pill
             link :href="spotifyLink"
+            dark color="green darken-3"
             class="no-decorators mr-3"
-            >Spotify link
+            ><site-icon site="spotify"/>
+            Spotify link
             <v-icon>mdi-play</v-icon>
           </v-chip>
           <v-chip
             v-if="!!applemusicLink"
             pill
             link :href="applemusicLink"
+            dark color="pink darken-2"
             class="no-decorators mr-3"
-            >Apple Music link
+            ><site-icon site="applemusic"/>
+            Apple Music link
             <v-icon>mdi-play</v-icon>
           </v-chip>
           <v-chip
             v-if="!!bandcampLink"
             pill
             link :href="bandcampLink"
+            dark color="cyan lighten-2"
             class="no-decorators mr-3"
-            >Bandcamp link
+            ><site-icon site="bandcamp"/>
+            Bandcamp link
             <v-icon>mdi-play</v-icon>
           </v-chip>
           <v-chip
             v-if="!!soundcloudLink"
             pill
             link :href="soundcloudLink"
+            dark color="orange lighten-2"
             class="no-decorators mr-3"
-            >Soundcloud link
+            ><site-icon site="soundcloud"/>
+            Soundcloud link
             <v-icon>mdi-play</v-icon>
           </v-chip>
         </div>
@@ -92,9 +102,14 @@
   import { useAccountStore } from '../store/account';
   import { mapState, mapActions } from 'pinia';
   import { Link, restoreYoutubeLink, restoreSpotifyLink, restoreApplemusicLink, restoreBandcampLink, restoreSoundcloudLink } from '../service/linkHelpers';
+  import SiteIcon from '../components/SiteIcon.vue';
 
   export default {
     name: "songWidgetLarge",
+
+    components: {
+      SiteIcon,
+    },
 
     props: {
       songTitle: String,
