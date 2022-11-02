@@ -81,6 +81,8 @@ namespace musicCatalogDotNetAPI.Controllers
                 song.Links = links.ToList<Link>();
                 foreach (Link link in song.Links)
                     link.Song = null;
+
+                //song = _songService.CleanupSong(song); //cannot assign to foreach iteration variable
             }
 
             return songs;
@@ -95,7 +97,7 @@ namespace musicCatalogDotNetAPI.Controllers
             //Song song = _context.Song.Where(b => b.SongId == id).First(); ////nie uwzglednia tych co w tym nizej sa included - sa null i []
             Song song = _context.Song.Include(b => b.UploadedBy).Include(b => b.Artists).Include(b => b.Genres).Include(b => b.Links).Where(b => b.SongId == id).First();
 
-            song.UploadedBy.Password = "***";
+            song = _songService.CleanupSong(song);
 
             return song;
         }
@@ -162,6 +164,8 @@ namespace musicCatalogDotNetAPI.Controllers
 
 
             //var role = _userService.GetUserRole(request.UserName);      // GetUserRole po prostu zwraca UserRoles.BasicUser;
+
+            createdSong = _songService.CleanupSong(createdSong);
 
             _logger.LogInformation($"Song [{createdSong.Title}] was added by user [{currentUser}].");
             return Ok(createdSong);

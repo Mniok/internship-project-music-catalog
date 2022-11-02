@@ -135,7 +135,7 @@
         })
         .then(response => { 
           console.log(response.data); ////
-          console.log(response.data.$values); ////
+          //console.log(response.data.$values); ////
           /*console.log(response.data.$values.at(16).valueOf().$ref); ////
           console.log(JSON.decycle(response.data.$values));
           var newJson : any;

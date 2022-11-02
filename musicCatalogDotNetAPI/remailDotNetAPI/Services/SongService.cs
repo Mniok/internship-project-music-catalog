@@ -14,6 +14,7 @@ namespace musicCatalogDotNetAPI.Services
     {
         Models.Song CreateSong(string title, int time, string desc, /*Models.User uploader,*/ string uploaderName, List<string> artists, List<string> genres, List<UploadLink> links);  //notice: should be async! Not async for now
         //Models.Artist CreateArtist(string name);
+        Models.Song CleanupSong(Models.Song song);
     }
 
     public class SongService : ISongService
@@ -99,10 +100,25 @@ namespace musicCatalogDotNetAPI.Services
 
         }
 
+        public Models.Song CleanupSong(Models.Song song)
+        {
+
+            song.UploadedBy.Password = "***";
+            song.UploadedBy.uploadedSongs.Clear(); //to reduce circular references
+
+            foreach (Artist artist in song.Artists)
+                artist.Song = null; //to reduce circular references...
+
+            foreach (Genre genre in song.Genres)
+                genre.Song = null;
+
+            foreach (Link link in song.Links)
+                link.Song = null;
+
+            return song;
+        }
 
 
     }
-
-
 
 }
