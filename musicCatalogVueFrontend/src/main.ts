@@ -10,6 +10,7 @@ import vuetify from './plugins/vuetify'
 import { createPinia, PiniaVuePlugin } from 'pinia'
 import VueCompositionAPI from '@vue/composition-api'
 import { markRaw } from 'vue'
+import './plugins/cycle'
 
 Vue.use(PiniaVuePlugin);
 const pinia = createPinia();

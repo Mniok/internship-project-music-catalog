@@ -65,15 +65,22 @@ namespace musicCatalogDotNetAPI.Controllers
                 var user = from u in _context.User.ToList() where u.UserId == song.UserId select u;
                 song.UploadedBy = user.First();
                 song.UploadedBy.Password = "***";   ///lazy fix so songs list doesn't leak passwords
+                song.UploadedBy.uploadedSongs.Clear();  //to reduce circular references
 
                 var artists = from a in _context.Artist.ToList() where a.SongId == song.SongId select a;
                 song.Artists = artists.ToList<Artist>();
+                foreach (Artist artist in song.Artists)
+                    artist.Song = null; //to reduce circular references...
 
                 var genres = from g in _context.Genre.ToList() where g.SongId == song.SongId select g;
                 song.Genres = genres.ToList<Genre>();
+                foreach (Genre genre in song.Genres)
+                    genre.Song = null;
 
                 var links = from l in _context.Link.ToList() where l.SongId == song.SongId select l;
                 song.Links = links.ToList<Link>();
+                foreach (Link link in song.Links)
+                    link.Song = null;
             }
 
             return songs;

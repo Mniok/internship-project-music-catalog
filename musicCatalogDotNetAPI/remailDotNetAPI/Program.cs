@@ -21,7 +21,7 @@ builder.Services.AddControllers()
     {
         //options.JsonSerializerOptions.IgnoreNullValues = true;
         //options.JsonSerializerOptions.Converters.Add(new TimeSpanConverter());
-        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+        //options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
     });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

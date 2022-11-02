@@ -40,9 +40,8 @@ export const useAccountStore = defineStore('accountStore', {
     },
 
     logout(){
-      //console.log("logging out...");  ////
+      console.log("logging out...");  ////
       //console.log(`bearer ${this.accessToken}`) ////
-
       var token : string = this.accessToken;  //to pass to api, because pinia store gets cleared
 
       this.accessToken = "";    //moved here, because You couldn't log out when token expired and got locked in

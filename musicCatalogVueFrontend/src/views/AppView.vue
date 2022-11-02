@@ -126,6 +126,73 @@
       LoginForm,
     },*/
 
+    created() {
+        axios.get('https://localhost:7026/api/Song/songs/', {
+          //id: this.$route.params.id
+        },
+        {
+          headers: { 'Authorization': `bearer ${this.accessToken}` }
+        })
+        .then(response => { 
+          console.log(response.data); ////
+          console.log(response.data.$values); ////
+          /*console.log(response.data.$values.at(16).valueOf().$ref); ////
+          console.log(JSON.decycle(response.data.$values));
+          var newJson : any;
+          var njson = JSON.decycle(response.data.$values, newJson);
+          console.log(newJson);
+          console.log(njson);
+          var elem = response.data.$values[0];
+          elem.$ref = 2;
+          elem.$id = 2;
+          //elem.uploadedBy.uploadedSongs.$values[0].$ref = elem;
+          console.log(JSON.decycle(elem))
+          console.log(JSON.retrocycle(elem))
+          console.log(JSON.retrocycle(response.data.$values));
+          console.log("---------");
+          console.log(JSON.retrocycle(response.data));
+          //console.log(JSON.hbasfsdhga(response.data)); properly crashes, meaning cycle.js IS used
+          console.log(JSON.retrocycle(response.data));
+          console.log(JSON.retrocycle(JSON.stringify(response.data.$values)));
+          console.log(JSON.parse(JSON.retrocycle(JSON.stringify(response.data.$values))));
+          console.log(JSON.parse(JSON.decycle(JSON.stringify(response.data.$values))));*/
+
+          /*this.song = response.data;
+
+          this.songTitle = response.data.title;
+          this.songDescription = response.data.description;
+          this.songTime = response.data.time;
+          this.songUploader = response.data.uploadedBy.userName;
+          this.songUploadedOn = response.data.createdAt;
+
+
+          for(var i=0; i<response.data.artists.$values.length; i++){
+            this.songArtists.push(response.data.artists.$values.at(i).artistName);
+          }
+
+          for(var i=0; i<response.data.genres.$values.length; i++){
+            this.songGenres.push(response.data.genres.$values.at(i).genreName);
+          }
+
+          for(var i=0; i<response.data.links.$values.length; i++){
+            var l : Link = {toSite: "", linkBody: ""};
+            l.toSite = response.data.links.$values.at(i).toSite;
+            l.linkBody = response.data.links.$values.at(i).linkBody;
+            this.songLinks.push(l);
+          }*/
+
+        })
+        .catch(function (error) {
+          console.log(error);
+          if(error.response == undefined){
+            alert("Couldn't connect to the server. Try again later.");
+          }
+          if(error.response.status == 401){
+            alert("401: unauthorized");
+          }
+        });
+    },
+
     methods: {
       search () {
         console.log("clicked search button");

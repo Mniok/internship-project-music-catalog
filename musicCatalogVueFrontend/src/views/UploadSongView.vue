@@ -212,7 +212,7 @@
         {
           title: this.songTitle,
           time: this.songTimeInt,
-          description: this.songDescription || "",
+          description: this.songDescription,
           artists: this.songArtistsNonEmpty,
           genres: this.songGenresNonEmpty,
           links: this.songLinks
