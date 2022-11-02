@@ -68,7 +68,7 @@ export default Vue.extend({
 
   methods: {
       
-      ...mapActions(useAccountStore, ['newJWT', 'updateCurrentUser', 'logout'])
+      ...mapActions(useAccountStore, ['newJWT', 'updateCurrentUser', 'logout', 'refreshJWT'])
   },
 
   created() {
@@ -77,6 +77,7 @@ export default Vue.extend({
 
     if (!!accessToken && !!refreshToken){
       this.newJWT(accessToken, refreshToken);
+      this.refreshJWT();
       this.updateCurrentUser(accessToken);
     }
   },

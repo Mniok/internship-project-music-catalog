@@ -76,6 +76,28 @@ export const useAccountStore = defineStore('accountStore', {
 
     },
 
+    refreshJWT(){
+      let logoutfunc = this.logout; //handle bo w catch error jest inny scope
+
+      axios.post(`https://localhost:7026/api/Account/refresh-token`, 
+      {
+        refreshToken: this.refreshToken
+      }, 
+      {
+        headers: { 'Authorization': `bearer ${this.accessToken}` }
+      })
+      .then(response => {
+        this.newJWT(response.data.accessToken, response.data.refreshToken)
+      })
+      .catch(function (error) {
+        console.log(error);
+        if(error.response.status == 401){
+          alert("Token expired. Log in again and retry.");
+          logoutfunc();
+        }
+      });
+    },
+
   },
 
 

@@ -200,6 +200,7 @@
 
     methods: {
       submitSong () {
+        this.refreshJWT();
         axios.post('https://localhost:7026/api/Song/upload', 
         {
           title: this.songTitle,
@@ -231,6 +232,8 @@
           }
         });
       },
+
+      ...mapActions(useAccountStore, ['refreshJWT']),
     },
 
 
