@@ -17,7 +17,7 @@
           class="ml-5"
           type="time"
           step="1"
-          messages="hh:mm:ss"
+          messages="hh:mm:ss e.g. 00:05:20"
         ></v-text-field>
 
         <p class="category-title mt-8">                                            <!-- list of link inputs -->
@@ -69,6 +69,8 @@
           <site-icon slot="prepend" site="soundcloud" size="small"/>
         </v-text-field>
 
+        <v-input :error-messages="linksErrors" class="ml-8"/>
+
       </v-container>
 
       <v-divider vertical class="blue-grey darken-1 mt-4"/>
@@ -78,6 +80,7 @@
         <v-text-field
           dark color="indigo lighten-2"
           v-model="songTitle"
+          :error-messages="titleErrors"
           outlined
           label="Song Title*:"
           class="mt-4 mb-4 wider-field"
@@ -103,6 +106,7 @@
           class="ml-5"
         >
         </v-text-field>
+        <v-input :error-messages="artistsErrors" class="ml-5"/>
 
         <p class="category-title mt-8">                                       <!-- genres inputs list -->
           <v-icon small color="blue-grey">mdi-music-box-multiple</v-icon>
@@ -135,10 +139,9 @@
           </v-card>
           <v-spacer/>
           <v-btn
-            :disabled="!valid"
             dark color="success"
             class="mt-4 ml-0 mr-0 float-right"
-            @click="submitSong"
+            @click="trySubmit"
           >
             Submit song
           </v-btn>
@@ -169,7 +172,7 @@
       song: '',
       songTitle: '',
       songDescription: '',
-      songTime: "00:05:00",
+      songTime: "00:00:00",
       songArtists: Array<String>(),
       songGenres: Array<String>(),
       //songLinks: Array<Link>(),
@@ -195,6 +198,10 @@
       soundcloudLinkRules: [
         v => (!!trimSoundcloudLink(v) || v=="") || "No valid Soundcloud link detected",
       ],
+
+      titleErrors: String(),
+      artistsErrors: String(),
+      linksErrors: String(),
     }),
 
 
@@ -205,7 +212,7 @@
         {
           title: this.songTitle,
           time: this.songTimeInt,
-          description: this.songDescription,
+          description: this.songDescription || "",
           artists: this.songArtistsNonEmpty,
           genres: this.songGenresNonEmpty,
           links: this.songLinks
@@ -232,6 +239,45 @@
           }
         });
       },
+
+      trySubmit(){
+        if (!this.songTitle)
+          this.titleErrors = "Please enter title.";
+        else
+          this.titleErrors = "";
+
+        if (this.songArtistsNonEmpty.length == 0)
+          this.artistsErrors = "Please enter at least one artist.";
+        else
+          this.artistsErrors = "";
+
+        var noInvalidLinks : boolean = (!!trimYoutubeLink(this.youtubeLink) || this.youtubeLink == "");
+        noInvalidLinks &&= (!!trimSpotifyLink(this.spotifyLink) || this.spotifyLink == "");
+        noInvalidLinks &&= (!!trimApplemusicLink(this.applemusicLink) || this.applemusicLink == "");
+        noInvalidLinks &&= (!!trimBandcampLink(this.bandcampLink) || this.bandcampLink == "");
+        noInvalidLinks &&= (!!trimSoundcloudLink(this.soundcloudLink) || this.soundcloudLink == "");
+
+        if (this.songLinks.length == 0)
+          this.linksErrors = "Please enter at least one valid link.";
+        else if (!noInvalidLinks)
+          this.linksErrors = "Please make sure no entered links are invalid."
+        else
+          this.linksErrors = "";
+
+        if (this.titleErrors == "" && this.artistsErrors == "" && this.linksErrors == "")
+          this.submitSong()
+      },
+
+      /*valid() : boolean{
+        //console.log(this.songArtistsNonEmpty); ////
+        var noInvalidLinks : boolean = (!!trimYoutubeLink(this.youtubeLink) || this.youtubeLink == "");
+        noInvalidLinks &&= (!!trimSpotifyLink(this.spotifyLink) || this.spotifyLink == "");
+        noInvalidLinks &&= (!!trimApplemusicLink(this.applemusicLink) || this.applemusicLink == "");
+        noInvalidLinks &&= (!!trimBandcampLink(this.bandcampLink) || this.bandcampLink == "");
+        noInvalidLinks &&= (!!trimSoundcloudLink(this.soundcloudLink) || this.soundcloudLink == "");
+
+        return !!this.songTitle && this.songArtistsNonEmpty.length > 0 && this.songLinks.length > 0 && noInvalidLinks;
+      },*/
 
       ...mapActions(useAccountStore, ['refreshJWT']),
     },
@@ -302,17 +348,6 @@
 
       songGenresNonEmpty() : Array<String>{
         return this.songGenres.filter(genre => !!genre);
-      },
-
-      valid() : boolean{
-        //console.log(this.songArtistsNonEmpty); ////
-        var noInvalidLinks : boolean = (!!trimYoutubeLink(this.youtubeLink) || this.youtubeLink == "");
-        noInvalidLinks &&= (!!trimSpotifyLink(this.spotifyLink) || this.spotifyLink == "");
-        noInvalidLinks &&= (!!trimApplemusicLink(this.applemusicLink) || this.applemusicLink == "");
-        noInvalidLinks &&= (!!trimBandcampLink(this.bandcampLink) || this.bandcampLink == "");
-        noInvalidLinks &&= (!!trimSoundcloudLink(this.soundcloudLink) || this.soundcloudLink == "");
-
-        return !!this.songTitle && this.songArtistsNonEmpty.length > 0 && this.songLinks.length > 0 && noInvalidLinks;
       },
 
       ...mapState(useAccountStore, ['accessToken', 'refreshToken']),

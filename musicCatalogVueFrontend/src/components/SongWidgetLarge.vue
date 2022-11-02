@@ -10,14 +10,15 @@
 
       <v-container id="right-column" class="ml-12" >
         <h3 class="mb-4">
-          <strong><u>{{songTitle}}</u></strong> {{songTime | timeFormat}}<strong>, by </strong>
+          <strong><u>{{songTitle}}</u></strong>
+          <span v-if="songTime>0"> {{songTime | timeFormat}}</span><strong>, by</strong>
           <v-chip 
             v-for="artist in songArtists"
             link
             pill
             color="indigo lighten-1"
             text-color="blue lighten-5"
-            class="mr-3"
+            class="ml-3"
           >{{artist}}
           </v-chip>
         </h3>
@@ -30,7 +31,7 @@
               small pill
               color="indigo lighten-1"
               text-color="blue lighten-5"
-              class="mr-3"
+              class="mr-2"
             >{{genre}}
             </v-chip>
           </h5>
@@ -214,7 +215,7 @@ h3 {
   color: #BBDEFB; /* blue lighten-4 */
 }
 
-h3 > strong, h5, h6 {
+h3>strong, h3>span>strong, h5, h6 {
   color: #9FA8DA; /* indigo lighten-3 */
 }
 

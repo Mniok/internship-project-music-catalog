@@ -177,11 +177,9 @@ namespace musicCatalogDotNetAPI.Controllers
         [JsonPropertyName("title")]
         public string Title { get; set; }
 
-        [Required]
         [JsonPropertyName("time")]
         public int Time { get; set; }
 
-        [Required]
         [JsonPropertyName("description")]
         public string Description { get; set; }
 
