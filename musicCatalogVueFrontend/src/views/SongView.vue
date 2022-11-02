@@ -55,18 +55,18 @@
           this.songUploadedOn = response.data.createdAt;
 
 
-          for(var i=0; i<response.data.artists.$values.length; i++){
-            this.songArtists.push(response.data.artists.$values.at(i).artistName);
+          for(var i=0; i<response.data.artists.length; i++){
+            this.songArtists.push(response.data.artists.at(i).artistName);
           }
 
-          for(var i=0; i<response.data.genres.$values.length; i++){
-            this.songGenres.push(response.data.genres.$values.at(i).genreName);
+          for(var i=0; i<response.data.genres.length; i++){
+            this.songGenres.push(response.data.genres.at(i).genreName);
           }
 
-          for(var i=0; i<response.data.links.$values.length; i++){
+          for(var i=0; i<response.data.links.length; i++){
             var l : Link = {toSite: "", linkBody: ""};
-            l.toSite = response.data.links.$values.at(i).toSite;
-            l.linkBody = response.data.links.$values.at(i).linkBody;
+            l.toSite = response.data.links.at(i).toSite;
+            l.linkBody = response.data.links.at(i).linkBody;
             this.songLinks.push(l);
           }
 
