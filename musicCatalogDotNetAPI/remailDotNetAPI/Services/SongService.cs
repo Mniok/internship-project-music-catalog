@@ -65,7 +65,7 @@ namespace musicCatalogDotNetAPI.Services
             foreach (string artist in artists)
             {
                 Artist a = new Artist(newArtistId, artist);
-                artistsList.Add(a);
+                //artistsList.Add(a);
                 newSong.Artists.Add(a);
                 newArtistId++;
             }
@@ -74,7 +74,7 @@ namespace musicCatalogDotNetAPI.Services
             foreach (string genre in genres)
             {
                 Genre g = new Genre(newGenreId, genre);
-                genresList.Add(g);
+                //genresList.Add(g);
                 newSong.Genres.Add(g);
                 newGenreId++;
             }
@@ -83,7 +83,7 @@ namespace musicCatalogDotNetAPI.Services
             foreach (UploadLink link in links)
             {
                 Link l = new Link(newLinkId, link.ToSite, link.LinkBody);
-                linksList.Add(l);
+                //linksList.Add(l);
                 newSong.Links.Add(l);
                 newLinkId++;
             }
