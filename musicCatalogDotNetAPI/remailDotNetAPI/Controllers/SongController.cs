@@ -58,31 +58,21 @@ namespace musicCatalogDotNetAPI.Controllers
         [HttpGet("songs")]
         public async Task<ActionResult<IEnumerable<Song>>> GetSongList()
         {
-            var songs = await _context.Song.ToListAsync();
+            var songs = await _context.Song
+                .Include(b => b.UploadedBy)
+                .Include(b => b.Artists)
+                .Include(b => b.Genres)
+                .Include(b => b.Links)
+                .ToListAsync();
             
             foreach (Song song in songs)
             {
-                var user = from u in _context.User.ToList() where u.UserId == song.UserId select u;
-                song.UploadedBy = user.First();
-                song.UploadedBy.Password = "***";   ///lazy fix so songs list doesn't leak passwords
-                song.UploadedBy.uploadedSongs.Clear();  //to reduce circular references
-
-                var artists = from a in _context.Artist.ToList() where a.SongId == song.SongId select a;
-                song.Artists = artists.ToList<Artist>();
-                foreach (Artist artist in song.Artists)
-                    artist.Song = null; //to reduce circular references...
-
-                var genres = from g in _context.Genre.ToList() where g.SongId == song.SongId select g;
-                song.Genres = genres.ToList<Genre>();
-                foreach (Genre genre in song.Genres)
-                    genre.Song = null;
-
-                var links = from l in _context.Link.ToList() where l.SongId == song.SongId select l;
-                song.Links = links.ToList<Link>();
-                foreach (Link link in song.Links)
-                    link.Song = null;
-
                 //song = _songService.CleanupSong(song); //cannot assign to foreach iteration variable
+                var cleanSong = _songService.CleanupSong(song);
+                song.UploadedBy = cleanSong.UploadedBy;
+                song.Artists = cleanSong.Artists;
+                song.Genres = cleanSong.Genres;
+                song.Links = cleanSong.Links;
             }
 
             return songs;
@@ -90,12 +80,47 @@ namespace musicCatalogDotNetAPI.Controllers
 
         /*/ [Authorize] /*/ [AllowAnonymous] /**/
         [EnableCors]
+        [HttpGet("songs/{byMe}/{byTitle}/{byArtists}/{byGenres}/{page}/{pageSize}")]
+        public async Task<ActionResult<IEnumerable<Song>>> SearchSongList(bool byMe, string byTitle, string byArtists, string byGenres, int page, int pageSize)
+        {
+            var UserName = User.Identity?.Name;
+
+            //var songsQuery = await _context.Song
+            var songs = await _context.Song
+                .Include(b => b.UploadedBy)
+                .Include(b => b.Artists)
+                .Include(b => b.Genres)
+                .Include(b => b.Links)//.AsAsyncEnumerable()
+                //.Where(b => b.Title == byTitle)
+                .ToListAsync();
+
+            foreach (Song song in songs)
+            {
+                //song = _songService.CleanupSong(song); //cannot assign to foreach iteration variable
+                var cleanSong = _songService.CleanupSong(song);
+                song.UploadedBy = cleanSong.UploadedBy;
+                song.Artists = cleanSong.Artists;
+                song.Genres = cleanSong.Genres;
+                song.Links = cleanSong.Links;
+            }
+
+            return songs;
+        }
+
+        /*/ [Authorize] /*/
+        [AllowAnonymous] /**/
+        [EnableCors]
         [HttpGet("song/{id}")]
         public async Task<ActionResult<Song>> GetSongById(int id)
         {
 
             //Song song = _context.Song.Where(b => b.SongId == id).First(); ////nie uwzglednia tych co w tym nizej sa included - sa null i []
-            Song song = _context.Song.Include(b => b.UploadedBy).Include(b => b.Artists).Include(b => b.Genres).Include(b => b.Links).Where(b => b.SongId == id).First();
+            Song song = _context.Song
+                .Include(b => b.UploadedBy)
+                .Include(b => b.Artists)
+                .Include(b => b.Genres)
+                .Include(b => b.Links)
+                .Where(b => b.SongId == id).First();
 
             song = _songService.CleanupSong(song);
 
