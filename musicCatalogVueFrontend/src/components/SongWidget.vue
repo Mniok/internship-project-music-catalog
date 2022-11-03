@@ -9,7 +9,9 @@
 
       <v-container id="right-column">
         <h5>
-          <strong><u>{{song.title}}</u></strong>
+          <strong><u>
+            <router-link :to="/song/ + song.id">{{song.title}}</router-link>
+          </u></strong>
         </h5>
 
         <strong>By</strong> <v-chip 
@@ -281,6 +283,15 @@ h3 {
 #description > p {
   white-space: pre;
   color: #B0BEC5; /* blue-grey lighten-3 */
+}
+
+a { /* to remove styling from router-link */
+  text-decoration: inherit !important;
+  color: inherit;
+}
+
+a:hover {
+  color: #E8EAF6; /* indigo lighten-5 */
 }
 
 </style>

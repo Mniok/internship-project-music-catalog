@@ -10,7 +10,7 @@
 
       <v-container id="right-column" class="ml-12" >
         <h3 class="mb-4">
-          <strong><u>{{songTitle}}</u></strong>
+          <strong>{{songTitle}}</strong>
           <span v-if="songTime>0"> {{songTime | timeFormat}}</span><strong>, by</strong>
           <v-chip 
             v-for="artist in songArtists"
@@ -37,13 +37,13 @@
           </h5>
         </div>
 
-        <div id="links" class="mt-5 mb-5">
+        <div id="links" class="m2-5 mb-5">
           <v-chip
             v-if="!!youtubeLink"
             pill
             link :href="youtubeLink"
             dark color="red lighten-1"
-            class="no-decorators mr-3"
+            class="no-decorators mr-3 mt-3"
             ><site-icon site="youtube" class="mr-2"/>
             view on YouTube
             <v-icon>mdi-play</v-icon>
@@ -53,7 +53,7 @@
             pill
             link :href="spotifyLink"
             dark color="green darken-3"
-            class="no-decorators mr-3"
+            class="no-decorators mr-3 mt-3"
             ><site-icon site="spotify" class="mr-2"/>
             view on Spotify
             <v-icon>mdi-play</v-icon>
@@ -63,7 +63,7 @@
             pill
             link :href="applemusicLink"
             dark color="pink darken-2"
-            class="no-decorators mr-3"
+            class="no-decorators mr-3 mt-3"
             ><site-icon site="applemusic" class="mr-2"/>
             view on Apple Music
             <v-icon>mdi-play</v-icon>
@@ -73,7 +73,7 @@
             pill
             link :href="bandcampLink"
             dark color="cyan lighten-2"
-            class="no-decorators mr-3"
+            class="no-decorators mr-3 mt-3"
             ><site-icon site="bandcamp" class="mr-2"/>
             view on Bandcamp
             <v-icon>mdi-play</v-icon>
@@ -83,7 +83,7 @@
             pill
             link :href="soundcloudLink"
             dark color="orange lighten-2"
-            class="no-decorators mr-3"
+            class="no-decorators mr-3 mt-3"
             ><site-icon site="soundcloud" class="mr-2"/>
             view on Soundcloud
             <v-icon>mdi-play</v-icon>
