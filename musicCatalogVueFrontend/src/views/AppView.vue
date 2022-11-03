@@ -74,9 +74,13 @@
     <v-divider class="blue-grey darken-1"></v-divider>
 
     <!-- main content - song widgets page -->
-    <song-widget :v-if="readyToDisplaySongs" :song="songsList.at(18)" />
-    <song-widget :v-if="false" :song="songsList.at(14)" />
-    <song-widget :v-if="false" :song="songsList.at(27)" />
+    <v-container
+      :v-if="readyToDisplaySongs"
+      id="songs-container"
+      class="d-flex flex-wrap mb-16"
+    >
+      <song-widget v-for="s in songsList" :song="s" class="horizontal-tiling"/>
+    </v-container>
 
 
     <!-- bar for bottom pagination and add song button -->
@@ -247,6 +251,10 @@ hr.widen {  /* do v-divider */
 
 .corner-curved {
   border-radius: 48px 0px 0px 0px !important;
+}
+
+.horizontal-tiling {
+  max-width: 520px;
 }
 
 </style>

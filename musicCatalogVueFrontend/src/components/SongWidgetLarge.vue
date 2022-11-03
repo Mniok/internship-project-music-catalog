@@ -37,7 +37,7 @@
           </h5>
         </div>
 
-        <div id="links" class="m2-5 mb-5">
+        <div id="links" class="mb-5">
           <v-chip
             v-if="!!youtubeLink"
             pill
