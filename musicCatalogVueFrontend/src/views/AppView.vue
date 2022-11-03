@@ -74,7 +74,9 @@
     <v-divider class="blue-grey darken-1"></v-divider>
 
     <!-- main content - song widgets page -->
-    <song-widget :song="songsList.at(18)" />
+    <song-widget :v-if="readyToDisplaySongs" :song="songsList.at(18)" />
+    <song-widget :v-if="false" :song="songsList.at(14)" />
+    <song-widget :v-if="false" :song="songsList.at(27)" />
 
 
     <!-- bar for bottom pagination and add song button -->
@@ -115,6 +117,7 @@ import SongWidget from '../components/SongWidget.vue'
 import { Link } from '../service/linkHelpers';
 
 interface Song {
+  id: number,
   title: string,
   description: string,
   time: number,
@@ -140,6 +143,8 @@ interface Song {
       searchByGenre: '',
 
       songsList: Array<Song>(),
+
+      readyToDisplaySongs: false,
       
     }),
   
@@ -160,8 +165,9 @@ interface Song {
 
           var s: any;
           for(s of response.data){
-            var newSong : Song = {title: '', description: '', time: 0, artists: [], genres: [], links: [], uploadedBy: '', uploadedDate: ''};
+            var newSong : Song = {id: 0, title: '', description: '', time: 0, artists: [], genres: [], links: [], uploadedBy: '', uploadedDate: ''};
             //({s.title, s.description, s.time, s.artists, s.genres, s.links, s.uploadedBy} = response.data[0]);
+            newSong.id = s.songId;  //!! //to link to song detailed page
             newSong.title = s.title;
             newSong.description = s.description;
             newSong.time = s.time;
@@ -175,6 +181,8 @@ interface Song {
           }
 
           console.log(this.songsList);
+
+          this.readyToDisplaySongs = true;
 
         })
         .catch(function (error) {

@@ -10,7 +10,7 @@ import vuetify from './plugins/vuetify'
 import { createPinia, PiniaVuePlugin } from 'pinia'
 import VueCompositionAPI from '@vue/composition-api'
 import { markRaw } from 'vue'
-import './plugins/cycle'
+//import './plugins/cycle'  //didn't quite work, removed circular references and disabled ReferenceHandler.Preserve in Program.cs instead. Leaving this here for now just in case
 
 Vue.use(PiniaVuePlugin);
 const pinia = createPinia();
