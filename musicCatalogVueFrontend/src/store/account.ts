@@ -86,7 +86,7 @@ export const useAccountStore = defineStore('accountStore', {
         headers: { 'Authorization': `bearer ${this.accessToken}` }
       })
       .then(response => {
-        console.log("refreshed " + response.data.accessToken + " ||| " + response.data.refreshToken); ////
+        //console.log("refreshed " + response.data.accessToken + " ||| " + response.data.refreshToken); ////
         this.newJWT(response.data.accessToken, response.data.refreshToken)
       })
       .catch(function (error) {
@@ -98,6 +98,7 @@ export const useAccountStore = defineStore('accountStore', {
       });
     },
 
+    
   },
 
 

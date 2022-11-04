@@ -45,7 +45,7 @@
           headers: { 'Authorization': `bearer ${this.accessToken}` }
         })
         .then(response => { 
-          console.log(response.data); ////
+          //console.log(response.data); ////
           this.song = response.data;
 
           this.songTitle = response.data.title;

@@ -5,7 +5,7 @@
       
         <!--
         <v-checkbox
-          v-model="searchByFavourite"
+          v-model="formSearchByFavourite"
           label="Show favourite only"
           color="indigo lighten-1"
           class="search-inputs"
@@ -15,7 +15,7 @@
         -->
 
         <v-checkbox
-          v-model="searchByUploader"
+          v-model="formSearchByUploader"
           label="Show only uploaded by me"
           color="indigo lighten-1"
           class="search-inputs"
@@ -25,7 +25,7 @@
         <v-spacer class="thin"></v-spacer>
 
         <v-text-field
-          v-model="searchByTitle"
+          v-model="formSearchByTitle"
           label="Search by Title:"
           class="search-inputs mt-4 wider-field"
           color="indigo lighten-1"
@@ -39,29 +39,29 @@
         <v-spacer></v-spacer>
 
         <v-text-field
-          v-model="searchByArtist"
-          label="Search by Artists:"
+          v-model="formSearchByArtist"
+          label="Search by Artist:"
           class="search-inputs mt-4 wider-field"
           color="indigo lighten-1"
         >
           <v-icon 
             slot="prepend" 
             color="indigo lighten-2"
-          >mdi-account-box-multiple</v-icon>
+          >mdi-account-box</v-icon>
         </v-text-field>
 
         <v-spacer></v-spacer>
 
         <v-text-field
-          v-model="searchByGenre"
-          label="Search by Genres:"
+          v-model="formSearchByGenre"
+          label="Search by Genre:"
           class="search-inputs mt-4 wider-field"
           color="indigo lighten-1"
         >
           <v-icon 
             slot="prepend" 
             color="indigo lighten-2"
-          >mdi-music-box-multiple</v-icon>
+          >mdi-music-box</v-icon>
         </v-text-field>
 
         <v-btn text color="indigo lighten-2" class="ml-8" @click="search">
@@ -116,6 +116,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { useAccountStore } from '../store/account';
+import { useSongStore } from '../store/song';
 import { mapState, mapActions } from 'pinia';
 import SongWidget from '../components/SongWidget.vue'
 import { Link } from '../service/linkHelpers';
@@ -140,11 +141,11 @@ interface Song {
     },
 
     data: () => ({
-      searchByFavourite: false,
-      searchByUploader: false,
-      searchByTitle: '',
-      searchByArtist: '',
-      searchByGenre: '',
+      formSearchByFavourite: false,
+      formSearchByUploader: false,
+      formSearchByTitle: '',
+      formSearchByArtist: '',
+      formSearchByGenre: '',
 
       songsList: Array<Song>(),
 
@@ -157,47 +158,49 @@ interface Song {
     },*/
 
     created() {
-        this.refreshJWT();
-        axios.get('https://localhost:7026/api/Song/songs/', {
-          //id: this.$route.params.id
-        },
-        {
+      var page : number = 0, pageSize : number = 12;
+      var searchCriteria = this.searchUploadedByMe + '/' + page + '/' + pageSize + '/'
+          + this.searchSongFlags + '/' + this.searchByTitle + '/' + this.searchByArtist + '/' + this.searchByGenre;
+      
+
+      this.refreshJWT();
+      axios.get('https://localhost:7026/api/Song/searchsongs/' + searchCriteria, {
           headers: { 'Authorization': `bearer ${this.accessToken}` }
         })
-        .then(response => { 
-          //console.log(response.data); ////
+      .then(response => { 
+        //console.log(response.data); ////
 
-          var s: any;
-          for(s of response.data){
-            var newSong : Song = {id: 0, title: '', description: '', time: 0, artists: [], genres: [], links: [], uploadedBy: '', uploadedDate: ''};
-            //({s.title, s.description, s.time, s.artists, s.genres, s.links, s.uploadedBy} = response.data[0]);
-            newSong.id = s.songId;  //!! //to link to song detailed page
-            newSong.title = s.title;
-            newSong.description = s.description;
-            newSong.time = s.time;
-            newSong.artists = s.artists;
-            newSong.genres = s.genres;
-            newSong.links = s.links;
-            newSong.uploadedBy = s.uploadedBy;
-            newSong.uploadedDate = s.createdAt;  //!!
+        var s: any;
+        for(s of response.data){
+          var newSong : Song = {id: 0, title: '', description: '', time: 0, artists: [], genres: [], links: [], uploadedBy: '', uploadedDate: ''};
+          //({s.title, s.description, s.time, s.artists, s.genres, s.links, s.uploadedBy} = response.data[0]);
+          newSong.id = s.songId;  //!! //to link to song detailed page
+          newSong.title = s.title;
+          newSong.description = s.description;
+          newSong.time = s.time;
+          newSong.artists = s.artists;
+          newSong.genres = s.genres;
+          newSong.links = s.links;
+          newSong.uploadedBy = s.uploadedBy;
+          newSong.uploadedDate = s.createdAt;  //!!
 
-            this.songsList.push(newSong);
-          }
+          this.songsList.push(newSong);
+        }
 
-          console.log(this.songsList);
+        //console.log(this.songsList);  ////
 
-          this.readyToDisplaySongs = true;
+        this.readyToDisplaySongs = true;
 
-        })
-        .catch(function (error) {
-          console.log(error);
-          if(error.response == undefined){
-            alert("Couldn't connect to the server. Try again later.");
-          }
-          if(error.response.status == 401){
-            alert("401: unauthorized");
-          }
-        });
+      })
+      .catch(function (error) {
+        console.log(error);
+        if(error.response == undefined){
+          alert("Couldn't connect to the server. Try again later.");
+        }
+        if(error.response.status == 401){
+          alert("401: unauthorized");
+        }
+      });
     },
 
     methods: {
@@ -206,8 +209,13 @@ interface Song {
       },
 
       ...mapActions(useAccountStore, ['refreshJWT']),
+      ...mapActions(useSongStore, ['saveSearchCriteria']),
     },
 
+    computed: {
+      ...mapState(useAccountStore, ['accessToken', 'refreshToken']),
+      ...mapState(useSongStore, ['searchUploadedByMe', 'searchByTitle', 'searchByArtist', 'searchByGenre', 'searchSongFlags']),
+    },
 
   })
 </script>
