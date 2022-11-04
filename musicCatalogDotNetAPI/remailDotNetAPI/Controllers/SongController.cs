@@ -78,21 +78,48 @@ namespace musicCatalogDotNetAPI.Controllers
             return songs;
         }
 
-        /*/ [Authorize] /*/ [AllowAnonymous] /**/
+        /**/ [Authorize] /*/ [AllowAnonymous] /**/
         [EnableCors]
-        [HttpGet("songs/{byMe}/{byTitle}/{byArtists}/{byGenres}/{page}/{pageSize}")]
-        public async Task<ActionResult<IEnumerable<Song>>> SearchSongList(bool byMe, string byTitle, string byArtists, string byGenres, int page, int pageSize)
+        [HttpGet("songs/{byMe}/{page}/{pageSize}/{byTitle}/{byArtists}/{byGenres}")]
+        public async Task<ActionResult<IEnumerable<Song>>> SearchSongList(bool byMe, int page, int pageSize, string byTitle="", string byArtists="", string byGenres="")
         {
-            var UserName = User.Identity?.Name;
+            Range currentPageIndexes = new Range(page * pageSize, page * pageSize + pageSize);
 
-            //var songsQuery = await _context.Song
-            var songs = await _context.Song
+            var songsQuery = _context.Song
+            //var songs = await _context.Song
                 .Include(b => b.UploadedBy)
                 .Include(b => b.Artists)
                 .Include(b => b.Genres)
-                .Include(b => b.Links)//.AsAsyncEnumerable()
-                //.Where(b => b.Title == byTitle)
-                .ToListAsync();
+                .Include(b => b.Links)
+
+                /*if (byMe) {
+                    var UserName = User.Identity?.Name;
+                    songsQuery.Where(b => b.UploadedBy.UserName == UserName);
+                }*/
+                .Where(b => !byMe || b.UploadedBy.UserName == User.Identity.Name)  //if byMe is true, filters by uploader
+
+            /*if (byTitle.Length > 0)
+            {
+                songsQuery.Where(b => b.Title.Contains(byTitle));
+            }*/
+                .Where(b => byTitle.Length > 0 || b.Title.Contains(byTitle))
+
+            /*if (byMe)
+            {
+                var UserName = User.Identity?.Name;
+                songsQuery.Where(b => b.UploadedBy.UserName == UserName);
+            }*/
+
+            /*if (page != null && pageSize > 0)
+            {
+                Range currentPageIndexes = new Range(page*pageSize, page*pageSize + pageSize);
+                //songsQuery.Take( currentPageIndexes );
+                songsQuery.Take( new Range(page * pageSize, page * pageSize + pageSize) );
+            }*/
+                .Take(12);
+
+            var songs = await songsQuery.ToListAsync();
+            //.toListAsync();
 
             foreach (Song song in songs)
             {
