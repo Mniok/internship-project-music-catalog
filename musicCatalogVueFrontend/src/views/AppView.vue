@@ -98,8 +98,16 @@
         </v-btn> 
       </v-card>
       
-      <v-card >
-            <span>&nbsp;&nbsp;&lt; pagination goes here &gt;&nbsp;&nbsp;</span>    <!-- !!! layout kinda breaks when dislpay is thin, might have to split pagination and upload into 2 differrent footers, or make seperate style for s or xs displays -->
+      <v-card v-if="readyToDisplaySongs" style="height:40px">
+        <v-col cols="12" class="p-0">
+          <v-container class="max-width p-0">
+            <v-pagination
+              v-model="page"
+              class="my-0"
+              :length="numOfPages"
+            ></v-pagination>
+          </v-container>
+        </v-col>    <!-- !!! layout kinda breaks when dislpay is thin, might have to split pagination and upload into 2 differrent footers, or make seperate style for s or xs displays -->
       </v-card>
 
       <v-card class="corner-curved" color="success">
@@ -148,8 +156,10 @@ interface Song {
       formSearchByGenre: '',
 
       songsList: Array<Song>(),
-
       readyToDisplaySongs: false,
+
+      page: 0,
+      numOfPages: Number,
       
     }),
   
@@ -168,7 +178,10 @@ interface Song {
           headers: { 'Authorization': `bearer ${this.accessToken}` }
         })
       .then(response => { 
-        console.log(response.data); ////
+        //console.log(response.data); ////
+
+        this.page = response.data.pagination.page;
+        this.numOfPages = response.data.pagination.pagesFromSearch;
 
         var s: any;
         for(s of response.data.songs){
@@ -214,7 +227,7 @@ interface Song {
 
     computed: {
       ...mapState(useAccountStore, ['accessToken', 'refreshToken']),
-      ...mapState(useSongStore, ['searchUploadedByMe', 'searchByTitle', 'searchByArtist', 'searchByGenre', 'searchSongFlags']),
+      ...mapState(useSongStore, ['searchUploadedByMe', 'searchByTitle', 'searchByArtist', 'searchByGenre', 'searchSongFlags', 'currentPage']),
     },
 
   })

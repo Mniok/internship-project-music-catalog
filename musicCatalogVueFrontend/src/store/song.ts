@@ -13,6 +13,8 @@ export const useSongStore = defineStore('songStore', {
     searchByArtist: "none",
     searchByGenre: "none",
     searchSongFlags: "none",
+
+    currentPage: 0,
   }),
 
   /*getters: {
