@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.EntityFrameworkCore;
 using musicCatalogDotNetAPI.Models;
 using NuGet.Protocol;
+using System.Linq.Expressions;
+//using System.Web.Http;
 
 namespace musicCatalogDotNetAPI.Controllers
 {
@@ -80,29 +82,42 @@ namespace musicCatalogDotNetAPI.Controllers
 
         /**/ [Authorize] /*/ [AllowAnonymous] /**/
         [EnableCors]
-        [HttpGet("songs/{byMe}/{page}/{pageSize}/{byTitle}/{byArtists}/{byGenres}")]
-        public async Task<ActionResult<IEnumerable<Song>>> SearchSongList(bool byMe, int page, int pageSize, string byTitle="", string byArtists="", string byGenres="")
+        [HttpGet("searchsongs/{byMe}/{page}/{pageSize}/{searchFlags}/{byTitle}/{byArtists}/{byGenres}")]
+        public async Task<ActionResult<IEnumerable<Song>>> SearchSongList(bool byMe=false, int page=0, int pageSize=12, string searchFlags="none", string byTitle="none", string byArtists="none", string byGenres="none")
         {
+            ////// flags: eg. "tag" -> all 3, "tg" -> title and genre, "none" -> none. Had problems with passing empty strings/lists, and with passing bool[], so this is a workaround
+            bool flagSearchByTitle = searchFlags.Contains("t");
+            bool flagSearchByArtist = searchFlags.Contains("a");
+            bool flagSearchByGenre = searchFlags.Contains("g");
             Range currentPageIndexes = new Range(page * pageSize, page * pageSize + pageSize);
+
+            //var minIndex = page * pageSize;
+            //var maxIndex = (page+1) * pageSize;
+
+            //Expression minIndex = Expression.Constant(page * pageSize);
+            //Expression maxIndex = Expression.Constant((page+1) * pageSize);
+
+            //Expression<Func<Song, int, bool>> paginate = (s, index) => index >= page * pageSize;
+            //Expression<Func<Song, int, bool>> paginate = (s, index) => index >= minIndex && index < maxIndex;
 
             var songsQuery = _context.Song
             //var songs = await _context.Song
-                .Include(b => b.UploadedBy)
-                .Include(b => b.Artists)
-                .Include(b => b.Genres)
-                .Include(b => b.Links)
+                .Include(s => s.UploadedBy)
+                .Include(s => s.Artists)
+                .Include(s => s.Genres)
+                .Include(s => s.Links)
 
                 /*if (byMe) {
                     var UserName = User.Identity?.Name;
                     songsQuery.Where(b => b.UploadedBy.UserName == UserName);
                 }*/
-                .Where(b => !byMe || b.UploadedBy.UserName == User.Identity.Name)  //if byMe is true, filters by uploader
+                .Where(s => !byMe || s.UploadedBy.UserName == User.Identity.Name)  //if byMe is true, filters by uploader
 
             /*if (byTitle.Length > 0)
             {
                 songsQuery.Where(b => b.Title.Contains(byTitle));
             }*/
-                .Where(b => byTitle.Length > 0 || b.Title.Contains(byTitle))
+                .Where(s => !flagSearchByTitle || s.Title.Contains(byTitle));
 
             /*if (byMe)
             {
@@ -116,10 +131,15 @@ namespace musicCatalogDotNetAPI.Controllers
                 //songsQuery.Take( currentPageIndexes );
                 songsQuery.Take( new Range(page * pageSize, page * pageSize + pageSize) );
             }*/
-                .Take(12);
+                //.Take(currentPageIndexes);
+                //.TakeWhile((s, index) => index >= page*pageSize && index < (page+1)*pageSize);
+                //.TakeWhile((s, index) => Expression.GreaterThanOrEqual(Expression.Constant(index), minIndex));
+                //.TakeWhile(paginate);
 
             var songs = await songsQuery.ToListAsync();
             //.toListAsync();
+            //var songs = songsQuery.AsEnumerable().Take(currentPageIndexes);
+            songs = songs.Take(currentPageIndexes).ToList();
 
             foreach (Song song in songs)
             {
