@@ -82,8 +82,8 @@ namespace musicCatalogDotNetAPI.Controllers
 
         /**/ [Authorize] /*/ [AllowAnonymous] /**/
         [EnableCors]
-        [HttpGet("searchsongs/{byMe}/{page}/{pageSize}/{searchFlags}/{byTitle}/{byArtists}/{byGenres}")]
-        public async Task<ActionResult<IEnumerable<Song>>> SearchSongList(bool byMe=false, int page=0, int pageSize=12, string searchFlags="none", string byTitle="none", string byArtists="none", string byGenres="none")
+        [HttpGet("searchsongs/{byMe}/{page}/{pageSize}/{searchFlags}/{byTitle}/{byArtist}/{byGenre}")]
+        public async Task<ActionResult<IEnumerable<Song>>> SearchSongList(bool byMe=false, int page=0, int pageSize=12, string searchFlags="none", string byTitle="none", string byArtist="none", string byGenre="none")
         {
             ////// flags: eg. "tag" -> all 3, "tg" -> title and genre, "none" -> none. Had problems with passing empty strings/lists, and with passing bool[], so this is a workaround
             bool flagSearchByTitle = searchFlags.Contains("t");
@@ -117,7 +117,15 @@ namespace musicCatalogDotNetAPI.Controllers
             {
                 songsQuery.Where(b => b.Title.Contains(byTitle));
             }*/
-                .Where(s => !flagSearchByTitle || s.Title.Contains(byTitle));
+                .Where(s => !flagSearchByTitle || s.Title.Contains(byTitle))        //if flag is set, search by title fragment
+
+                .Where( s => !flagSearchByArtist ||                                 //if flag is set, search by full artist name
+                        s.Artists.Where(a => a.ArtistName == byArtist).Count() > 0  
+                )
+
+                .Where( s => !flagSearchByGenre ||                                  //if flag is set, search by full genre name
+                        s.Genres.Where(g => g.GenreName == byGenre).Count() > 0
+                );
 
             /*if (byMe)
             {
@@ -131,10 +139,10 @@ namespace musicCatalogDotNetAPI.Controllers
                 //songsQuery.Take( currentPageIndexes );
                 songsQuery.Take( new Range(page * pageSize, page * pageSize + pageSize) );
             }*/
-                //.Take(currentPageIndexes);
-                //.TakeWhile((s, index) => index >= page*pageSize && index < (page+1)*pageSize);
-                //.TakeWhile((s, index) => Expression.GreaterThanOrEqual(Expression.Constant(index), minIndex));
-                //.TakeWhile(paginate);
+            //.Take(currentPageIndexes);
+            //.TakeWhile((s, index) => index >= page*pageSize && index < (page+1)*pageSize);
+            //.TakeWhile((s, index) => Expression.GreaterThanOrEqual(Expression.Constant(index), minIndex));
+            //.TakeWhile(paginate);
 
             var songs = await songsQuery.ToListAsync();
             //.toListAsync();
