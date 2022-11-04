@@ -168,10 +168,10 @@ interface Song {
           headers: { 'Authorization': `bearer ${this.accessToken}` }
         })
       .then(response => { 
-        //console.log(response.data); ////
+        console.log(response.data); ////
 
         var s: any;
-        for(s of response.data){
+        for(s of response.data.songs){
           var newSong : Song = {id: 0, title: '', description: '', time: 0, artists: [], genres: [], links: [], uploadedBy: '', uploadedDate: ''};
           //({s.title, s.description, s.time, s.artists, s.genres, s.links, s.uploadedBy} = response.data[0]);
           newSong.id = s.songId;  //!! //to link to song detailed page

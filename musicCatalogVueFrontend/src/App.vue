@@ -87,10 +87,6 @@ export default Vue.extend({
         return !!this.currentUser;
       },
 
-      logoLink() {  //where clicking logo redirects you
-        return false;
-      },
-
       ...mapState(useAccountStore, ['accessToken', 'refreshToken', 'currentUser']),
   }
 });

@@ -83,7 +83,7 @@ namespace musicCatalogDotNetAPI.Controllers
         /**/ [Authorize] /*/ [AllowAnonymous] /**/
         [EnableCors]
         [HttpGet("searchsongs/{byMe}/{page}/{pageSize}/{searchFlags}/{byTitle}/{byArtist}/{byGenre}")]
-        public async Task<ActionResult<IEnumerable<Song>>> SearchSongList(bool byMe=false, int page=0, int pageSize=12, string searchFlags="none", string byTitle="none", string byArtist="none", string byGenre="none")
+        public async Task<ActionResult<SongSearchResult>> SearchSongList(bool byMe=false, int page=0, int pageSize=12, string searchFlags="none", string byTitle="none", string byArtist="none", string byGenre="none")
         {
             ////// flags: eg. "tag" -> all 3, "tg" -> title and genre, "none" -> none. Had problems with passing empty strings/lists, and with passing bool[], so this is a workaround
             bool flagSearchByTitle = searchFlags.Contains("t");
@@ -91,63 +91,29 @@ namespace musicCatalogDotNetAPI.Controllers
             bool flagSearchByGenre = searchFlags.Contains("g");
             Range currentPageIndexes = new Range(page * pageSize, page * pageSize + pageSize);
 
-            //var minIndex = page * pageSize;
-            //var maxIndex = (page+1) * pageSize;
-
-            //Expression minIndex = Expression.Constant(page * pageSize);
-            //Expression maxIndex = Expression.Constant((page+1) * pageSize);
-
-            //Expression<Func<Song, int, bool>> paginate = (s, index) => index >= page * pageSize;
-            //Expression<Func<Song, int, bool>> paginate = (s, index) => index >= minIndex && index < maxIndex;
+            var howManySongsInTotal = await _context.Song.CountAsync();
 
             var songsQuery = _context.Song
-            //var songs = await _context.Song
                 .Include(s => s.UploadedBy)
                 .Include(s => s.Artists)
                 .Include(s => s.Genres)
                 .Include(s => s.Links)
 
-                /*if (byMe) {
-                    var UserName = User.Identity?.Name;
-                    songsQuery.Where(b => b.UploadedBy.UserName == UserName);
-                }*/
                 .Where(s => !byMe || s.UploadedBy.UserName == User.Identity.Name)  //if byMe is true, filters by uploader
 
-            /*if (byTitle.Length > 0)
-            {
-                songsQuery.Where(b => b.Title.Contains(byTitle));
-            }*/
                 .Where(s => !flagSearchByTitle || s.Title.Contains(byTitle))        //if flag is set, search by title fragment
-
                 .Where( s => !flagSearchByArtist ||                                 //if flag is set, search by full artist name
                         s.Artists.Where(a => a.ArtistName == byArtist).Count() > 0  
                 )
-
                 .Where( s => !flagSearchByGenre ||                                  //if flag is set, search by full genre name
                         s.Genres.Where(g => g.GenreName == byGenre).Count() > 0
                 );
 
-            /*if (byMe)
-            {
-                var UserName = User.Identity?.Name;
-                songsQuery.Where(b => b.UploadedBy.UserName == UserName);
-            }*/
-
-            /*if (page != null && pageSize > 0)
-            {
-                Range currentPageIndexes = new Range(page*pageSize, page*pageSize + pageSize);
-                //songsQuery.Take( currentPageIndexes );
-                songsQuery.Take( new Range(page * pageSize, page * pageSize + pageSize) );
-            }*/
-            //.Take(currentPageIndexes);
-            //.TakeWhile((s, index) => index >= page*pageSize && index < (page+1)*pageSize);
-            //.TakeWhile((s, index) => Expression.GreaterThanOrEqual(Expression.Constant(index), minIndex));
-            //.TakeWhile(paginate);
-
             var songs = await songsQuery.ToListAsync();
-            //.toListAsync();
-            //var songs = songsQuery.AsEnumerable().Take(currentPageIndexes);
-            songs = songs.Take(currentPageIndexes).ToList();
+
+            var resultsWithCriteria = songs.Count();
+
+            songs = songs.Take(currentPageIndexes).ToList(); //pagination on list and not on queryable, because I couldn't get it to parse expression with variables not part of database data
 
             foreach (Song song in songs)
             {
@@ -159,11 +125,19 @@ namespace musicCatalogDotNetAPI.Controllers
                 song.Links = cleanSong.Links;
             }
 
-            return songs;
+            var resultsOnPage = songs.Count();
+            // var pagesNr = Math.Ceiling((float)resultsWithCriteria/(float)pageSize)); // problems with division by 0, and potentially with convertions to float
+            var pagesNr = resultsWithCriteria / pageSize;
+            if (pagesNr * pageSize < resultsWithCriteria) pagesNr++;    //should always be reliable
+
+            PaginationInfo pagination = new PaginationInfo { Page = page, PageSize = pageSize, PagesFromSearch = pagesNr, ResultsOnPage = resultsOnPage, ResultsFromSearch = resultsWithCriteria, SongsTotal = howManySongsInTotal };
+
+            SongSearchResult result = new SongSearchResult { Pagination = pagination, Songs = songs };
+
+            return result;
         }
 
-        /*/ [Authorize] /*/
-        [AllowAnonymous] /**/
+        /*/ [Authorize] /*/ [AllowAnonymous] /**/
         [EnableCors]
         [HttpGet("song/{id}")]
         public async Task<ActionResult<Song>> GetSongById(int id)
@@ -299,6 +273,39 @@ namespace musicCatalogDotNetAPI.Controllers
         [Required]
         [JsonPropertyName("LinkBody")]
         public string LinkBody { get; set; }
+
+    }
+
+
+    public class PaginationInfo
+    {
+        [JsonPropertyName("page")]
+        public int Page { get; set; }
+
+        [JsonPropertyName("pagesFromSearch")]
+        public int PagesFromSearch { get; set; }
+
+        [JsonPropertyName("pageSize")]
+        public int PageSize { get; set; }
+
+        [JsonPropertyName("resultsOnPage")]
+        public int ResultsOnPage { get; set; }
+
+        [JsonPropertyName("resultsFromSearch")]
+        public int ResultsFromSearch { get; set; }
+
+        [JsonPropertyName("songsTotal")]
+        public int SongsTotal { get; set; }
+
+    }
+
+    public class SongSearchResult
+    {
+        [JsonPropertyName("pagination")]
+        public PaginationInfo Pagination { get; set; }
+
+        [JsonPropertyName("songs")]
+        public List<Song> Songs { get; set; }
 
     }
 
