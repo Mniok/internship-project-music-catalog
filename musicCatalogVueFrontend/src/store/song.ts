@@ -14,7 +14,7 @@ export const useSongStore = defineStore('songStore', {
     searchByGenre: "none",
     searchSongFlags: "none",
 
-    currentPage: 0,
+    currentPage: 1,
   }),
 
   /*getters: {

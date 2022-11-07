@@ -105,6 +105,7 @@
               v-model="page"
               class="my-0"
               :length="numOfPages"
+              @input="handlePagination(page)"
             ></v-pagination>
           </v-container>
         </v-col>    <!-- !!! layout kinda breaks when dislpay is thin, might have to split pagination and upload into 2 differrent footers, or make seperate style for s or xs displays -->
@@ -128,6 +129,8 @@ import { useSongStore } from '../store/song';
 import { mapState, mapActions } from 'pinia';
 import SongWidget from '../components/SongWidget.vue'
 import { Link } from '../service/linkHelpers';
+
+var defaultPageSize : number = 12;
 
 interface Song {
   id: number,
@@ -158,7 +161,7 @@ interface Song {
       songsList: Array<Song>(),
       readyToDisplaySongs: false,
 
-      page: 0,
+      page: 1,
       numOfPages: Number,
       
     }),
@@ -168,57 +171,67 @@ interface Song {
     },*/
 
     created() {
-      var page : number = 0, pageSize : number = 12;
-      var searchCriteria = this.searchUploadedByMe + '/' + page + '/' + pageSize + '/'
-          + this.searchSongFlags + '/' + this.searchByTitle + '/' + this.searchByArtist + '/' + this.searchByGenre;
-      
-
-      this.refreshJWT();
-      axios.get('https://localhost:7026/api/Song/searchsongs/' + searchCriteria, {
-          headers: { 'Authorization': `bearer ${this.accessToken}` }
-        })
-      .then(response => { 
-        //console.log(response.data); ////
-
-        this.page = response.data.pagination.page;
-        this.numOfPages = response.data.pagination.pagesFromSearch;
-
-        var s: any;
-        for(s of response.data.songs){
-          var newSong : Song = {id: 0, title: '', description: '', time: 0, artists: [], genres: [], links: [], uploadedBy: '', uploadedDate: ''};
-          //({s.title, s.description, s.time, s.artists, s.genres, s.links, s.uploadedBy} = response.data[0]);
-          newSong.id = s.songId;  //!! //to link to song detailed page
-          newSong.title = s.title;
-          newSong.description = s.description;
-          newSong.time = s.time;
-          newSong.artists = s.artists;
-          newSong.genres = s.genres;
-          newSong.links = s.links;
-          newSong.uploadedBy = s.uploadedBy;
-          newSong.uploadedDate = s.createdAt;  //!!
-
-          this.songsList.push(newSong);
-        }
-
-        //console.log(this.songsList);  ////
-
-        this.readyToDisplaySongs = true;
-
-      })
-      .catch(function (error) {
-        console.log(error);
-        if(error.response == undefined){
-          alert("Couldn't connect to the server. Try again later.");
-        }
-        if(error.response.status == 401){
-          alert("401: unauthorized");
-        }
-      });
+      this.loadPage(1);
     },
 
     methods: {
+      loadPage(page: number){
+        page -= 1; //because API is 0-based but pagination component is 1-based!!!!
+
+        var searchCriteria = this.searchUploadedByMe + '/' + page + '/' + defaultPageSize + '/'
+            + this.searchSongFlags + '/' + this.searchByTitle + '/' + this.searchByArtist + '/' + this.searchByGenre;
+      
+
+        this.refreshJWT();
+        axios.get('https://localhost:7026/api/Song/searchsongs/' + searchCriteria, {
+            headers: { 'Authorization': `bearer ${this.accessToken}` }
+          })
+        .then(response => { 
+          //console.log(response.data); ////
+
+          this.page = response.data.pagination.page +1;   //again, because API is 0-based but pagination component is 1-based!!!! 
+          this.numOfPages = response.data.pagination.pagesFromSearch;
+
+          this.songsList = [];
+          var s: any;
+          for(s of response.data.songs){
+            var newSong : Song = {id: 0, title: '', description: '', time: 0, artists: [], genres: [], links: [], uploadedBy: '', uploadedDate: ''};
+            //({s.title, s.description, s.time, s.artists, s.genres, s.links, s.uploadedBy} = response.data[0]);
+            newSong.id = s.songId;  //!! //to link to song detailed page
+            newSong.title = s.title;
+            newSong.description = s.description;
+            newSong.time = s.time;
+            newSong.artists = s.artists;
+            newSong.genres = s.genres;
+            newSong.links = s.links;
+            newSong.uploadedBy = s.uploadedBy;
+            newSong.uploadedDate = s.createdAt;  //!!
+
+            this.songsList.push(newSong);
+          }
+
+          //console.log(this.songsList);  ////
+
+          this.readyToDisplaySongs = true;
+
+        })
+        .catch(function (error) {
+          console.log(error);
+          if(error.response == undefined){
+            alert("Couldn't connect to the server. Try again later.");
+          }
+          if(error.response.status == 401){
+            alert("401: unauthorized");
+          }
+        });
+      },
+
       search () {
         console.log("clicked search button");
+      },
+
+      handlePagination(page : number) {
+        this.loadPage(page);
       },
 
       ...mapActions(useAccountStore, ['refreshJWT']),
