@@ -10,11 +10,14 @@ Used technologies:
 - Vuetify
 - ASP.NET
 - C#
-- NuGet SQLite package
-- NuGet Microsoft.AspNetCore.Authentication.JwtBearer package
 - Pinia
 - Axios
 - Bootstrap
+- NuGet packages:
+    - SQLite
+    - Microsoft.AspNetCore.Authentication.JwtBearer
+    - Microsoft.EntityFrameworkCore.Sqlite
+    - Microsoft.EntityFrameworkCore.Tools
 
 
 
@@ -27,5 +30,5 @@ Before running this:
 
 To run this:
 1. start up backend by building solution (musicCatalogDotNetAPI.sln) in Visual Studio
-2. start up frontend by running 'vue serve' in remailfront/
+2. start up frontend by running 'vue serve' in musicCatalogVueFrontend/
 3. connect to localhost on port 8080, or on whichever port Vue-CLI deployed it on
