@@ -98,7 +98,7 @@
         </v-btn> 
       </v-card>
       
-      <v-card v-if="readyToDisplaySongs" style="height:40px">
+      <v-card v-if="readyToDisplaySongs" style="height:40px; background-color:#00000000" elevation="0">
         <v-col cols="12" class="p-0">
           <v-container class="max-width p-0">
             <v-pagination
@@ -111,7 +111,7 @@
         </v-col>    <!-- !!! layout kinda breaks when dislpay is thin, might have to split pagination and upload into 2 differrent footers, or make seperate style for s or xs displays -->
       </v-card>
 
-      <v-card class="corner-curved" color="success">
+      <v-card class="corner-curved mt-2" color="success">
         <v-btn to="/upload" class="corner-curved no-decorators pl-8 pt-1" text color="grey lighten-3">
           <span class="mr-2">Upload new song</span>
           <v-icon>mdi-tray-arrow-up</v-icon>

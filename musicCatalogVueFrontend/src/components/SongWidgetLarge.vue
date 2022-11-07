@@ -2,7 +2,7 @@
   <v-container class="d-flex">
     <v-container id="left-column" class="mr-5 pb-0" style="width:220px"> <!-- bez tego style width v-sheet jest zciśnięty -->
         <v-sheet id="image-preview" height="220px" width="220px" rounded outlined elevation="8" color="blue-grey darken-3">
-          <span>[image]</span>
+          <!--<span>[image]</span>-->
         </v-sheet>
         <p class="uploader-info mt-2 ml-1">Uploaded by <strong>{{songUploader}}</strong><br/>
         on {{songUploadedDate | dateFormat}}</p>

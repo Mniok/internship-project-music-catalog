@@ -3,7 +3,7 @@
     <v-form class="d-flex" style="width:100%">
       <v-container id="left-column" class="mr-5 pb-0">
         <v-sheet id="image-preview" height="220px" width="220px" rounded outlined elevation="8" color="blue-grey darken-3">
-          <span>[choose an image]</span>
+          <!--<span>[choose an image]</span>-->
         </v-sheet>
 
         <p class="category-title mt-8">                                            <!-- song length input -->
